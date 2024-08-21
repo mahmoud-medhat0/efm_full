@@ -1,0 +1,544 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+}
+
+:root {
+  --primary-100: #bb9f86;
+  --primary-200: #cfb096;
+  --primary-300: #ffe099;
+  --accent-100: #ffc801;
+  --accent-200: #916a00;
+  --text-100: #8fb635;
+  --text-200: #719912;
+  --bg-100: #f9f9f9;
+  --bg-200: #faf3f3;
+  --bg-300: #ffeaea;
+  --bg-400: #fdf2f2;
+}
+
+/* --- Global Styles --- */
+
+body {
+  background-color: var(--bg-400);
+  overflow-x: hidden;
+}
+
+body::-moz-focus-inner {
+  color: #110726;
+}
+
+body::-webkit-scrollbar {
+  width: 0;
+  background-color: #110726;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #4b2399;
+  box-shadow: 0px 0px 30px 30px #4b2399;
+}
+
+input,
+textarea {
+  color: #bb9f86 !important;
+}
+
+/* table {
+  border-collapse: separate !important;
+} */
+
+table thead th {
+  font-weight: 500;
+}
+
+.root-layout {
+  width: 100%;
+  height: 100%;
+}
+
+#hero,
+#features,
+#payments,
+#advertise,
+#vision,
+#faq {
+  scroll-snap-align: flex-start;
+  scroll-snap-type: "y mandatory";
+}
+
+.active {
+  color: #24183a;
+}
+
+.logoLight {
+  cursor: pointer;
+  filter: drop-shadow(0px 0px 18px var(--primary-100));
+}
+
+.logoLight:hover {
+  filter: drop-shadow(0px 0px 34px var(--primary-200));
+}
+
+.hoving:hover {
+  filter: drop-shadow(0px 0px 2px #fff);
+}
+
+.btnHover:hover {
+  scale: 1.1;
+}
+
+/* --- Marks --- */
+.mark {
+  position: relative;
+  padding: 0 0 10px;
+}
+
+.mark::after {
+  content: "";
+  position: absolute;
+  width: 91px;
+  height: 12px;
+  bottom: 0;
+  left: 50%;
+  z-index: 7;
+  -webkit-transform: translate(-45px);
+  -ms-transform: translate(-45px);
+  transform: translate(-45px);
+  background-color: #bb9f86;
+  -webkit-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-image: url(assets/headline-curve.svg);
+  mask-image: url(assets/headline-curve.svg);
+}
+
+.mark-zigzag {
+  position: relative;
+  padding: 0 0 10px;
+}
+
+.mark-zigzag::after {
+  content: "";
+  position: absolute;
+  width: 91px;
+  height: 12px;
+  bottom: -5px;
+  left: 50%;
+  z-index: 7;
+  -webkit-transform: translate(-45px);
+  -ms-transform: translate(-45px);
+  transform: translate(-45px);
+  background-color: #bb9f86;
+  -webkit-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-image: url(assets/headline-underline-zigzag.svg);
+  mask-image: url(assets/headline-underline-zigzag.svg);
+}
+
+/* --- UnderLine of Select Menu --- */
+li.text-lg.duration-200,
+.sely {
+  position: relative;
+  transition: color 0.3s ease-in-out;
+}
+
+li.text-lg.duration-200 a,
+.sely button {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+li.text-lg.duration-200 a::before,
+.sely button::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: transparent;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+li.text-lg.duration-200 a:hover::before,
+.sely button:hover::before {
+  width: 100%;
+  background-color: #bb9f86;
+}
+
+/* --- Hero Section --- */
+.bg-rounded {
+  background-color: rgb(45, 58, 74);
+  background-color: linear-gradient(
+    90deg,
+    rgba(45, 58, 74, 1) 27%,
+    rgb(55, 66, 81) 82%
+  );
+  background-image: url(./assets/bg.png);
+  background-position: center;
+  background-clip: border-box;
+  background-size: contain;
+}
+
+.bg-left {
+  position: absolute;
+  top: -100px;
+  left: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-200));
+  z-index: 1;
+}
+
+.bg-right {
+  position: absolute;
+  bottom: -100px;
+  right: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-100));
+}
+
+.heroSection svg {
+  font-size: 16px;
+  color: #ffd700;
+  filter: blur(0.7px);
+  transition: 0.7s;
+}
+
+.heroSection svg:hover {
+  filter: blur(0.5px);
+  transition: 0.7s;
+}
+
+.heroSection svg.hn1 {
+  position: absolute;
+  top: 235px;
+  left: 80px;
+  transform: rotate(165deg);
+}
+
+.heroSection svg.hn2 {
+  position: absolute;
+  bottom: 78px;
+  right: 75px;
+  transform: rotate(-15deg);
+}
+
+.heroSection svg.hn3 {
+  position: absolute;
+  top: 315px;
+  right: 45px;
+  transform: rotate(20deg);
+  z-index: 99999;
+}
+.heroSection svg.hn4 {
+  position: absolute;
+  left: 59px;
+  bottom: 38px;
+  color: var(--text-100);
+  z-index: 99999;
+}
+
+/* --- Features Section --- */
+.features-cards {
+  background-color: #bb9f86;
+  background-color: linear-gradient(90deg, #bb9f86 27%, #cfb096 82%);
+}
+
+.featuresSection .bg-left {
+  position: absolute;
+  top: 1750px;
+  left: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-100));
+  z-index: 1;
+}
+
+/* --- Payments Section --- */
+.paymentSection svg {
+  font-size: 16px;
+  color: #ffd700;
+  filter: blur(0.7px);
+  transition: 0.7s;
+}
+
+.paymentSection svg:hover {
+  filter: blur(0.5px);
+  transition: 0.7s;
+}
+
+.paymentSection svg.pn1 {
+  position: absolute;
+  top: 1235px;
+  left: 60px;
+  transform: rotate(165deg);
+}
+
+.paymentSection svg.pn2 {
+  position: absolute;
+  bottom: -878px;
+  right: 145px;
+  transform: rotate(-15deg);
+}
+
+.paymentSection svg.pn3 {
+  position: absolute;
+  top: 1315px;
+  right: 45px;
+  transform: rotate(2deg);
+  color: #8b4513;
+  z-index: 99999;
+}
+
+.paymentSection svg.pn4 {
+  position: absolute;
+  left: 59px;
+  bottom: -1200px;
+  color: #8b4513;
+  z-index: 99999;
+}
+
+/* --- Advertise Section --- */
+.advertise-cards {
+  background-color: #bb9f86;
+  background-color: linear-gradient(90deg, #bb9f86 27%, #cfb096 82%);
+}
+
+.advertiseSection .bg-right {
+  position: absolute;
+  bottom: -2100px;
+  right: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-100));
+}
+
+/* --- Vision Section --- */
+.visionSection svg {
+  font-size: 16px;
+  color: #ffd700;
+  filter: blur(0.7px);
+  transition: 0.7s;
+}
+
+.visionSection svg:hover {
+  filter: blur(0.5px);
+  transition: 0.7s;
+}
+
+.visionSection svg.vn1 {
+  position: absolute;
+  top: 2635px;
+  left: 40px;
+  transform: rotate(165deg);
+}
+
+.visionSection svg.vn2 {
+  position: absolute;
+  bottom: -2278px;
+  right: 145px;
+  transform: rotate(-15deg);
+}
+
+.visionSection svg.vn3 {
+  position: absolute;
+  top: 2315px;
+  right: 45px;
+  transform: rotate(2deg);
+  color: #8b4513;
+  z-index: 99999;
+}
+
+.visionSection svg.vn4 {
+  position: absolute;
+  left: 59px;
+  bottom: -2600px;
+  color: #8b4513;
+  z-index: 99999;
+}
+
+/* --- Referral Section --- */
+.referral-cards {
+  background-color: #bb9f86;
+  background-color: linear-gradient(90deg, #bb9f86 27%, #cfb096 82%);
+}
+
+/* --- FAQ Section --- */
+.faqSection .bg-left {
+  position: absolute;
+  top: 3850px;
+  left: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-100));
+  z-index: 1;
+}
+
+.faqSection .bg-right {
+  position: absolute;
+  bottom: -4100px;
+  right: -200px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--primary-100);
+  filter: drop-shadow(50px 30px 180px var(--primary-100));
+}
+
+.faqSection svg {
+  font-size: 16px;
+  color: #ffd700;
+  filter: blur(0.7px);
+  transition: 0.7s;
+}
+
+.faqSection svg:hover {
+  filter: blur(0.5px);
+  transition: 0.7s;
+}
+
+.faqSection svg.fn1 {
+  position: absolute;
+  top: 4035px;
+  left: 40px;
+  transform: rotate(130deg);
+}
+
+.faqSection svg.fn2 {
+  position: absolute;
+  bottom: -2878px;
+  color: #8b4513;
+  right: 145px;
+  transform: rotate(-15deg);
+}
+
+.faqSection svg.fn3 {
+  position: absolute;
+  top: 4315px;
+  right: 45px;
+  transform: rotate(2deg);
+  z-index: 99999;
+}
+
+.faqSection svg.fn4 {
+  position: absolute;
+  left: 59px;
+  bottom: -3480px;
+  color: #8b4513;
+  z-index: 99999;
+}
+
+/* --- PartnersSection --- */
+.slick-dots {
+  margin-bottom: -30px !important;
+}
+
+.slick-dots li button::before {
+  font-size: 8px !important;
+  color: #bb9f86 !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 24px !important;
+  color: var(--primary-200) !important;
+}
+
+.silder {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.slick-slide {
+  margin-left: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* --- Phone Input --- */
+.react-international-phone-input-container {
+  border-color: #d1d5db !important;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem !important;
+  padding: 0 10px;
+}
+
+.react-international-phone-input-container:focus {
+  border-color: #4f46e5;
+  outline: none;
+  box-shadow: 0 0 0 2px #4f46e5;
+}
+
+.react-international-phone-country-selector button {
+  background-color: transparent !important;
+  border: 0px;
+  width: 100% !important;
+  height: 50px !important;
+  margin-right: 15px;
+  padding-right: 10px;
+}
+
+.react-international-phone-input {
+  width: 100% !important;
+  height: 50px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  font-size: 1rem !important;
+  background-color: transparent !important;
+  color: #bb9f86 !important;
+  font-family: "Rubik", sans-serif;
+  border: 0px !important;
+}
+
+@media (max-width: 767px) {
+  .faqSection svg,
+  .visionSection svg,
+  .paymentSection svg,
+  .heroSection svg {
+    display: none;
+  }
+}
+
+/* --- Dashboard Style --- */
+.ref {
+  width: 400px;
+  color: #719912 !important;
+}
+
+.ref:focus {
+  outline: none;
+  border: none;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
