@@ -22,6 +22,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@emotion/styled": "^11.13.0",
         "@headlessui/react": "^2.1.2",
         "@heroicons/react": "^2.1.5",
         "@hookform/resolvers": "^3.9.0",
@@ -29,8 +30,11 @@
         "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/progress": "^0.2.7",
         "@inertiajs/react": "^1.2.0",
+        "@mui/material": "^5.16.7",
         "@reduxjs/toolkit": "^2.2.7",
+        "@types/youtube": "^0.1.0",
         "class-variance-authority": "^0.7.0",
+        "devtools-detect": "^4.0.2",
         "dropify": "^0.2.2",
         "framer-motion": "^11.3.24",
         "jquery": "^3.7.1",

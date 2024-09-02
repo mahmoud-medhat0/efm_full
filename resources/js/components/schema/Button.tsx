@@ -20,6 +20,7 @@ const buttonVariants = cva(
       size: {
         default: "p-3",
         sm: "text-sm px-4 py-2",
+        sm2: "text-sm px-3 py-1",
       },
       fullWidth: {
         true: "w-full",

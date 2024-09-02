@@ -34,7 +34,7 @@ const DepositHistory = () => {
                     <td className="pt-3 pb-2 px-2 text-sm">
                       {deposit.total}
                     </td>
-                    <td className={`pt-3 pb-2 px-2 text-sm text-center`}>
+                    <td className={`pt-3 pb-2 px-2 text-sm text-left`}>
                     <span className={`px-2 py-1 rounded ${deposit.status=='success' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                         {deposit.status}
                       </span>

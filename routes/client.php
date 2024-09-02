@@ -45,6 +45,14 @@ Route::controller(DashboardContrtoller::class)->prefix('dashboard')->group(funct
         Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');
         Route::get('messages', 'messages')->name('messages');
         Route::get('membership', 'membership')->name('membership');
+        Route::get('orders', 'orders')->name('orders');
+        Route::get('order', 'newOrder')->name('new-order');
+        Route::post('order', 'newOrderPost')->name('new-order.post');
+        Route::get('tasks', 'tasks')->name('tasks');
+        Route::post('tasks/update', 'UpdateTask')->name('tasks.update');
+        Route::post('yt-video-details','YtVideoDetails')->name('yt-video-details');
+        Route::post('cli-ban','CliBan')->name('cli-ban');
+        Route::get('convert-points', 'convertPoints')->name('convert-points');
         Route::get('coupons', 'coupons')->name('coupons');
         Route::get('deposit', 'deposit')->name('deposit');
         Route::post('deposit', 'depositPost')->name('deposit.post');

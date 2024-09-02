@@ -5,20 +5,24 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Naif\ToggleSwitchField\ToggleSwitchField;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\MorphTo;
-use App\Nova\Filters\AuthenticableFilter;
-use App\Nova\Filters\AuthenticableUsers;
-use Laravel\Nova\Fields\DateTime;
-class LoginAttempt extends Resource
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\MorphMany;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+
+class Task extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\LoginAttempt>
+     * @var class-string<\App\Models\Task>
      */
-    public static $model = \App\Models\LoginAttempt::class;
+    public static $model = \App\Models\Task::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,26 +50,33 @@ class LoginAttempt extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ip_address'),
-            Text::make('country'),
-            Text::make('email'),
-            Boolean::make('successful'),
-            MorphTo::make('authenticatable'),
-            DateTime::make('created_at'),
+            Select::make('Status', 'status')->options([
+                'pending' => 'Pending',
+                'completed' => 'Completed',
+                'failed' => 'Failed',
+                'in_progress' => 'In Progress',
+            ]),
+            ToggleSwitchField::make('Paid', 'paid'),
+            Boolean::make('Removed', 'removed'),
+            Number::make('Points Reward', 'points_reward')->step(0.01)->default(0),
+            Text::make('Link', 'link')->readonly(),
+            Text::make('IP', 'ip')->readonly(),
+            Text::make('User Agent', 'user_agent')->readonly(),
+            Text::make('Country', 'country')->readonly(),
+            BelongsTo::make('Order', 'order', Order::class)->displayUsing(function ($order) {
+                return $order->order_id;
+            }),
+            BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
+                return $client->name;
+            }),
+            BelongsTo::make('Service', 'service', Service::class)->displayUsing(function ($service) {
+                return $service->name;
+            }),
+            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class),
+            MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class),
         ];
     }
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;   
-    }
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
-    }
+
     /**
      * Get the cards available for the request.
      *
@@ -85,10 +96,7 @@ class LoginAttempt extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [
-            new AuthenticableFilter,
-            // new AuthenticableUsers,
-        ];
+        return [];
     }
 
     /**

@@ -14,9 +14,13 @@ import {
   EllipsisHorizontalIcon,
   EnvelopeIcon,
   PhotoIcon,
+  RectangleGroupIcon,
   ShieldCheckIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
   StarIcon,
+  SquaresPlusIcon,
+  WrenchIcon,
   TvIcon,
   UserGroupIcon,
 } from "@heroicons/react/20/solid";
@@ -60,6 +64,11 @@ const Sidebar = () => {
       label: "Upgrade Account",
       isNew: true,
     },
+    {
+      href: route('client.dashboard.new-order'),
+      icon: <ShoppingCartIcon />,
+      label: "New Order",
+    },
     { href: route('client.dashboard.coupons'), icon: <StarIcon />, label: "Coupon code" },
     {
       href: route('client.dashboard.deposit'),
@@ -75,6 +84,9 @@ const Sidebar = () => {
   ];
 
   const settingsLinks = [
+    { href: route('client.dashboard.tasks'), icon: <RectangleGroupIcon />, label: "Tasks" },
+    { href: route('client.dashboard.orders'), icon: <SquaresPlusIcon />, label: "Orders" },
+    { href: route('client.dashboard.convert-points'), icon: <WrenchIcon />, label: "Convert Points" },
     { href: "#dashboard", icon: <Cog6ToothIcon />, label: "Personal Settings" },
     {
       href: route('client.dashboard.2fa'),

@@ -22,7 +22,7 @@ use Naif\ToggleSwitchField\ToggleSwitchField;
 use App\Models\InterestCategory as InterestCategoryModel;
 use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-
+use Laravel\Nova\Fields\Currency;
 class Client extends Resource
 {
     /**
@@ -60,6 +60,8 @@ class Client extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'name'),
             Email::make('Email', 'email'),
+            Currency::make('Balance', 'balance')->currency('USD')->onlyOnDetail(),
+            Number::make('Points', 'points')->onlyOnDetail(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
             ToggleSwitchField::make('Email Verified', 'email_verified')->color('#3AB95A'),
             ToggleSwitchField::make('Active', 'is_active')->color('#3AB95A'),
@@ -95,6 +97,8 @@ class Client extends Resource
             MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class),
             HasMany::make('Transactions', 'transactions', Transaction::class),
+            HasMany::make('Tasks', 'tasks', Task::class),
+            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class),
             MorphMany::make('Activities', 'activities', ActivityLog::class),
         ];
     }

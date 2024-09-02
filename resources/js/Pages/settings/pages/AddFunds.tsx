@@ -48,7 +48,9 @@ const AddFundsPage = () => {
   const handleAttachmentChange = (file) => {
     setAttachment(file); // Update the attachment state
   };
-  
+  const handleMethodChange = (method) => {
+    setSelectedMethod(method);
+  };
   useEffect(() => {
     calcTotal();
   }, [amount, selectedMethod]);
@@ -133,7 +135,7 @@ const AddFundsPage = () => {
               <label htmlFor="plan" className="text-black text-base">
                 Method
               </label>
-              {methods.length > 0 && <MethodSelector methods={methods} />}
+              {methods.length > 0 && <MethodSelector methods={methods} onChange={handleMethodChange}/>}
             </div>
             <div className="space-y-2 pb-1">
               <label htmlFor="amount" className="text-black text-base">

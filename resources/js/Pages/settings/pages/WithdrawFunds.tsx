@@ -116,6 +116,9 @@ const WithdrawFundsPage = () => {
       });
     }
   }, []);
+  const handleMethodChange = (method) => {
+    setSelectedMethod(method);
+  };
   const {
     register,
     handleSubmit,
@@ -176,7 +179,7 @@ const WithdrawFundsPage = () => {
         <div className="flex justify-between items-center">
           <h3 className="text-lg mb-5">Withdraw funds</h3>
           <div className="flex justify-end mb-4">
-            {selectedMethod.withdrawAccounts.length === 0 && <Button onClick={() => setIsOpen(true)}>Add Withdraw Account</Button>}
+            {selectedMethod.withdrawAccounts && selectedMethod.withdrawAccounts.length === 0 && <Button onClick={() => setIsOpen(true)}>Add Withdraw Account</Button>}
           </div>
         </div>
         {selectedMethod && selectedMethod.description_withdraw!=null && selectedMethod.description_withdraw !='' && (
@@ -199,7 +202,7 @@ const WithdrawFundsPage = () => {
               <label htmlFor="plan" className="text-black text-base">
                 Method
               </label>
-              {methods.length > 0 && <MethodSelector methods={methods} />}
+              {methods.length > 0 && <MethodSelector methods={methods} onChange={handleMethodChange}/>}
             </div>
             <div className="space-y-2 pb-1">
               <label htmlFor="amount" className="text-black text-base">
@@ -228,7 +231,7 @@ const WithdrawFundsPage = () => {
               <Button fullWidth isLoading={isLoading}>Withdraw</Button>
             </div>
           </form>
-          <Modal isOpen={isOpen} closeModal={closeModal}>
+          {selectedMethod.fields && <Modal isOpen={isOpen} closeModal={closeModal}>
                 <div className='absolute top-[-20px] right-0'>
                     <div className='bg-[#E8F0F7] rounded-full p-1'>
                         <XMarkIcon className='w-6 h-6 cursor-pointer text-red-600' onClick={closeModal} />
@@ -255,7 +258,7 @@ const WithdrawFundsPage = () => {
                         </Button>
                     </div>
                 </form>
-            </Modal>
+            </Modal>}
         </div>
       </div>
     </div>

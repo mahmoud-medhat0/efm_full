@@ -1,9 +1,10 @@
 import InfoAlert from "../../../../components/dashboard/alerts/InfoAlert";
 import WelcomeTab from "../../../../components/dashboard/welcome/WelcomeTab";
 import Select from "../../../../components/schema/Select";
-
+import DashboardLayout from "../../../../Pages/settings/Layout";
 const AdvertiserPanelPage = () => {
   return (
+    <DashboardLayout>
     <div className="w-full h-auto mt-20">
       <WelcomeTab />
 
@@ -38,6 +39,7 @@ const AdvertiserPanelPage = () => {
         </div>
       </div>
     </div>
+    </DashboardLayout>
   );
 };
 

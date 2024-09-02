@@ -24,6 +24,17 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Activity::class, 'causer_id', 'id');
     }
+    public function ValidClient()
+    {
+        return $this->where('email_verified', 1)
+        ->where('is_active', 1)
+        ->where('telegram_verified', 1)
+        ->where('kyc_verified', 1);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class,'provider_id','id');
+    }
     public function interests()
     {
         return $this->belongsToMany(InterestCategory::class);
@@ -47,5 +58,17 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function withdrawals()
     {
         return $this->transactions()->where('type', 'withdrawal')->get();
+    }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+    public function notRemovedTasks()
+    {
+        return $this->tasks()->where('removed', false);
+    }
+    public function banAttemps()
+    {
+        return $this->hasMany(BanAttemp::class);
     }
 }

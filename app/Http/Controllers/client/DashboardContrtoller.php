@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers\client;
 
+use DateInterval;
 use Inertia\Inertia;
+use App\Models\Service;
 use App\Models\Gateways;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Alaouy\Youtube\Rules\ValidYoutubeVideo;
+use App\Models\Order;
+use App\Models\InterestCategory;
+use App\Models\BanAttemp;
+use App\Models\Client;
+use App\Models\Task;
+use Stevebauman\Location\Facades\Location;
 
 class DashboardContrtoller extends Controller
 {
@@ -18,10 +28,14 @@ class DashboardContrtoller extends Controller
             'loginFailures' => $loginFailed
         ]);
     }
+    public function advertiserPanel()
+    {
+        return Inertia::render('settings/pages/AdvertiserPanel/index.tsx');
+    }
     //Finance methods
     public function deposit()
     {
-        return Inertia::render('settings/pages/AddFunds.tsx',[
+        return Inertia::render('settings/pages/AddFunds.tsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
@@ -42,24 +56,24 @@ class DashboardContrtoller extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $gateway = Gateways::find($request->selectedMethod);
-        if($gateway->attachment == true){
-            if($request->attachment == null){
-                return response()->json(['success' => false,'message' => 'Attachment is required'], 200);
+        if ($gateway->attachment == true) {
+            if ($request->attachment == null) {
+                return response()->json(['success' => false, 'message' => 'Attachment is required'], 200);
             }
         }
         $rules = [
-            'amount' => ['required', 'numeric', 'min:'.$gateway->min_deposit,'max:'.$gateway->max_deposit],
+            'amount' => ['required', 'numeric', 'min:' . $gateway->min_deposit, 'max:' . $gateway->max_deposit],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
-        $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount/100) : $gateway->charge_deposit;
+        $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
         $total = $request->amount - $fees;
-        $tnx = 'DEP'.time();
+        $tnx = 'DEP' . time();
         Transaction::create([
             'amount' => $request->amount,
             'fee' => $fees,
@@ -67,16 +81,16 @@ class DashboardContrtoller extends Controller
             'tnx_type' => 'add',
             'tnx' => $tnx,
             'type' => 'deposit',
-            'description' => 'Deposit from '.$gateway->name,
+            'description' => 'Deposit from ' . $gateway->name,
             'gateway_id' => $request->selectedMethod,
             'client_id' => auth()->user()->id,
         ]);
-        return response()->json(['success' => true,'message' => 'Deposit successful','tnx' => $tnx]);
+        return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
     }
     //withdraw methods
     public function withdraw()
     {
-        return Inertia::render('settings/pages/WithdrawFunds.tsx',[
+        return Inertia::render('settings/pages/WithdrawFunds.tsx', [
             'methods' => Gateways::withdrawGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
@@ -86,11 +100,11 @@ class DashboardContrtoller extends Controller
                     'description_withdraw' => $gateway->description_withdraw,
                     'charge_type_withdraw' => $gateway->charge_type_withdraw,
                     'charge_withdraw' => $gateway->charge_withdraw,
-                    'fields' => json_decode($gateway->fields,true),
+                    'fields' => json_decode($gateway->fields, true),
                     'withdrawAccounts' => auth()->user()->withdrawAccounts()->where('gateway_id', $gateway->id)->first(),
                 ];
             }),
-        ]); 
+        ]);
     }
     public function withdrawAccount(Request $request)
     {
@@ -99,33 +113,33 @@ class DashboardContrtoller extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 400);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 400);
         }
         // Check if client has withdraw account in this gateway
         $existingAccount = auth()->user()->withdrawAccounts()->where('gateway_id', $request->selectedMethod)->first();
         if ($existingAccount) {
-            return response()->json(['success' => false,'message' => 'Withdraw account already exists for this gateway'], 400);
+            return response()->json(['success' => false, 'message' => 'Withdraw account already exists for this gateway'], 400);
         }
 
         $gateway = Gateways::find($request->selectedMethod);
         $fields = json_decode($gateway->fields, true);
         $rules[$fields['name']] = ($fields['validation']['required'] ? 'required' : 'nullable') .
-                                  (isset($fields['validation']['regex']) ? '|regex:' . $fields['validation']['regex'] : '') .
-                                  (isset($fields['validation']['unique']) && $fields['validation']['unique'] ? '|unique:withdraw_accounts,data->' . $fields['name'] : '');
+            (isset($fields['validation']['regex']) ? '|regex:' . $fields['validation']['regex'] : '') .
+            (isset($fields['validation']['unique']) && $fields['validation']['unique'] ? '|unique:withdraw_accounts,data->' . $fields['name'] : '');
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
-                          
+
         $data[$fields['name']] = $request->input($fields['name']);
-        
+
         $data = json_encode($data);
         auth()->user()->withdrawAccounts()->create([
             'client_id' => auth()->user()->id,
             'data' => $data,
             'gateway_id' => $request->selectedMethod,
         ]);
-        return response()->json(['success' => true,'message' => 'Withdraw account created successfully']);
+        return response()->json(['success' => true, 'message' => 'Withdraw account created successfully']);
     }
     public function withdrawPost(Request $request)
     {
@@ -134,19 +148,19 @@ class DashboardContrtoller extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $gateway = Gateways::find($request->selectedMethod);
         $rules = [
-            'amount' => ['required', 'numeric', 'min:'.$gateway->min_withdraw,'max:'.$gateway->max_withdraw],
+            'amount' => ['required', 'numeric', 'min:' . $gateway->min_withdraw, 'max:' . $gateway->max_withdraw],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['success' => false,'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
-        $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount/100) : $gateway->charge_withdraw;
+        $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
         $total = $request->amount - $fees;
-        $tnx = 'WITH'.time();
+        $tnx = 'WITH' . time();
         Transaction::create([
             'amount' => $request->amount,
             'fee' => $fees,
@@ -154,12 +168,12 @@ class DashboardContrtoller extends Controller
             'tnx_type' => 'add',
             'tnx' => $tnx,
             'type' => 'withdraw',
-            'description' => 'Withdraw to '.$gateway->name,
+            'description' => 'Withdraw to ' . $gateway->name,
             'gateway_id' => $request->selectedMethod,
             'client_id' => auth()->user()->id,
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $total]);
-        return response()->json(['success' => true,'message' => 'Withdraw successful','tnx' => $tnx]);
+        return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
     //logs methods
     public function LogLoginAttempts()
@@ -183,5 +197,186 @@ class DashboardContrtoller extends Controller
             'deposits' => $deposits
         ]);
     }
+    //Order methods
+    public function orders()
+    {
+        return Inertia::render('settings/pages/settings/Orders.tsx', [
+            'orders' => auth()->user()->orders()->get()->toArray()
+        ]);
+    }
+    public function newOrder()
+    {
+        return Inertia::render('settings/pages/NewOrder.tsx', [
+            'services' => Service::where('status', 'active')->get()->map(function ($service) {
+                return [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'icon' => $service->icon,
+                    'min' => $service->min_amount,
+                    'max' => $service->max_amount,
+                    'minute_cost' => json_decode($service->calculation_formula, true)['minute_cost'],
+                ];
+            }),
+            'categories' => InterestCategory::all()->toArray()
+        ]);
+    }
+    public function YtVideoDetails(Request $request)
+    {
+        $validator = Validator::make(['url' => $request->url], [
+            'url' => ['required', 'bail', new ValidYoutubeVideo],
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+        }
+        $videoId = Youtube::parseVidFromURL($request->url);
+        $video = Youtube::getVideoInfo($videoId);
+        if ($video) {
+            $thumbnail = $video->snippet->thumbnails->standard->url;
+            $title = $video->snippet->title;
+            $viewCount = number_format($video->statistics->viewCount);
+            $likeCount = number_format($video->statistics->likeCount);
+            $duration = iso8601ToDuration($video->contentDetails->duration);
+            $interval = new DateInterval($video->contentDetails->duration);
+            $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
+            return response()->json(['success' => true, 'message' => 'Video details fetched successfully', 'thumbnail' => $thumbnail, 'title' => $title, 'viewCount' => $viewCount, 'likeCount' => $likeCount, 'duration' => $duration, 'minutes' => $minutes]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Video details Cant fetched', 'duration' => '']);
+        }
+    }
+    public function newOrderPost(Request $request)
+    {
+        $rules = [
+            'service_id' => ['required', 'exists:services,id'],
+            'link' => ['required', 'url'],
+            'amount' => ['required', 'numeric', 'min:' . Service::find($request->service_id)->min_amount, 'max:' . Service::find($request->service_id)->max_amount],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+        }
+        $service = Service::find($request->service_id);
+        if ($service->is_category_required) {
+            $rules['categories'] = ['required', 'array'];
+            $rules['categories.*'] = ['exists:interest_categories,id'];
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+        }
+        if ($request->service_id == "1") {
+            $videoId = Youtube::parseVidFromURL($request->link);
+            $video = Youtube::getVideoInfo($videoId);
+            $interval = new DateInterval($video->contentDetails->duration);
+            $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
+            $price = $request->amount * ($minutes * json_decode($service->calculation_formula, true)['minute_cost']);
+            $user = auth()->user();
+            $thumbnail = $video->snippet->thumbnails->standard->url;
+            $title = $video->snippet->title;
+            if ($user->balance < $price) {
+                return response()->json(['success' => false, 'message' => 'Insufficient balance to place the order'], 200);
+            }
+            Transaction::create([
+                'amount' => $price,
+                'fee' => 0,
+                'total' => $price,
+                'tnx_type' => 'sub',
+                'tnx' => 'ORD' . time(),
+                'type' => 'order',
+                'description' => 'Order from ' . $service->name,
+                'client_id' => auth()->user()->id,
+            ]);
+            foreach(json_decode($service->fields,true) as $field => $value){
+                $orderdata[$field] = isset(${$field}) ? ${$field} : null;
+            }
+            auth()->user()->update(['balance' => auth()->user()->balance - $price]);
+            $order = Order::create([
+                'order_id' => 'ORD' . time(),
+                'provider_id' => auth()->user()->id,
+                'service_id' => $request->service_id,
+                'link' => $request->link,
+                'target_amount' => $request->amount,
+                'price' => $price,
+                'status' => 'pending',
+                'data' => json_encode($orderdata),
+            ]);
+            if ($service->is_category_required) {
+                $order->categories()->sync($request->categories);
+            }
+        } else {    
+            $price = $request->amount * $service->minute_cost;
+        }
 
+        return response()->json(['success' => true, 'message' => 'Order created successfully', 'price' => $price]);
+    }
+    //Tasks methods
+    public function tasks()
+    {
+        return Inertia::render('settings/pages/settings/Tasks.tsx', [
+            'tasks' => auth()->user()->tasks()->where('status','!=','completed')->where('removed', false)->whereHas('order', function ($query) {
+                $query->where('status', 'approved');
+            })->get()->map(function ($task) {
+                return [
+                    'id' => $task->id,
+                    'order_id' => $task->order_id,
+                    'service_id' => $task->service_id,
+                    'service_name' => $task->service->name,
+                    'status' => $task->status,
+                    'data' => json_decode($task->order->data, true),
+                    'categories' => $task->order->categories->pluck('name')->toArray(),
+                    'reward' => number_format($task->reward(), 2),
+                ];
+            }),
+            'categories' => auth()->user()->tasks()->where('status','!=','completed')->where('removed', false)->whereHas('order', function ($query) {
+                $query->where('status', 'approved');
+            })->with('service:id,name')->select('service_id')->distinct()->get()->map(function ($task) {
+                return [
+                    'service_id' => $task->service_id,
+                    'service_name' => $task->service->name,
+                ];
+            })->toArray()
+        ]);
+    }
+    public function UpdateTask(Request $request)
+    {
+        $task = Task::find($request->taskId);
+        $ip = Location::get($request->ip());
+
+        $user_agent = $request->userAgent();
+        $country = $ip? $ip->countryName : null;
+        $task->update(['status' => $request->status,'ip' => $ip,'country' => $country,'user_agent' => $user_agent]);
+        if($request->status == 'completed'){
+            Transaction::create([
+                'status' => 'success',
+                'amount' => $task->reward(),
+                'fee' => 0,
+                'total' => $task->reward(),
+                'tnx_type' => 'add',
+                'tnx' => 'PTS' . time(),
+                'type' => 'points',
+                'description' => 'Points reward for task of Order ID: '.$task->order->order_id,
+                'client_id' => auth()->user()->id,
+            ]);
+            $task->update(['paid' => true,'points_reward' => $task->reward()]);
+            auth()->user()->update(['points' => auth()->user()->points + $task->reward()]);
+            $task->order->update(['current_amount' => $task->order->current_amount + 1]);
+        }
+    }
+    public function cliBan(Request $request)
+    {
+        $request->validate([
+            'cause' => ['required', 'string'],
+        ]);
+        BanAttemp::create([
+            'client_id' => auth()->user()->id,
+            'cause' => $request->cause,
+        ]);
+        Client::find(auth()->user()->id)->update(['is_active' => false]);
+    }
+    //convert Point Methods
+    public function convertPoints()
+    {
+        return Inertia::render('settings/pages/settings/ConvertPoints.tsx', [
+            'points' => auth()->user()->points,
+        ]);
+    }
 }

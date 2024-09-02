@@ -6,19 +6,16 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\MorphTo;
-use App\Nova\Filters\AuthenticableFilter;
-use App\Nova\Filters\AuthenticableUsers;
-use Laravel\Nova\Fields\DateTime;
-class LoginAttempt extends Resource
+use Laravel\Nova\Fields\BelongsTo;
+
+class BanAttemp extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\LoginAttempt>
+     * @var class-string<\App\Models\BanAttemp>
      */
-    public static $model = \App\Models\LoginAttempt::class;
+    public static $model = \App\Models\BanAttemp::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,26 +43,13 @@ class LoginAttempt extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ip_address'),
-            Text::make('country'),
-            Text::make('email'),
-            Boolean::make('successful'),
-            MorphTo::make('authenticatable'),
-            DateTime::make('created_at'),
+            Text::make('Video ID', 'video_id'),
+            Text::make('Cause', 'cause'),
+            BelongsTo::make('Task', 'task', Task::class),
+            BelongsTo::make('Client', 'client', Client::class),
         ];
     }
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;   
-    }
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
-    }
+
     /**
      * Get the cards available for the request.
      *
@@ -85,10 +69,7 @@ class LoginAttempt extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [
-            new AuthenticableFilter,
-            // new AuthenticableUsers,
-        ];
+        return [];
     }
 
     /**

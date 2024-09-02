@@ -539,6 +539,47 @@ li.text-lg.duration-200 a:hover::before,
   border: none;
 }
 
+/* src/YouTubeInfoCard.css */
+.youtube-info-card {
+  width: 70%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  background-color: #fff;
+  text-align: center;
+  height: 20%;
+}
+
+.youtube-info-card .thumbnail {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.youtube-info-card .title {
+  font-size: 1.2em;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.youtube-info-card .description {
+  font-size: 0.9em;
+  margin-bottom: 12px;
+  color: #555;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.youtube-info-card .stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  color: #666;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

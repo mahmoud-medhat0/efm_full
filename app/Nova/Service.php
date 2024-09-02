@@ -5,20 +5,25 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\NovaTranslatable\Translatable;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\MorphMany;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\MorphTo;
-use App\Nova\Filters\AuthenticableFilter;
-use App\Nova\Filters\AuthenticableUsers;
-use Laravel\Nova\Fields\DateTime;
-class LoginAttempt extends Resource
+class Service extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\LoginAttempt>
+     * @var class-string<\App\Models\Service>
      */
-    public static $model = \App\Models\LoginAttempt::class;
+    public static $model = \App\Models\Service::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,26 +51,28 @@ class LoginAttempt extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ip_address'),
-            Text::make('country'),
-            Text::make('email'),
-            Boolean::make('successful'),
-            MorphTo::make('authenticatable'),
-            DateTime::make('created_at'),
+            Translatable::make([
+                Text::make('name'),
+            ]),
+            Image::make('icon'),
+            Boolean::make('is_category_required'),
+            Select::make('status')->options([
+                'active' => 'Active',
+                'inactive' => 'Inactive',
+            ]),
+            Number::make('reward_point'),
+            Number::make('price_per_one_point'),
+            Currency::make('price_per_one_balance')->step(0.01),
+            Number::make('min_amount'),
+            Number::make('max_amount'),
+            Code::make('credentials'),
+            Code::make('calculation_formula'),
+            Code::make('fields'),
+            HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail(),
+            MorphMany::make('activityLogs','activityLogs', ActivityLog::class),
         ];
     }
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;   
-    }
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
-    }
+
     /**
      * Get the cards available for the request.
      *
@@ -85,10 +92,7 @@ class LoginAttempt extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [
-            new AuthenticableFilter,
-            // new AuthenticableUsers,
-        ];
+        return [];
     }
 
     /**
