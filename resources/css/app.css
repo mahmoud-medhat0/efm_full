@@ -114,8 +114,8 @@ table thead th {
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   mask-size: contain;
-  -webkit-mask-image: url(assets/headline-curve.svg);
-  mask-image: url(assets/headline-curve.svg);
+  -webkit-mask-image: url(../js/assets/headline-curve.svg);
+  mask-image: url(../js/assets/headline-curve.svg);
 }
 
 .mark-zigzag {
@@ -140,8 +140,8 @@ table thead th {
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   mask-size: contain;
-  -webkit-mask-image: url(assets/headline-underline-zigzag.svg);
-  mask-image: url(assets/headline-underline-zigzag.svg);
+  -webkit-mask-image: url(../js/assets/headline-underline-zigzag.svg);
+  mask-image: url(../js/assets/headline-underline-zigzag.svg);
 }
 
 /* --- UnderLine of Select Menu --- */
@@ -185,7 +185,7 @@ li.text-lg.duration-200 a:hover::before,
     rgba(45, 58, 74, 1) 27%,
     rgb(55, 66, 81) 82%
   );
-  background-image: url(./assets/bg.png);
+  background-image: url(../js/assets/bg.png);
   background-position: center;
   background-clip: border-box;
   background-size: contain;

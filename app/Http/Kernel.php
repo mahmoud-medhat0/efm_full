@@ -37,7 +37,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             HandleInertiaRequests::class,
-
         ],
 
         'api' => [
@@ -68,5 +67,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'telegram.verified' => \App\Http\Middleware\UserTelegramVerified::class,
         'telegram.not.verified' => \App\Http\Middleware\UserTelegramNotVerified::class,
+        '2fa' => \App\Http\Middleware\TwoFactorMiddleware::class,
+        'has2fa' => \App\Http\Middleware\Has2faEnabled::class,
     ];
 }

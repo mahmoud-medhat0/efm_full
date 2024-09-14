@@ -18,6 +18,9 @@ use App\Models\BanAttemp;
 use App\Models\Client;
 use App\Models\Task;
 use Stevebauman\Location\Facades\Location;
+use PragmaRX\Google2FALaravel\Google2FA;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class DashboardContrtoller extends Controller
 {
@@ -378,5 +381,54 @@ class DashboardContrtoller extends Controller
         return Inertia::render('settings/pages/settings/ConvertPoints.tsx', [
             'points' => auth()->user()->points,
         ]);
+    }
+    //2fa methods
+    public function twoFa()
+    {
+        return Inertia::render('settings/pages/settings/TwoFactorAuthentication.tsx');
+    }
+    public function get2faQrUrl()
+    {
+        $google2fa = app('pragmarx.google2fa');
+        // Generate a secret key for the user
+        $secret = $google2fa->generateSecretKey();
+        // Generate the QR code URL
+        $qrCodeUrl = $google2fa->getQRCodeUrl(
+            config('app.name'), // Company name
+            auth()->user()->email, // User's email
+            $secret // Secret key
+        );
+        auth()->user()->update(['two_factor_code' => $secret]);
+        $qrCode = new QrCode($qrCodeUrl);
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+        $dataUri = $result->getDataUri();
+        return response()->json(['success' => true, 'message' => 'QR code generated successfully', 'qrCodeUrl' => $dataUri]);
+    }
+    public function enable2faPost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => ['required', 'string', 'min:6', 'max:6'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+        $google2fa = app('pragmarx.google2fa');
+        $valid = $google2fa->verifyKey(auth()->user()->two_factor_code, $request->code);
+        if ($valid) {
+            auth()->user()->update(['is_2a' => true]);
+            return response()->json(['success' => true, 'message' => '2FA enabled successfully']);
+        }
+        return response()->json(['success' => false, 'message' => 'Invalid code']);
+    }
+    public function disable2faPost()
+    {
+        auth()->user()->update(['is_2a' => false]);
+        return response()->json(['success' => true, 'message' => '2FA disabled successfully']);
+    }
+    public function enable2fa()
+    {
+        return Inertia::render('settings/pages/settings/Enable2fa.tsx');
     }
 }

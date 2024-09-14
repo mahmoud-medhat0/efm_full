@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 use App\Models\LoginAttempt;
 use App\Models\Client;
-
+use PragmaRX\Google2FALaravel\Support\Authenticator;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator;
 class AuthClientController extends Controller
 {
     public function login()
@@ -35,17 +37,50 @@ class AuthClientController extends Controller
             $loginAttempt->successful = true;
             $loginAttempt->authenticatable_id = Auth::user()->id;    
             $loginAttempt->save();
-            return response()->json(['message' => 'Login successful','user' => Auth::user()], 200);
-        }
+            $cookie = Cookie::make('session_id', session()->getId(), 120); // 120 minutes
+
+            return response()->json(['message' => 'Login successful', 'user' => Auth::user()], 200)->cookie($cookie);
+     }
         $loginAttempt->successful = false;
         $loginAttempt->save();
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return response()->json(['message' => 'Logout successful'], 200);
+        try{
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            $cookie = Cookie::forget('session_id');
+
+            return response()->json(['success' => true, 'message' => 'Logout successful'], 200)->cookie($cookie);
+     }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json(['success' => false,'message' => $e->getMessage()], 500);
+        }
+    }
+    public function twoFa()
+    {
+        return Inertia::render('auth/2faverify.tsx');
+    }
+    public function twoFaPost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+        $user = Auth::user();
+        $google2fa = app('pragmarx.google2fa');
+        $valid = $google2fa->verifyKey(auth()->user()->two_factor_code, $request->code);
+        if ($valid) {
+            session(['2fa_verified' => true]);
+            return response()->json(['success' => true, 'message' => '2FA successful', 'user' => Auth::user()], 200);
+        }
+        return response()->json(['success' => false, 'message' => 'Invalid code']);
     }
     public function register()
     {

@@ -35,13 +35,6 @@ class HomeController extends Controller
             }),
         ]);
     }
-
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('client.login');
-    }
-
     public function advertise()
     {
         return Inertia::render('pages/Advertise.tsx');
