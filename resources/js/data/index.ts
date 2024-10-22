@@ -48,6 +48,13 @@ export const REGISTER_FORM: IRegisterInput[] = [
     },
   },
   {
+    name: "username",
+    placeholder: "Type your Username ..",
+    type: "text",
+    forl: "username",
+    placel: "Username :",
+  },
+  {
     name: "password",
     placeholder: "Type your Password ..",
     type: "password",
@@ -59,10 +66,10 @@ export const REGISTER_FORM: IRegisterInput[] = [
     },
   },
   {
-    name: "confirm_password",
+    name: "password_confirmation",
     placeholder: "Type your password Confirmation ..",
     type: "password",
-    forl: "confirm_password",
+    forl: "password_confirmation",
     placel: "Password Confirmation :",
     validation: {
       required: true,
@@ -81,11 +88,11 @@ export const REGISTER_FORM: IRegisterInput[] = [
     },
   },
   {
-    name: "usdt_address",
-    placeholder: "Type your USDT ..",
+    name: "referral_code",
+    placeholder: "Type your Referral Code ..",
     type: "text",
-    forl: "USDT",
-    placel: "USDT :",
+    forl: "referral_code",
+    placel: "Referral Code :",
     validation: {
       required: true,
       minLength: 6,

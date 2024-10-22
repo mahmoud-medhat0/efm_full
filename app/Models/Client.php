@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-
+use Carbon\Carbon;
 class Client extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, LogsActivity;
@@ -70,5 +70,25 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function banAttemps()
     {
         return $this->hasMany(BanAttemp::class);
+    }
+    public function subscriptionMemberships()
+    {
+        return $this->hasMany(SubscriptionMembership::class);
+    }
+    public function getHasActiveSubscriptionAttribute()
+    {
+        return $this->subscriptionMemberships()->where('status', 'active')->exists();
+    }
+    public function getReferralCountAttribute()
+    {
+        return $this->where('ref_id', $this->id)->count();
+    }
+    public function getActivatorCountAttribute()
+    {
+        return $this->where('ref_id', $this->id)->whereNotNull('activator_count')->count();
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Client::class, 'ref_id', 'id');
     }
 }

@@ -5,9 +5,10 @@ export interface IRegisterInput {
     | "phone"
     | "email"
     | "password"
-    | "confirm_password"
+    | "password_confirmation"
     | "telegram"
-    | "usdt_address";
+    | "referral_code"
+    | "username";
   placeholder: string;
   type: string;
   forl: string;
@@ -65,6 +66,17 @@ export interface IResetInput {
   placel: string;
   validation: {
     pattern?: RegExp;
+    required?: boolean;
+    minLength?: number;
+  };
+}
+export interface IUsernameInput {
+  name: "username";
+  placeholder: string;
+  type: string;
+  forl: string;
+  placel: string;
+  validation: {
     required?: boolean;
     minLength?: number;
   };

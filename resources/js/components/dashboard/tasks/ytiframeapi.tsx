@@ -4,7 +4,7 @@ import axios from 'axios';
 import { route } from 'ziggy-js';
 import { toast } from 'react-hot-toast';
 import Inertia from '@inertiajs/inertia-react';
-const YouTubePlayer: React.FC<{ videoId: string , taskId: string}> = ({ videoId , taskId }) => {
+const YouTubePlayer: React.FC<{ videoId: string , taskId: string, order: any, }> = ({ videoId , taskId, order }) => {
   const playerRef = useRef<HTMLDivElement>(null);
   const updateTask = (taskId: string,status: string) => {
     axios.post(route('client.dashboard.tasks.update'), {
@@ -23,6 +23,8 @@ const YouTubePlayer: React.FC<{ videoId: string , taskId: string}> = ({ videoId 
         new YT.Player(playerRef.current, {
           videoId: videoId,
           playerVars: {
+            start: order.order_type === 'custom_time' ? order.time_start : 0, // Start time in seconds
+            end: order.order_type === 'custom_time' ? order.time_end : 0,   // End time in seconds
             autoplay: 0,
             // controls: 0,
             showinfo: 0,

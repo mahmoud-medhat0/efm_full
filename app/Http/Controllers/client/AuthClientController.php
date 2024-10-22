@@ -12,6 +12,9 @@ use App\Models\Client;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\checkactiveReferralUserCode;
+use Illuminate\Support\Facades\Hash;
+use App\Rules\ValidMail;
 class AuthClientController extends Controller
 {
     public function login()
@@ -85,5 +88,33 @@ class AuthClientController extends Controller
     public function register()
     {
         return Inertia::render('auth/Register.tsx');
+    }
+    public function registerPost(Request $request)
+    {
+        // dd($request->all());
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => ['required', 'unique:clients,email', new ValidMail],
+            'password' => 'required|min:8|confirmed',
+            'telegram' => 'required|unique:clients,telegram_username',
+            'referral_code' => ['nullable', new checkactiveReferralUserCode],
+            'phone' => 'required|unique:clients,phone',
+            'username' => 'required|unique:clients,username',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+        $fullname = $request->first_name . ' ' . $request->last_name;
+        Client::create([
+            'name' => $fullname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telegram_username' => $request->telegram,
+            'phone' => $request->phone,
+        ]);
+        return response()->json(['success' => true, 'message' => 'Register is done, you will navigate after 2 seconds!'], 200);
     }
 }

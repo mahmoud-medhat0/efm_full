@@ -13,6 +13,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('login', 'login')->name('login');
         Route::post('login', 'loginPost')->name('login.post');
         Route::get('register', 'register')->name('register');
+        Route::post('register', 'registerPost')->name('register.post');
         Route::get('reset-password', 'resetPassword')->name('reset-password');
         Route::post('logout', 'logout')->name('logout');
     });

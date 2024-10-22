@@ -10,8 +10,7 @@ const TasksPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [videoId, setVideoId] = useState("");
     const [taskId, setTaskId] = useState("");
-    const [player, setPlayer] = useState(null);
-
+    const [order, setOrder] = useState({});
     const handleCategoryClick = (category: string) => {
         setSelectedCategory(category);
     };
@@ -21,15 +20,18 @@ const TasksPage = () => {
             ? tasks
             : tasks.filter((task) => task.service_id === selectedCategory);
 
-    const openModal = (videoId: string , taskId: string) => {
+    const openModal = (videoId: string , taskId: string , order: Object) => {
         setVideoId(videoId);
         setTaskId(taskId);
         setIsModalOpen(true);
+        setOrder(order);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
         setVideoId(""); // Reset videoId when closing the modal
+        setTaskId("");
+        setOrder({});
     };
 
     return (
@@ -89,7 +91,7 @@ const TasksPage = () => {
                                     </p>
                                     <button
                                         onClick={() =>
-                                            openModal(task.data.videoId , task.id)
+                                            openModal(task.data.videoId , task.id , task.order)
                                         }
                                         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
                                     >
@@ -118,10 +120,9 @@ const TasksPage = () => {
                             </div>
                         </div>
                         <div className="relative pb-9/16 overflow-hidden mt-1">
-                            <YouTubePlayer videoId={videoId} taskId={taskId} />
+                            <YouTubePlayer videoId={videoId} taskId={taskId} order={order} />
                         </div>
                     </div>
-                     
                 </div>
             )}
         </DashboardLayout>

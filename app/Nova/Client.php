@@ -60,7 +60,9 @@ class Client extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'name'),
             Email::make('Email', 'email'),
-            Currency::make('Balance', 'balance')->currency('USD')->onlyOnDetail(),
+            Currency::make('Balance', 'balance')->currency('USD')->onlyOnDetail()->displayUsing(function ($value, $resource, $attribute) {
+                return number_format($resource->balance, 2);
+            }),
             Number::make('Points', 'points')->onlyOnDetail(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
             ToggleSwitchField::make('Email Verified', 'email_verified')->color('#3AB95A'),

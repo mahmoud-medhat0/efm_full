@@ -19,7 +19,7 @@ export const registerSchema = yup
       .string()
       .required("Password is required!")
       .min(6, "Password should be at least 6 characters!"),
-    confirm_password: yup
+    password_confirmation: yup
       .string()
       .required("Password confirmation is required!")
       .oneOf([yup.ref("password")], "Passwords must match"),

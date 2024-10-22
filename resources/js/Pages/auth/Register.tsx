@@ -21,14 +21,14 @@ interface IFormInput {
   phone?: string;
   email: string;
   password: string;
-  confirm_password: string;
+  password_confirmation: string;
   telegram: string;
+  referral_code?: string;
 }
 
 const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
-
   // const router = useNavigate();
 
   const {
@@ -46,13 +46,13 @@ const RegisterPage = () => {
       const requestData = {
         ...data,
         phone,
-        username: `${data.first_name} ${data.last_name}`,
       };
-      const { status, data: resData } = await axios.post(
-        route('client.register'),
+      
+      const resData = await axios.post(
+        route('client.register.post'),
         requestData
       );
-      if (status === 200) {
+      if (resData.data.success) {
         toast.success("Register is done, you will navigate after 2 seconds!", {
           position: "bottom-center",
           duration: 4000,
@@ -63,10 +63,12 @@ const RegisterPage = () => {
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorResponse>;
-      const message = errorObj.response?.data.error.message;
-      toast.error(`${message}`, {
-        position: "bottom-center",
-        duration: 4000,
+      const errorMessages = error.response.data.errors || ["An unexpected error occurred"];
+      Object.keys(errorMessages).forEach((key) => {
+        toast.error(`${key}: ${errorMessages[key]}`, {
+          position: "top-right",
+          duration: 4000,
+        });
       });
     } finally {
       setIsLoading(false);

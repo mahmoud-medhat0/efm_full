@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { LinkIcon, PhotoIcon } from "@heroicons/react/20/solid";
 import WelcomeTab from "../../../components/dashboard/welcome/WelcomeTab";
 import Input from "../../../components/schema/Input";
-import { BanknotesIcon, ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { BanknotesIcon, ShoppingBagIcon, ClockIcon } from "@heroicons/react/24/solid";
 import Button from "../../../components/schema/Button";
 import ServicesSelector from "../../../components/dashboard/membships/ServicesSelector";
 import RootLayout from "../Layout";
@@ -15,7 +15,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-
+import Selector from "../../../components/dashboard/membships/Selector";
 const NewOrderPage = () => {
   const page = usePage();
   const [categories,setCategories] = useState(page.props.categories);
@@ -34,6 +34,9 @@ const NewOrderPage = () => {
     likeCount: '',
     duration: '',
   });
+  const [selectedOrderType, setSelectedOrderType] = useState();
+  const [startTime,setStartTime] = useState(0);
+  const [endTime,setEndTime] = useState(0);
   const handleConfirmClick = () => {
     if (isConfirmed) {
       setIsConfirmed(false);
@@ -118,6 +121,11 @@ const NewOrderPage = () => {
     formData.append('link', document.getElementById('link').value);
     formData.append('amount', amount);
     formData.append('price', price);
+    formData.append('order_type', selectedOrderType);
+    if(selectedOrderType==='custom_time'){
+      formData.append('time_start', startTime);
+      formData.append('time_end', endTime);
+    }
     if(selectedService.is_category_required){
       selectedCategoryIds.forEach((id) => formData.append('categories[]', id)); // Correctly append category IDs as an array
     }
@@ -143,24 +151,12 @@ const NewOrderPage = () => {
         });
       }
       else if(!res.data.success && res.data.errors){
-        if(res.data.errors.link){
-          toast.error(res.data.errors.url,{
-            position:"top-right",
-            duration:4000
+        Object.keys(res.data.errors).forEach(field => {
+          toast.error(res.data.errors[field], {
+            position: "top-right",
+            duration: 4000
           });
-        }
-        if(res.data.errors.amount){
-          toast.error(res.data.errors.amount,{
-            position:"top-right",
-            duration:4000
-          });
-        }
-        if(res.data.errors.service_id){
-          toast.error(res.data.errors.service_id,{
-            position:"top-right",
-            duration:4000
-          });
-        }
+        });
       }
       else if(!res.data.success){
         toast.error(res.data.message,{
@@ -177,6 +173,9 @@ const NewOrderPage = () => {
     const selectedCategories = typeof value === 'string' ? value.split(',') : value;
     setSelectedCategories(selectedCategories);
     setSelectedCategoryIds(selectedCategories.map(cat => cat.id));
+  };
+  const handleOrderTypeChange = (method) => {
+    setSelectedOrderType(method.value);
   };
   return (
     <RootLayout>
@@ -229,6 +228,27 @@ const NewOrderPage = () => {
             </Select>
             </div>
             </div>}
+            <div>
+              <label htmlFor="order_type" className="block text-lg font-medium mb-2">Order Time Type</label>
+              <div className='w-full flex flex-row items-center gap-2 border border-[#6377863D] px-2 rounded-lg'>
+                <ClockIcon className="h-6 w-6 text-primary" />
+                <Selector methods={[{name: 'Full Time', value: 'full_time'}, {name: 'Custom Time', value: 'custom_time'}]} onChange={handleOrderTypeChange} />
+              </div>
+            </div>
+            {selectedOrderType==='custom_time' && 
+            <div className='w-full flex flex-col items-start justify-center gap-2'>
+              <label htmlFor="time_start" className="block text-lg font-medium mb-2">Start Time</label>
+              <div className='w-full flex flex-row items-center gap-2 border border-[#6377863D] p-2 rounded-lg'>
+                <ClockIcon className="h-6 w-6 text-primary" />
+                <Input id="time_start" className="w-full bg-transparent" aria-describedby="Start Time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              </div>
+              <label htmlFor="time_end" className="block text-lg font-medium mb-2">End Time</label>
+              <div className='w-full flex flex-row items-center gap-2 border border-[#6377863D] p-2 rounded-lg'>
+                <ClockIcon className="h-6 w-6 text-primary" />
+                <Input id="time_end" className="w-full bg-transparent" aria-describedby="End Time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              </div>
+            </div> 
+            }
             <div>
               <label htmlFor="number" className="block text-lg font-medium mb-2">Amount</label>
               <div className='w-full flex flex-row items-center gap-2 border border-[#6377863D] p-2 rounded-lg'>

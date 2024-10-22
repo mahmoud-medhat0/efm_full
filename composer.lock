@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee8b6a054c162d04ca44f083ed904ff",
+    "content-hash": "c54cf8db0d161abb042977dcb2e4638a",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -8413,6 +8413,57 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zero-bounce/sdk",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zerobounce/zero-bounce-php-sdk-setup.git",
+                "reference": "71ba0ecf2badad8dbc89dd284dce1c5afa3e4d5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zerobounce/zero-bounce-php-sdk-setup/zipball/71ba0ecf2badad8dbc89dd284dce1c5afa3e4d5b",
+                "reference": "71ba0ecf2badad8dbc89dd284dce1c5afa3e4d5b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZeroBounce\\SDK\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zero Bounce",
+                    "email": "integrations@zerobounce.net",
+                    "homepage": "https://www.zerobounce.net/"
+                }
+            ],
+            "description": "The ZeroBounce SDK for PHP programming language",
+            "keywords": [
+                "bounce",
+                "sdk",
+                "zero"
+            ],
+            "support": {
+                "issues": "https://github.com/zerobounce/zero-bounce-php-sdk-setup/issues",
+                "source": "https://github.com/zerobounce/zero-bounce-php-sdk-setup/tree/v1.1.4"
+            },
+            "time": "2023-11-26T08:01:57+00:00"
         }
     ],
     "packages-dev": [

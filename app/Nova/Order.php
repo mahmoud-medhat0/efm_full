@@ -87,9 +87,29 @@ class Order extends Resource
                 }
             })->nullable(), 
             URL::make('link'),
+            Select::make('order_type')->options([
+                'full_time' => 'Full Time',
+                'custom_time' => 'Custom Time',
+            ]),
+            Number::make('time_start')->onlyOnForms()->dependsOn('order_type', function ($field, $request) {
+                if ($request->order_type === 'custom_time') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
+            Number::make('time_end')->onlyOnForms()->dependsOn('order_type', function ($field, $request) {
+                if ($request->order_type === 'custom_time') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
             Number::make('Target Amount','target_amount'),
             Number::make('Current Amount','current_amount')->readonly(),
-            Currency::make('Price'),
+            Currency::make('Price')->displayUsing(function ($value, $resource, $attribute) {
+                return number_format($resource->price, 2);
+            }),
             Text::make('Last Action','last_action')->hideWhenCreating()->readonly(),
             DateTime::make('Last Action At','last_action_at',)->readonly()->onlyOnDetail(),
             BelongsTo::make('Last Action By', 'LastActionBy', User::class)->displayUsing(function ($user) {
@@ -115,6 +135,29 @@ class Order extends Resource
             $model->approved_by = $admin->id;
             if($model->tasks->isEmpty()){
                 GenerateOrderTasks::dispatch($model)->onQueue('default');
+            }
+            $client_of_order = $model->provider;
+            $parent_of_client_of_order = $client_of_order->parent;
+            if($parent_of_client_of_order){
+                $referral_setting = ReferralSetting::where('is_active', true)->where('code', 'order_referral')->first();
+                if($referral_setting){
+                    if($referral_setting->type === 'percentage'){
+                        $bonus = $model->price * $referral_setting->value / 100;
+                    }else{
+                        $bonus = $referral_setting->value;
+                    }
+                    Transaction::create([
+                        'amount' => $bonus,
+                        'fee' => 0,
+                        'total' => $bonus,
+                        'tnx_type' => 'add',
+                        'tnx' => 'ORD' . time(),
+                        'type' => 'referral',
+                        'description' => 'Referral bonus from ' . $model->service->name,
+                        'client_id' => $parent_of_client_of_order->id,
+                    ]);
+                    $parent_of_client_of_order->increment('balance', $bonus);
+                }
             }
         }else{
             $model->rejection_cause_id = null;

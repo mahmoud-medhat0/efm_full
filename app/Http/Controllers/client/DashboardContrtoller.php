@@ -252,6 +252,9 @@ class DashboardContrtoller extends Controller
             'service_id' => ['required', 'exists:services,id'],
             'link' => ['required', 'url'],
             'amount' => ['required', 'numeric', 'min:' . Service::find($request->service_id)->min_amount, 'max:' . Service::find($request->service_id)->max_amount],
+            'order_type' => ['required', 'string', 'in:full_time,custom_time'],
+            'time_start' => ['required_if:order_type,custom_time', 'numeric', 'min:0'],
+            'time_end' => ['required_if:order_type,custom_time', 'numeric', 'min:1', 'gt:time_start'],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -301,6 +304,9 @@ class DashboardContrtoller extends Controller
                 'price' => $price,
                 'status' => 'pending',
                 'data' => json_encode($orderdata),
+                'order_type' => $request->order_type,
+                'time_start' => $request->time_start,
+                'time_end' => $request->time_end,
             ]);
             if ($service->is_category_required) {
                 $order->categories()->sync($request->categories);
@@ -327,6 +333,7 @@ class DashboardContrtoller extends Controller
                     'data' => json_decode($task->order->data, true),
                     'categories' => $task->order->categories->pluck('name')->toArray(),
                     'reward' => number_format($task->reward(), 2),
+                    'order' => $task->order,
                 ];
             }),
             'categories' => auth()->user()->tasks()->where('status','!=','completed')->where('removed', false)->whereHas('order', function ($query) {
