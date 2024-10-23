@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TelegramController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::post('/webhook/telegram/{token}', [TelegramController::class, 'handleWebhook']);
 
 require __DIR__ . '/client.php';
 require __DIR__ . '/auth.php';
