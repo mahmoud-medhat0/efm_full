@@ -18,8 +18,8 @@ const PartnersSection = () => {
           Our partners and supporters recently!
         </p>
       </div>
-      <div className="flex flex-col justify-between items-center gap-3">
-        <div className="flex flex-row justify-between items-center gap-x-5">
+      <div className="flex flex-col justify-between items-center gap-3 max-sm:gap-0">
+        <div className="grid grid-cols-8 max-sm:grid-cols-4 gap-5">
           <img
             className="w-16 h-16 grayscale hover:grayscale-0 cursor-pointer duration-300"
             src={paypal}

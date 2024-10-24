@@ -1,9 +1,4 @@
-import {
-  BanknotesIcon,
-  ClockIcon,
-  DocumentCheckIcon,
-  StarIcon,
-} from "@heroicons/react/20/solid";
+import { BanknotesIcon, ClockIcon, DocumentCheckIcon, StarIcon } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
 
 interface IProps {
@@ -17,14 +12,14 @@ interface IProps {
 
 const ADSCards = ({ URL, img, title, mission, money, time }: IProps) => {
   return (
-    <Link href={`view-videos/${URL}`}>
-      <div className="bg-backround w-[380px] rounded-lg overflow-hidden border-2 border-primary">
+    <div className="bg-backround w-[320px] max-sm:w-auto rounded-lg overflow-hidden border-2 border-primary h-[380px] flex flex-col justify-between">
+      <Link href={`view-videos/${URL}`}>
         <img
-          className="w-full max-h-[200px] min-h-[200px]"
+          className="w-full max-h-[200px] min-h-[200px] object-cover"
           src={img}
-          alt="yahia azzam"
+          alt={title}
         />
-        <div className="py-4 px-2 space-y-1.5 text-left">
+        <div className="py-4 px-2 space-y-1.5 text-left flex-grow">
           <h3 className="flex flex-row justify-start items-start gap-2 text-black">
             <StarIcon className="w-6 h-6 text-primary" />
             {title}
@@ -42,8 +37,8 @@ const ADSCards = ({ URL, img, title, mission, money, time }: IProps) => {
             {time}
           </h4>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

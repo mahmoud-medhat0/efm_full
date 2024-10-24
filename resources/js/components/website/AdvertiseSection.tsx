@@ -20,7 +20,7 @@ const AdvertiseSection = () => {
         </div>
         <div>
           <div>
-            <h3 className="text-2xl text-black">
+            <h3 className="text-2xl text-black max-sm:text-center">
               What will you get to{" "}
               <span className="mark-zigzag">start advertising</span> with us?
             </h3>

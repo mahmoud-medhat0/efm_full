@@ -86,10 +86,10 @@ const ResetPasswordPage = () => {
   );
 
   return (
-    <section className="w-[800px] my-20 mx-auto">
+    <section className="w-[800px] my-20 mx-auto max-sm:w-full max-sm:px-3">
       <h2 className="text-primary text-2xl pb-6">Reset Your Password :</h2>
       <form
-        className="w-[800px] space-y-3 mx-auto"
+        className="w-[800px] space-y-3 mx-auto max-sm:w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         {renderRestPasswordForm}

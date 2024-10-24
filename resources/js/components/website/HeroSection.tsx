@@ -15,7 +15,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="flex flex-col justify-center items-center pt-44 pb-12 text-center space-y-16 rounded-b-[120px] bg-rounded"
+      className="flex flex-col justify-center items-center pt-44 pb-12 text-center space-y-16 rounded-b-[120px] bg-rounded max-sm:rounded-b-[40px] bg-rounded"
     >
       <div className="flex flex-col justify-center items-center text-center space-y-8">
         <motion.h3 className="text-6xl text-white font-medium max-sm:text-4xl">
@@ -25,7 +25,7 @@ const HeroSection = () => {
         <h5 className="text-3xl text-[#f8f8f8] max-sm:text-2xl">
           Buy Bitcoin, Ethereum, and 150+ cryptocurrencies
         </h5>
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start max-sm:px-3">
           <div className="flex flex-row justify-center items-center gap-2 max-sm:text-base text-white text-xl">
             <CheckBadgeIcon className="w-7 h-7 text-primary" />
             <h4 className="w-full text-white text-left">

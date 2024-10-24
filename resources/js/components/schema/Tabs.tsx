@@ -88,7 +88,7 @@ export default function Tabs() {
   return (
     <div className="w-full px-2 py-20 sm:px-0">
       <Tab.Group>
-        <Tab.List className="max-w-xl mb-6 flex space-x-1 rounded-xl bg-background/5 p-1">
+        <Tab.List className="max-w-xl mb-6 flex space-x-1 rounded-xl bg-background/5 p-1 max-sm:flex-col">
           {Object.keys(categories).map((category) => (
             <Tab
               key={category}
@@ -118,15 +118,15 @@ export default function Tabs() {
               <table className="w-full">
                 <thead className="border-b border-black font-normal">
                   <tr>
-                    <th className="text-left py-3">Position</th>
-                    <th className="text-left py-3">Username</th>
-                    <th className="text-left py-3 text-primary cursor-pointer">
+                    <th className="text-left py-3 max-sm:text-xs">Position</th>
+                    <th className="text-left py-3 max-sm:text-xs">Username</th>
+                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
                       Referrals in 24 hours
                     </th>
-                    <th className="text-left py-3 text-primary cursor-pointer">
+                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
                       Referrals in 7 days
                     </th>
-                    <th className="text-left py-3 text-primary cursor-pointer">
+                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
                       Referrals in 30 days
                     </th>
                   </tr>
@@ -137,11 +137,11 @@ export default function Tabs() {
                       key={winner.id}
                       className={idx % 2 === 1 ? "bg-white" : "bg-blue-100"}
                     >
-                      <td className="py-3 px-2">{winner.id}</td>
-                      <td className="py-3 px-2">{winner.username}</td>
-                      <td className="py-3 px-2">{winner.referrals24}</td>
-                      <td className="py-3 px-2">{winner.referrals7}</td>
-                      <td className="py-3 px-2">{winner.referrals30}</td>
+                      <td className="py-3 px-2 max-sm:text-xs">{winner.id}</td>
+                      <td className="py-3 px-2 max-sm:text-xs">{winner.username}</td>
+                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals24}</td>
+                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals7}</td>
+                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals30}</td>
                     </tr>
                   ))}
                 </tbody>

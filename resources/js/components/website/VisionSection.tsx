@@ -25,7 +25,7 @@ const VisionSection = () => {
           src={logo}
           alt="logo"
         />
-        <div className="w-full flex flex-row justify-between items-center px-24 max-sm:flex-col">
+        <div className="w-full flex flex-row justify-between items-center px-24 max-sm:flex-col max-sm:gap-5">
           <h3 className="text-black text-3xl text-center">
             Founded in <br />{" "}
             <span className="text-primary">

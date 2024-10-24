@@ -13,6 +13,23 @@ const FeedbackSection = () => {
     autoplay: true,
     autoplaySpeed: 1500,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ],
   };
   return (
     <section id="feedbacks" className="h-auto mb-32">

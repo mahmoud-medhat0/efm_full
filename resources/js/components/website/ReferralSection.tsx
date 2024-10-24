@@ -26,7 +26,7 @@ const ReferralSection = () => {
         </div>
         <div>
           <div>
-            <h3 className="text-2xl text-black">
+            <h3 className="text-2xl text-black max-sm:text-center">
               What you will get by <span className="mark-zigzag">referral</span>{" "}
               with us?
             </h3>

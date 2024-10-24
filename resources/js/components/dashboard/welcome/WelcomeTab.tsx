@@ -9,8 +9,8 @@ const WelcomeTab = () => {
     const user = page.props.auth.client;
     return (
         <div className="w-full p-4 rounded-lg shadow-md">
-            <div className="w-[300px]">
-                <div className="flex flex-row justify-between items-center">
+            <div className="w-[300px] max-sm:w-[200px]">
+                <div className="flex flex-row justify-between items-center max-sm:flex-col">
                     <img
                         className="w-16 h-16 rounded-full cursor-pointer"
                         src={accImg}
@@ -29,7 +29,7 @@ const WelcomeTab = () => {
                         </h4>
                     </div>
                 </div>
-                <div className="ml-[90px] mt-5">
+                <div className="ml-[90px] mt-5 max-sm:ml-0">
                     {user.membership == null && (
                         <Link
                             href={route("client.dashboard.membership")}

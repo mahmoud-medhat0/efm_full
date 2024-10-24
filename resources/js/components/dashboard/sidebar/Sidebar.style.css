@@ -297,3 +297,25 @@ body.collapsed .expand-btn svg {
     width: 100%;
   }
 }
+@media (max-width: 640px) {
+  .sidebar {
+    width: 60px;
+    overflow: hidden;
+  }
+  .expand-btn {
+    display: none;
+  }
+  .link,
+  .avatar__name,
+  .tag {
+    display: none !important;
+  }
+  .avatar__wrapper {
+    justify-content: center;
+    align-items: center;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+}

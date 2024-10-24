@@ -8,13 +8,13 @@ const ViewAdsPage = () => {
     <RootLayout>
     <main className="w-full h-full my-20 container">
       <div className="mb-2">
-        <h2 className="text-4xl text-black mb-4">
+        <h2 className="text-4xl text-black mb-4 max-sm:text-center">
           View <span className="mark">Advertisements</span>
         </h2>
       </div>
       <div className="w-full py-20">
         <div className="w-full flex flex-col items-center justify-end gap-y-5">
-          <div className="flex flex-row gap-5">
+          <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-12 max-sm:gap-3">
             <ADSCards
               URL="Bitmortel Monthly ADS!"
               img={ads}
@@ -40,32 +40,6 @@ const ViewAdsPage = () => {
               time="1s"
             />
           </div>
-          {/* <div className="flex flex-row gap-5">
-            <ADSCards
-              URL="Bitmortel Monthly Referral Contest!"
-              img={referral_contest}
-              title="Bitmortel Monthly Referral Contest!"
-              mission="Get A Chance To Win Prizes Up To $1,100 .."
-              money="$0.89"
-              time="1s"
-            />
-            <ADSCards
-              URL="Bitmortel Monthly Referral Contest!"
-              img={referral_contest}
-              title="Bitmortel Monthly Referral Contest!"
-              mission="Get A Chance To Win Prizes Up To $1,100 .."
-              money="$0.89"
-              time="1s"
-            />
-            <ADSCards
-              URL="Bitmortel Monthly Referral Contest!"
-              img={referral_contest}
-              title="Bitmortel Monthly Referral Contest!"
-              mission="Get A Chance To Win Prizes Up To $1,100 .."
-              money="$0.89"
-              time="1s"
-            />
-          </div> */}
         </div>
         </div>
       </main>

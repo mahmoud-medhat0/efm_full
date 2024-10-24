@@ -13,9 +13,9 @@ const FaqSection = () => {
   return (
     <section
       id="faq"
-      className="flex flex-row items-start justify-between mb-24"
+      className="flex flex-row items-start justify-between mb-24 max-sm:flex-col max-sm:items-center"
     >
-      <h3 className="text-2xl text-black">
+      <h3 className="text-2xl text-black max-sm:text-center">
         Frequently <span className="mark-zigzag">Asked</span> Questions!
       </h3>
       <div className="">

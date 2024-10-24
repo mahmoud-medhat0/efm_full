@@ -14,7 +14,7 @@ const Footer = () => {
   return (
     <footer className="border-t-[1px] border-[#323C52]">
       <div className="container mb-10">
-        <div className="flex flex-row items-center mb-16 pt-16">
+        <div className="flex flex-row items-center mb-16 pt-16 max-sm:flex-col max-sm:gap-2">
           <Link
             to={"/"}
             className="flex flex-row items-center text-black text-lg gap-1"
@@ -27,7 +27,7 @@ const Footer = () => {
           </Link>
 
           <div className="h-[2px] mx-5 bg-[#323C52] flex-1"></div>
-          <div className="flex flex-row gap-5">
+          <div className="grid grid-cols-8 max-sm:grid-cols-4 gap-5">
             <Link
               to={"/"}
               className="rounded-full border-[#323C52] border-[1px] hover:border-primary duration-300"
@@ -78,7 +78,7 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full flex flex-row justify-between text-black text-lg mb-20">
+        <div className="w-full grid grid-cols-4 max-sm:grid-cols-2 gap-5 text-black text-lg mb-20">
           <div className="flex flex-col gap-y-4">
             <Link
               to={"/"}
