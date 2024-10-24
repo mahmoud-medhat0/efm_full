@@ -14,10 +14,11 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 |
 */
 Route::get('/set-webhook', function () {
+    Telegram::removeWebhook();
     $response = Telegram::setWebhook([
-        'url' => env('APP_URL').'/telegram/webhook', // Replace with your public URL
+        'url' => env('APP_URL').'webhook/telegram/'.env('TELEGRAM_BOT_TOKEN'), // Replace with your public URL
     ]);
-
+    dd($response);
     return $response ? 'Webhook set successfully' : 'Failed to set webhook';
 });
 Route::post('/webhook/telegram/{token}', [TelegramController::class, 'handleWebhook'])->withoutMiddleware('verifyCsrfToken');

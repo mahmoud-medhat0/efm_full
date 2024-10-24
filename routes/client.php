@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\AuthClientController;
 use App\Http\Controllers\client\DashboardContrtoller;
 
