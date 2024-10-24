@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'current_url' => fn () => $request->fullUrl(),
             'app_url' => fn () => env('APP_URL'),
+            'app_debug' => fn () => env('APP_DEBUG'),
         ]);
     }
 }

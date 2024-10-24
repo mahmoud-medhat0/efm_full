@@ -26,8 +26,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       }
     }
     const interval = setInterval(() => {
-      if (devtools.isOpen) {
-        // alert('Developer tools are open!');
+      if (devtools.isOpen && page.props.app_debug) {
+        alert('Developer tools are open!');
       }
     }, 1000);
 
@@ -36,7 +36,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {/* <DevToolsListener /> */}
+      {page.props.app_debug && <DevToolsListener />}
       <div className="root-layout">
         <DashboardNavbar />
         <div className="flex flex-row justify-between h-full">
