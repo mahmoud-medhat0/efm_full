@@ -23,6 +23,7 @@ import {
   WrenchIcon,
   TvIcon,
   UserGroupIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/20/solid";
 import Img from "../../../assets/dev.jpg";
 import Logo from "../../../assets/logo.png";

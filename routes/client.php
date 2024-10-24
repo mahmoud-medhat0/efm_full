@@ -53,6 +53,8 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');
             Route::get('messages', 'messages')->name('messages');
             Route::get('membership', 'membership')->name('membership');
+            Route::post('membership/upgrade/balance', 'upgradeBalance')->name('membership.upgrade.balance');
+            Route::post('membership/upgrade/gateway', 'upgradeBalanceGateway')->name('membership.upgrade.balance.gateway');
             Route::get('orders', 'orders')->name('orders');
             Route::get('order', 'newOrder')->name('new-order');
             Route::post('order', 'newOrderPost')->name('new-order.post');

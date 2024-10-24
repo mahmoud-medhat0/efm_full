@@ -15,6 +15,7 @@ class Client extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, LogsActivity;
     protected $guarded = [];
+    protected $appends = ['has_active_subscription','referral_count','activator_count','membership'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -74,6 +75,10 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function subscriptionMemberships()
     {
         return $this->hasMany(SubscriptionMembership::class);
+    }
+    public function getMembershipAttribute()
+    {
+        return $this->subscriptionMemberships()->where('status', 'active')->first()? $this->subscriptionMemberships()->where('status', 'active')->first()->membership : null;
     }
     public function getHasActiveSubscriptionAttribute()
     {

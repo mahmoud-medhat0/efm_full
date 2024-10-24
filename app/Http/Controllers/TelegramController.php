@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Models\TelegramUserViolation;
@@ -18,11 +17,11 @@ class TelegramController extends Controller
     public function handleWebhook($token, Request $request)
     {
         // Log the entire request payload for debugging
-        // Log::info('Received webhook request:', $request->all());
+        \Log::info('Received webhook request:', $request->all());
 
         // Verify the token to ensure that the request is authorized
         if ($token !== env('TELEGRAM_BOT_TOKEN')) {
-            Log::warning('Unauthorized attempt to access webhook with token: ' . $token);
+            \Log::warning('Unauthorized attempt to access webhook with token: ' . $token);
             abort(403, 'Unauthorized access');
         }
 
@@ -38,7 +37,7 @@ class TelegramController extends Controller
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             // Log detailed error if an exception is thrown during the process
-            Log::error("Telegram webhook error: " . $e->getMessage(), [
+            \Log::error("Telegram webhook error: " . $e->getMessage(), [
                 'exception' => $e,
                 'trace' => $e->getTraceAsString(), // Include stack trace for more detailed debugging
             ]);
@@ -52,14 +51,21 @@ class TelegramController extends Controller
     }
     public function handleCommand($message)
     {
-        $chatId = $message['chat']['id'];
-        $userId = $message['from']['id'];
-        $text = $message['text'] ?? '';
-        if (preg_match('/https?:\/\/[^\s]+/', $text)) {
-            // Delete the message containing the link
-            $this->deleteMessage($chatId, $message['message_id']);
-            // Handle user ban logic
-            $this->handleUserViolation($chatId, $userId);
+        // \Log::info($message);
+        if (isset($message['message']['chat'])) { // Check if 'chat' key exists
+            $chatId = $message['message']['chat']['id'];
+            $userId = $message['message']['from']['id'];
+            $text = $message['message']['text'] ?? '';
+            \Log::info($text);
+            if (preg_match('/https?:\/\/[^\s]+/', $text)) {
+                // Delete the message containing the link
+                \Log::info($message['message']['message_id']);
+                $this->deleteMessage($chatId, $message['message']['message_id']);
+                // Handle user ban logic
+                $this->handleUserViolation($chatId, $userId);
+            }
+        } else {
+            \Log::warning('Message does not contain chat information:', $message);
         }
     }
     private function deleteMessage($chat_id, $message_id)
@@ -75,7 +81,7 @@ class TelegramController extends Controller
             ]);
             return $response;
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            Log::error("Error deleting message: " . $e->getMessage());
+            \Log::error("Error deleting message: " . $e->getMessage());
             return null;
         }
     }
@@ -102,7 +108,7 @@ class TelegramController extends Controller
 
             return $response;
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            Log::error("Error sending message: " . $e->getMessage());
+            \Log::error("Error sending message: " . $e->getMessage());
             return null;
         }
     }
@@ -141,10 +147,10 @@ class TelegramController extends Controller
         $newStatus = $chatMemberUpdate['new_chat_member']['status'];
 
         if ($newStatus === 'member') {
-            Log::info("Bot added to group: " . $chat['title']);
+            \Log::info("Bot added to group: " . $chat['title']);
             // Handle bot being added to a group
         } elseif ($newStatus === 'left') {
-            Log::info("Bot removed from group: " . $chat['title']);
+            \Log::info("Bot removed from group: " . $chat['title']);
             // Handle bot being removed from a group
         }
     }

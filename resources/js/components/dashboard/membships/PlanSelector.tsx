@@ -1,15 +1,11 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-
-const plans = [
-  { name: "7 day(s) - 19.95" },
-  { name: "14 day(s) - 34.95" },
-  { name: "21 day(s) - 49.95" },
-  { name: "30 day(s) - 69.95" },
-];
+import { usePage } from "@inertiajs/inertia-react";
 
 export default function PlanSelector() {
+  const page = usePage().props;
+  const plans = page.plans;
   const [selected, setSelected] = useState(plans[0]);
 
   return (

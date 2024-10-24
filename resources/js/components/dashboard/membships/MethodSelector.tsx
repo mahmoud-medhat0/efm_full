@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import {usePage} from "@inertiajs/inertia-react";
@@ -9,7 +9,15 @@ export default function MethodSelector({methods, onChange}) {
     setSelected(method);
     onChange(method); // Call the onChange callback
   };
-
+  useEffect((async) => {
+    if(page.method){
+      const method =  Object.values(methods).find(m => m.id == parseInt(page.method));
+      if(method){
+        setSelected(method);
+        onChange(method);
+      }
+    }
+  }, [page.method]);
   return (
     <div className="w-full">
       <Listbox value={selected} onChange={handleChange}>

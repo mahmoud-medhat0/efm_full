@@ -16,12 +16,15 @@ use App\Models\Order;
 use App\Models\InterestCategory;
 use App\Models\BanAttemp;
 use App\Models\Client;
+use App\Models\Membershib;
+use App\Models\SubscriptionMembership;
 use App\Models\Task;
 use Stevebauman\Location\Facades\Location;
 use PragmaRX\Google2FALaravel\Google2FA;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-
+use Illuminate\Support\Facades\DB;
+use App\Models\ReferralSetting;
 class DashboardContrtoller extends Controller
 {
     public function index()
@@ -36,7 +39,7 @@ class DashboardContrtoller extends Controller
         return Inertia::render('settings/pages/AdvertiserPanel/index.tsx');
     }
     //Finance methods
-    public function deposit()
+    public function deposit(Request $request)
     {
         return Inertia::render('settings/pages/AddFunds.tsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
@@ -49,7 +52,10 @@ class DashboardContrtoller extends Controller
                     'charge_type_deposit' => $gateway->charge_type_deposit,
                     'charge_deposit' => $gateway->charge_deposit,
                 ];
-            })
+            }),
+            'plan' => $request->plan ?? null,
+            'method' => $request->method ?? null,
+            'amount' => $request->amount ?? null,
         ]);
     }
     public function depositPost(Request $request)
@@ -437,5 +443,101 @@ class DashboardContrtoller extends Controller
     public function enable2fa()
     {
         return Inertia::render('settings/pages/settings/Enable2fa.tsx');
+    }
+    public function membership()
+    {
+        return Inertia::render('settings/pages/Membership.tsx', [
+            'methods' => Gateways::depositGateways()->map(function ($gateway) {
+                return [
+                    'name' => $gateway->name,
+                    'id' => $gateway->id,
+                    'logo' => $gateway->logo,
+                    'attachment' => $gateway->attachment,
+                    'description_deposit' => $gateway->description_deposit,
+                    'charge_type_deposit' => $gateway->charge_type_deposit,
+                    'charge_deposit' => $gateway->charge_deposit,
+                ];
+            }),
+            'plans' => Membershib::all()->map(function ($plan) {
+                return [
+                    'name' => $plan->name . ' - ' . $plan->price . '$ ' . $plan->duration,
+                    'id' => $plan->id,
+                ];
+            }),
+            'memberships' => Membershib::all()->map(function ($membership) {
+                return [
+                    'name' => $membership->name,
+                    'price' => $membership->price,
+                    'duration' => $membership->duration,
+                ];
+            })
+        ]);
+    }
+    public function upgradeBalance(Request $request)
+    {
+        $rules = [
+            'plan' => ['required', 'exists:membershibs,id'],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+        if(auth()->user()->balance < Membershib::find($request->plan)->price){
+            return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
+        }
+        DB::beginTransaction();
+        Transaction::create([
+            'amount' => Membershib::find($request->plan)->price,
+            'fee' => 0,
+            'total' => Membershib::find($request->plan)->price,
+            'tnx_type' => 'sub',
+            'tnx' => 'SUB' . time(),
+            'type' => 'membership',
+            'description' => 'Upgrade to ' . Membershib::find($request->plan)->name,
+            'client_id' => auth()->user()->id,
+        ]);
+        $LastActiveNumber = Client::whereNotNull('activator_count')->count();
+        auth()->user()->update(['balance' => auth()->user()->balance - Membershib::find($request->plan)->price,'activator_count' => $LastActiveNumber + 1]);
+        if(auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()){
+            $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type  ;
+            $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
+            $rewardvalue = $activatorReward == 'percentage' ? (Membershib::find($request->plan)->price * $activatorRewardValue / 100) : $activatorRewardValue;
+            if($rewardvalue > 0){
+                Transaction::create([
+                    'amount' => $rewardvalue,
+                    'fee' => 0,
+                    'total' => $rewardvalue,
+                    'tnx_type' => 'add',
+                    'tnx' => 'ADD' . time(),
+                    'type' => 'referral',
+                    'description' => 'Referral reward for ' . auth()->user()->name,
+                    'client_id' => auth()->user()->parent->id,
+                ]);
+                auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
+            }
+        }
+        SubscriptionMembership::create([
+            'client_id' => auth()->user()->id,
+            'membership_id' => $request->plan,
+            'status' => 'active',
+            'start_date' => now(),
+            'end_date' => Membershib::find($request->plan)->is_lifetime == true
+                ? null 
+                : now()->addDays(Membershib::find($request->plan)->duration),
+        ]);
+        DB::commit();
+        return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
+    }
+    public function upgradeBalanceGateway(Request $request)
+    {
+        $rules = [
+            'plan' => ['required', 'exists:membershibs,id'],
+            'method' => ['required', 'exists:gateways,id'],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+        return response()->json(['success' => true, 'message' => 'You Will Be Redirected To Payment Page','route' => route('client.dashboard.deposit', ['method' => $request->method,'amount' => Membershib::find($request->plan)->price])]);
     }
 }

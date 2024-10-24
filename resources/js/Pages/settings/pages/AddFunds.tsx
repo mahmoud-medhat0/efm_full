@@ -52,8 +52,19 @@ const AddFundsPage = () => {
     setSelectedMethod(method);
   };
   useEffect(() => {
+    if (page.props.amount) {
+      setAmount(page.props.amount);
+    }
+  }, [page.props.amount]); // Only run this effect when page.props.amount changes
+  useEffect(() => {
+    if(page.props.method){
+      setSelectedMethod(page.props.method);
+    }
+  }, [page.props.method]);
+  useEffect(() => {
     calcTotal();
-  }, [amount, selectedMethod]);
+  }, [amount, selectedMethod]); // Recalculate total when amount or selectedMethod changes
+  
   const {
     register,
     handleSubmit,
@@ -135,13 +146,13 @@ const AddFundsPage = () => {
               <label htmlFor="plan" className="text-black text-base">
                 Method
               </label>
-              {methods.length > 0 && <MethodSelector methods={methods} onChange={handleMethodChange}/>}
+              {methods.length > 0 && <MethodSelector methods={methods} onChange={handleMethodChange} />}
             </div>
             <div className="space-y-2 pb-1">
               <label htmlFor="amount" className="text-black text-base">
                 Amount
               </label>
-                <Input id="amount" type="number" placeholder="0.00"                  
+                <Input id="amount" type="number" placeholder="0.00" value={amount}
                 onChange={handleAmountChange}
                 onInput={handleAmountChange}
                 onKeyDown={(e) => {

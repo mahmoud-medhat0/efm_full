@@ -9,7 +9,8 @@ class SubscriptionMembership extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
+    protected $casts = ['start_date'=>'datetime','end_date'=>'datetime'];
+    protected $appends = ['remaining_days','start_date_human','end_date_human','is_lifetime_human'];
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -18,15 +19,15 @@ class SubscriptionMembership extends Model
     {
         return $this->belongsTo(Membershib::class);
     }
-    public function getStartDateAttribute($value)
+    public function getStartDateHumanAttribute($value)
     {
         return Carbon::parse($value)->format('Y-m-d H:i:s A');
     }
-    public function getEndDateAttribute($value)
+    public function getEndDateHumanAttribute($value)
     {
         return Carbon::parse($value)->format('Y-m-d H:i:s A');
     }
-    public function getIsLifetimeAttribute($value)
+    public function getIsLifetimeHumanAttribute($value)
     {
         return $value ? 'Yes' : 'No';
     }

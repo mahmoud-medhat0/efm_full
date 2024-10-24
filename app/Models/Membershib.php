@@ -17,4 +17,8 @@ class Membershib extends Model
     {
         return $value ? 'Yes' : 'No';
     }
+    public function getDurationAttribute()
+    {
+        return $this->is_lifetime ? 'Lifetime' : $this->days . ' day(s)';
+    }
 }

@@ -1,15 +1,25 @@
 import { Tab } from "@headlessui/react";
+import { useState } from "react";
 import { CurrencyDollarIcon, WalletIcon } from "@heroicons/react/20/solid";
 import Button from "../../schema/Button";
 import ItemSelector from "../membships/ItemSelector";
 import PlanSelector from "../membships/PlanSelector";
 import MethodSelector from "../membships/MethodSelector";
-
+import { usePage } from "@inertiajs/inertia-react";
+import axios from "axios";
+import { route } from "ziggy-js";
+import toast from 'react-hot-toast';
+import { Inertia } from '@inertiajs/inertia';
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function MembershipTabs() {
+  const page = usePage().props;
+  const plans = page.plans;
+  const methods = page.methods;
+  const [selectedPlan, setSelectedPlan] = useState(plans[0]);
+  const [selectedMethod,setSelectedMethod] = useState(methods[0]);
   return (
     <div className="w-full px-2 py-6 sm:px-0">
       <Tab.Group>
@@ -50,13 +60,21 @@ export default function MembershipTabs() {
             )}
           >
             <div className="py-3 px-3">
-              <form className="space-y-3">
-                <div className="space-y-2 pb-1">
-                  <label htmlFor="item" className="text-black text-base">
-                    Item
-                  </label>
-                  <ItemSelector />
-                </div>
+              <form className="space-y-3" onSubmit={async (e) => {
+                e.preventDefault();
+                const response = await axios.post(route('client.dashboard.membership.upgrade.balance'), {
+                  _method: 'POST',
+                  plan: selectedPlan.id,
+                });
+                if(response.data.success){
+                  Inertia.reload();
+                }else{
+                  toast.error(response.data.message,{
+                    duration: 5000,
+                    position: 'top-right',
+                  });
+                }
+              }}>
                 <div className="space-y-2 pb-1">
                   <label htmlFor="plan" className="text-black text-base">
                     Plan
@@ -70,7 +88,7 @@ export default function MembershipTabs() {
                   <input
                     className="cursor-pointer border-[1px] border-gray-300 shadow-lg focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary rounded-lg px-3 py-2 text-md w-full bg-transparent duration-200"
                     id="balance"
-                    value={"0$"}
+                    value={page.auth.client.balance + " $"}
                     disabled
                     readOnly
                   />
@@ -91,13 +109,28 @@ export default function MembershipTabs() {
             )}
           >
             <div className="py-3 px-3">
-              <form className="space-y-3">
-                <div className="space-y-2 pb-1">
-                  <label htmlFor="item" className="text-black text-base">
-                    Item
-                  </label>
-                  <ItemSelector />
-                </div>
+              <form className="space-y-3" onSubmit={async (e) => {
+                e.preventDefault();
+                const response = await axios.post(route('client.dashboard.membership.upgrade.balance.gateway'), {
+                  _method: 'POST',
+                  plan: selectedPlan.id,
+                  method: selectedMethod.id,
+                });
+                if(response.data.success){
+                  toast.success('You Will Be Redirected To Payment Page',{
+                    duration: 2000,
+                    position: 'top-right',
+                  });
+                  setTimeout(() => {
+                    Inertia.visit(response.data.route);
+                  }, 2000);
+                }else{
+                  toast.error(response.data.message,{
+                    duration: 5000,
+                    position: 'top-right',
+                  });
+                }
+              }}>
                 <div className="space-y-2 pb-1">
                   <label htmlFor="plan" className="text-black text-base">
                     Plan
@@ -108,7 +141,7 @@ export default function MembershipTabs() {
                   <label htmlFor="plan" className="text-black text-base">
                     Method
                   </label>
-                  <MethodSelector />
+                  <MethodSelector methods={methods} onChange={setSelectedMethod} />
                 </div>
                 <div className="flex flex-row gap-3">
                   <Button fullWidth>Submit</Button>
