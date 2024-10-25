@@ -6,7 +6,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Toaster } from "react-hot-toast";
 import NProgress from 'nprogress'
 import { router } from '@inertiajs/react'
-
+import './utils/functions'; // Import the utility file
 createInertiaApp({
     // Resolving all React components from resources/js/Pages folder with .jsx and .tsx extensions
     resolve: (name) => resolvePageComponent(`./Pages/${name}`, import.meta.glob([

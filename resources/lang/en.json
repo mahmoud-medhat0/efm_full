@@ -1,0 +1,28 @@
+{
+    "navbar": {
+        "login": "Login",
+        "register": "Register"
+    },
+    "home": {
+        "title": "Home",
+        "advertise": "Advertise",
+        "referral-contest": "Referral Contest",
+        "earn-money": "Earn Money",
+        "view-advertisements": "View Advertisements",
+        "view-videos": "View Videos",
+        "help": "Help",
+        "faq": "FAQ",
+        "news": "News",
+        "support": "Support",
+        "terms": "Terms of Service",
+        "referral": "Referral",
+        "contest": "Contest",
+        "dashboard": "Dashboard",
+        "advertiser-panel": "Advertiser Panel",
+        "personal-settings": "Personal Settings",
+        "two-factor-authentication": "Two Factor Authentication",
+        "logout":"Logout",
+        "logo":"logo",
+        "about-us": "About Us"
+    }
+}

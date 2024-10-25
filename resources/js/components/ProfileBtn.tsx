@@ -69,7 +69,7 @@ export default function ProfileBtn() {
                       <span className="flex items-center gap-3">
                         <TvIcon className="w-5 h-5 text-primary" />
                         <span className="text-base font-medium text-gray-900">
-                          Dashboard
+                          {translate("home.dashboard")}
                         </span>
                       </span>
                     </Link>
@@ -83,7 +83,7 @@ export default function ProfileBtn() {
                       <span className="flex items-center gap-3">
                         <ChartBarIcon className="w-5 h-5 text-primary" />
                         <span className="text-base font-medium text-gray-900">
-                          Advertiser Panel
+                          {translate("home.advertiser-panel")}
                         </span>
                       </span>
                     </Link>
@@ -97,7 +97,7 @@ export default function ProfileBtn() {
                       <span className="flex items-center gap-3">
                         <Cog8ToothIcon className="w-5 h-5 text-primary" />
                         <span className="text-base font-medium text-gray-900">
-                          Personal Settings
+                          {translate("home.personal-settings")}
                         </span>
                       </span>
                     </Link>
@@ -111,7 +111,7 @@ export default function ProfileBtn() {
                       <span className="flex items-center gap-3">
                         <ShieldCheckIcon className="w-5 h-5 text-primary" />
                         <span className="text-base font-medium text-gray-900">
-                          Two Factor Authentication
+                          {translate("home.two-factor-authentication")}
                         </span>
                       </span>
                     </Link>
@@ -126,7 +126,7 @@ export default function ProfileBtn() {
                       <span className="flex items-center gap-3">
                         <ArrowLeftEndOnRectangleIcon className="w-5 h-5 text-red-600" />
                         <span className="text-base font-medium text-red-600">
-                          Logout
+                          {translate("home.logout")}
                         </span>
                       </span>
                     </Link>

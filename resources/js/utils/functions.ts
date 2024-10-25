@@ -1,5 +1,5 @@
 import moment from "moment";
-
+import { usePage } from "@inertiajs/inertia-react";
 export const fadeIn = (direction: string, delay: number) => {
   return {
     hidden: {
@@ -86,3 +86,21 @@ export const calculateTimeAgo = (dateString: string) => {
     return `${minutes} minutes ago`;
   }
 };
+
+export const translate = (key: string) => {
+  const page = usePage();
+  if (!page.props.trans) {
+    return key;
+  }
+  const keys = key.split('.');
+    let translation = page.props.trans;
+    for (const k of keys) {
+    if (typeof translation === 'object' && translation[k] !== undefined) {
+      translation = translation[k];
+      } else {
+        return key; // Return the key itself if translation is not found
+      }
+    }
+  return translation;
+};
+window.translate = translate;

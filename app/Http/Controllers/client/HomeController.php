@@ -22,6 +22,12 @@ use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
+    public function setLang($lang)
+    {
+        session()->put('locale', $lang);
+        app()->setLocale($lang);
+        return redirect()->back();
+    }
     public function index()
     {
         return Inertia::render('home.jsx', [
@@ -34,6 +40,10 @@ class HomeController extends Controller
                 ];
             }),
         ]);
+    }
+    public function aboutUs()
+    {
+        return Inertia::render('pages/AboutUs.tsx');
     }
     public function advertise()
     {

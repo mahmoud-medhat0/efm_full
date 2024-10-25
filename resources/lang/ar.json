@@ -1,0 +1,28 @@
+{
+    "navbar": {
+        "login": "تسجيل الدخول",
+        "register": "انشاء حساب"
+    },
+    "home": {
+        "title": "الرئيسية",
+        "advertise": "التسويق",
+        "referral-contest": "مسابقة الإحالة",
+        "earn-money": "كسب المال",
+        "view-advertisements": "عرض الإعلانات",
+        "view-videos": "عرض الفيديوهات",
+        "help": "المساعدة",
+        "faq": "الأسئلة الشائعة",
+        "news": "الأخبار",
+        "support": "الدعم",
+        "terms": "الشروط والأحكام",
+        "referral": "الإحالة",
+        "contest": "مسابقة",
+        "dashboard": "لوحة التحكم",
+        "advertiser-panel": "لوحة الإعلانات",
+        "personal-settings": "إعدادات الملف الشخصي",
+        "two-factor-authentication": "المصادقة الثنائية",
+        "logout":"تسجيل الخروج",
+        "logo":"logo",
+        "about-us": "من نحن"
+    }
+}

@@ -15,7 +15,7 @@ const Help = () => {
       <Menu as="div" className="relative inline-block text-right">
         <div className="text-gray-400 sely">
           <Menu.Button className="inline-flex w-full justify-center rounded-md bg-transparent px-4 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
-            Help
+            {translate("home.help")}
             <ChevronDownIcon className="mr-1 ml-2 h-6 w-5" aria-hidden="true" />
           </Menu.Button>
         </div>
@@ -48,7 +48,7 @@ const Help = () => {
                           aria-hidden="true"
                         />
                       )}
-                      FAQ
+                      {translate("home.faq")}
                     </button>
                   )}
                 </Menu.Item>
@@ -71,7 +71,7 @@ const Help = () => {
                           aria-hidden="true"
                         />
                       )}
-                      News
+                      {translate("home.news")}
                     </button>
                   )}
                 </Menu.Item>
@@ -94,7 +94,7 @@ const Help = () => {
                           aria-hidden="true"
                         />
                       )}
-                      Support
+                      {translate("home.support")}
                     </button>
                   )}
                 </Menu.Item>
@@ -117,7 +117,7 @@ const Help = () => {
                           aria-hidden="true"
                         />
                       )}
-                      Terms of Service
+                      {translate("home.terms")}
                     </button>
                   )}
                 </Menu.Item>

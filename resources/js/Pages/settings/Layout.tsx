@@ -45,7 +45,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            {page.props.app_debug && <DevToolsListener />}
+            {!page.props.app_debug && <DevToolsListener />}
             <div className="root-layout">
                 <DashboardNavbar />
                 <div className="flex flex-row justify-between h-full">

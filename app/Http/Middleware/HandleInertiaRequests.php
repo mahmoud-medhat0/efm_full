@@ -35,6 +35,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        app()->setLocale(session()->get('locale','en'));
+        $trans = file_get_contents(resource_path('lang/' . app()->getLocale() . '.json'));
+        $trans = json_decode($trans, true);
         return array_merge(parent::share($request), [
             'authed' => fn () => Auth()->user() ? true : false,
             'auth' => [
@@ -43,6 +46,8 @@ class HandleInertiaRequests extends Middleware
             'current_url' => fn () => $request->fullUrl(),
             'app_url' => fn () => env('APP_URL'),
             'app_debug' => fn () => env('APP_DEBUG'),
+            'lang' => fn () => session()->get('locale', 'en'),
+            'trans' => fn () => $trans,
         ]);
     }
 }

@@ -169,7 +169,7 @@ const AuthTelegramPage = () => {
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
-                            href="https://t.me/ENG_MONEY_ADMIN_BOT"
+                            href="https://t.me/EFMhub_OFFICIAL_bot"
                             className="text-primary hover:underline"
                         >
                             Telegram bot
@@ -226,7 +226,7 @@ const AuthTelegramPage = () => {
                     onSubmit={handleSubmitModal(onSubmitModal)}
                 >
                     <p className="text-center mt-4">
-                        Please confirm access to your telegram username by entering the code provided by <a href="https://t.me/ENG_MONEY_ADMIN_BOT" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"><span className="text-primary">EFM</span>hub.com ADMIN BOT</a>.
+                        Please confirm access to your telegram username by entering the code provided by <a href="https://t.me/EFMhub_OFFICIAL_bot" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"><span className="text-primary">EFM</span>hub.com ADMIN BOT</a>.
                     </p>
 
                     <div className='w-full flex flex-row items-center gap-2 p-2 rounded-lg'>

@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Controllers\client\HomeController;
-use App\Http\Controllers\client\AuthClientController;
-use App\Http\Controllers\client\DashboardContrtoller;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\AuthClientController;
+use App\Http\Controllers\Client\DashboardContrtoller;
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
 Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function () {
     Route::controller(AuthClientController::class)->middleware(['web', 'guest'])->group(function () {
         Route::get('login', 'login')->name('login');
@@ -26,6 +27,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
     });
     Route::controller(HomeController::class)->group(function () {
         Route::get('home', 'index')->name('home');
+        Route::get('about-us', 'aboutUs')->name('about-us');
         Route::get('advertise', 'advertise')->name('advertise');
         Route::get('btc-game', 'btcGame')->name('btc-game');
         Route::get('referral-contest', 'referralContest')->name('referral-contest');

@@ -10,10 +10,17 @@ import EarnMoney from "./schema/selecters/EarnMoney";
 import Help from "./schema/selecters/Help";
 import ProfileBtn from "./ProfileBtn";
 import { usePage } from "@inertiajs/inertia-react";
-
+import UK from "../assets/uk.png";
+import UAE from "../assets/uae.png";
+import { Inertia } from "@inertiajs/inertia";
 const Navbar = () => {
-    const { auth } = usePage().props;
+    const page = usePage();
+    const { auth } = page.props;
     const isLoggedIn = usePage().props.authed ? auth.client !== null : false;
+    const handleChangeLang = (lang: string) => {
+        Inertia.visit(route("client.set-lang", { lang }));
+    };
+    console.log(page.props.lang);
     return (
         <nav className="w-full py-5 flex flex-row-reverse justify-between items-center px-4 shadow-md bg-[#f9f9f9]">
             <div className="flex flex-row-reverse items-center gap-4">
@@ -23,7 +30,7 @@ const Navbar = () => {
                             className="bg-primary dark:text-white dark:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
                             href={route("client.login")}
                         >
-                            Login
+                            {window.translate("navbar.login")}
                             <ArrowLeftStartOnRectangleIcon className="h-6 w-6 text-white" />
                         </Link>
                         <Link
@@ -39,21 +46,37 @@ const Navbar = () => {
                         <ProfileBtn />
                     </div>
                 )}
+                <button
+                    title={"navbar.lang"}
+                    className={`language-button duration-100 ${page.props.lang === "en" ? "english" : "arabic"
+                        }`}
+                    onClick={() =>
+                        handleChangeLang(page.props.lang === "en" ? "ar" : "en")
+                    }
+                >
+                    {page.props.lang === "en" ? (
+                        <img className="w-6" src={UK} alt="english" />
+                    ) : (
+                <img className="w-6" src={UAE} alt="arabic" />
+              )}
+            </button>
+
             </div>
             <ul className="flex items-center justify-between max-sm:hidden">
                 <li className="text-lg duration-200">
                     <Link className="text-gray-400 px-3 py-2" href={route('client.home')}>
-                        Home
+                        {translate("home.title")}
                     </Link>
                 </li>
-                <li className="text-lg duration-200">
+                {/* <li className="text-lg duration-200">
                     <Link className="text-gray-400 px-3 py-2" href={route('client.advertise')}>
-                        Advertise
+                        {translate("home.advertise")}
                     </Link>
-                </li>
+                </li> */}
+                
                 <li className="text-lg duration-200">
-                    <Link className="text-gray-400 px-3 py-2" href={route('client.btc-game')}>
-                        Bitcoin Game
+                    <Link className="text-gray-400 px-3 py-2" href={route("client.about-us")}>
+                        {translate("home.about-us")}
                     </Link>
                 </li>
                 <li className="text-lg duration-200">
@@ -61,7 +84,7 @@ const Navbar = () => {
                         className="text-gray-400 px-3 py-2"
                         href={route('client.referral-contest')}
                     >
-                        Referral Contest
+                        {translate("home.referral-contest")}
                     </Link>
                 </li>
                 <EarnMoney />
@@ -72,7 +95,7 @@ const Navbar = () => {
                     <img
                         className="w-16 h-16 hoving"
                         src={LogoImg}
-                        alt="logo"
+                        alt={translate("home.logo")}
                     />
                 </Link>
             </div>
