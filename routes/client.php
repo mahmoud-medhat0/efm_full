@@ -6,8 +6,8 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\AuthClientController;
 use App\Http\Controllers\client\DashboardContrtoller;
-
-Route::get('/', [HomeController::class, 'index']);
+use App\Http\Middleware\RedirectRoRegsiter;
+Route::get('/', [HomeController::class, 'index'])->middleware(RedirectRoRegsiter::class);
 Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
 Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function () {
     Route::controller(AuthClientController::class)->middleware(['web', 'guest'])->group(function () {
@@ -26,39 +26,19 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         });
     });
     Route::controller(HomeController::class)->group(function () {
-        Route::get('home', function() {
-            return redirect()->route('client.register');
-        })->name('home');
-        Route::get('about-us', function() {
-            return redirect()->route('client.register');
-        })->name('about-us');
-        Route::get('advertise', function() {
-            return redirect()->route('client.register');
-        })->name('advertise');
-        Route::get('btc-game', function() {
-            return redirect()->route('client.register');
-        })->name('btc-game');
-        Route::get('referral-contest', function() {
-            return redirect()->route('client.register');
-        })->name('referral-contest');
-        Route::get('view-videos', function() {
-            return redirect()->route('client.register');
-        })->name('view-videos');
-        Route::get('view-ads', function() {
-            return redirect()->route('client.register');
-        })->name('view-ads');
-        Route::get('faq', function() {
-            return redirect()->route('client.register');
-        })->name('faq');
-        Route::get('news', function() {
-            return redirect()->route('client.register');
-        })->name('news');
-        Route::get('support', function() {
-            return redirect()->route('client.register');
-        })->name('support');
-        Route::get('terms', function() {
-            return redirect()->route('client.register');
-        })->name('terms');
+        Route::middleware(RedirectRoRegsiter::class)->group(function () {
+        Route::get('home', 'index')->name('home');
+        Route::get('about-us', 'aboutUs')->name('about-us');
+        Route::get('advertise', 'advertise')->name('advertise');
+        Route::get('btc-game', 'btcGame')->name('btc-game');
+        Route::get('referral-contest', 'referralContest')->name('referral-contest');
+        Route::get('view-videos', 'viewVideos')->name('view-videos');
+        Route::get('view-ads', 'viewAds')->name('view-ads');
+        Route::get('faq', 'faq')->name('faq');
+        Route::get('news', 'news')->name('news');
+        Route::get('support', 'support')->name('support');
+            Route::get('terms', 'terms')->name('terms');
+        });
         Route::middleware(['auth', 'telegram.verified', '2fa'])->group(function () {
             Route::get('profile', 'profile')->name('profile');
             Route::get('dashboard', 'dashboard')->name('dashboard');

@@ -47,7 +47,7 @@ const DashboardNavbar = () => {
             Home
           </Link>
         </li>
-        <li className="text-lg duration-200">
+        {/* <li className="text-lg duration-200">
           <Link className="text-gray-400 px-3 py-2" href={route('client.advertise')}>
             Advertise
           </Link>
@@ -56,7 +56,7 @@ const DashboardNavbar = () => {
           <Link className="text-gray-400 px-3 py-2" href={route('client.btc-game')}>
             Bitcoin Game
           </Link>
-        </li>
+        </li> */}
         <li className="text-lg duration-200">
           <Link className="text-gray-400 px-3 py-2" href={route('client.referral-contest')}>
             Referral Contest
