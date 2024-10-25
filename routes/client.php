@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Controllers\Client\HomeController;
-use App\Http\Controllers\Client\AuthClientController;
-use App\Http\Controllers\Client\DashboardContrtoller;
+use App\Http\Controllers\client\HomeController;
+use App\Http\Controllers\client\AuthClientController;
+use App\Http\Controllers\client\DashboardContrtoller;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
