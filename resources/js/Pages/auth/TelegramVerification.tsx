@@ -16,6 +16,7 @@ import Modal from "../../components/schema/Modal";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import RootLayout from "../../layout";
 import { route } from "ziggy-js";
+import { Inertia } from '@inertiajs/inertia';
 // Define interfaces
 interface IFormInput {
     code: string;
@@ -67,7 +68,7 @@ const AuthTelegramPage = () => {
                     duration: 4000,
                 });
                 setTimeout(() => {
-                    window.location.replace("/");
+                    Inertia.visit(route("client.dashboard"));
                 }, 2000);
             }
             else if(status === 200 && resData.success==false){
