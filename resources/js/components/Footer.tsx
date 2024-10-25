@@ -78,7 +78,7 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full grid grid-cols-4 max-sm:grid-cols-2 gap-5 text-black text-lg mb-20">
+        {/* <div className="w-full grid grid-cols-4 max-sm:grid-cols-2 gap-5 text-black text-lg mb-20">
           <div className="flex flex-col gap-y-4">
             <Link
               to={"/"}
@@ -198,11 +198,11 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-        </div>
+        </div> */}
         <div className="border-t-[1px] border-[#323C52]" />
         <div className="flex flex-row justify-between pt-2 text-sm text-gray-500">
           <h5>
-            Copyright © 2022 - 2024 <span className="text-primary">EFM</span>hub.com. All rights
+            Copyright © 2024 <span className="text-primary">EFM</span>hub.com. All rights
             reserved.
           </h5>
           <p>

@@ -53,7 +53,7 @@ const LoginPage = () => {
           duration: 4000,
         });
         setTimeout(() => {
-          Inertia.get(route('client.home'));
+          Inertia.get(route('client.dashboard'));
         }, 2000);
       } else {
         throw new Error("Unexpected response status");

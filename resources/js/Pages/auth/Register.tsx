@@ -58,7 +58,7 @@ const RegisterPage = () => {
           duration: 4000,
         });
         setTimeout(() => {
-          route("client.login");
+          route("client.dashboard");
         }, 1500);
       }
     } catch (error) {
