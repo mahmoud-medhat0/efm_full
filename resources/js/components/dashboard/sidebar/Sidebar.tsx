@@ -54,11 +54,11 @@ const Sidebar = () => {
       icon: <ChartBarIcon />,
       label: "Advertiser Panel",
     },
-    {
-      href: route('client.dashboard.messages'),
-      icon: <EnvelopeIcon />,
-      label: "Message System",
-    },
+    // {
+    //   href: route('client.dashboard.messages'),
+    //   icon: <EnvelopeIcon />,
+    //   label: "Message System",
+    // },
     {
       href: route('client.dashboard.membership'),
       icon: <ChevronDoubleUpIcon />,
@@ -70,7 +70,7 @@ const Sidebar = () => {
       icon: <ShoppingCartIcon />,
       label: "New Order",
     },
-    { href: route('client.dashboard.coupons'), icon: <StarIcon />, label: "Coupon code" },
+    // { href: route('client.dashboard.coupons'), icon: <StarIcon />, label: "Coupon code" },
     {
       href: route('client.dashboard.deposit'),
       icon: <ArrowDownTrayIcon />,
@@ -81,7 +81,7 @@ const Sidebar = () => {
       icon: <ArrowUpTrayIcon />,
       label: "Withdraw",
     },
-    { href: route('client.dashboard.banners'), icon: <PhotoIcon />, label: "Banners" },
+    // { href: route('client.dashboard.banners'), icon: <PhotoIcon />, label: "Banners" },
   ];
 
   const settingsLinks = [
@@ -113,12 +113,12 @@ const Sidebar = () => {
   ];
 
   const logsLinks = [
-    {
-      href: route('client.dashboard.logs.orders'),
-      icon: <DocumentPlusIcon />,
-      label: "Order History",
-      isNew: false,
-    },
+    // {
+    //   href: route('client.dashboard.logs.orders'),
+    //   icon: <DocumentPlusIcon />,
+    //   label: "Order History",
+    //   isNew: false,
+    // },
     {
       href: route('client.dashboard.logs.deposit'),
       icon: <DocumentTextIcon />,
