@@ -13,8 +13,9 @@ import { Link } from "@inertiajs/inertia-react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import RootLayout from "../../layout";
-import axios from 'axios'
+import axios from 'axios';
 import { route } from "ziggy-js";
+import { Inertia } from '@inertiajs/inertia';
 interface IFormInput {
   first_name: string;
   last_name: string;
@@ -58,7 +59,7 @@ const RegisterPage = () => {
           duration: 4000,
         });
         setTimeout(() => {
-          route("client.dashboard");
+          Inertia.get(route('client.dashboard'));
         }, 1500);
       }
     } catch (error) {
