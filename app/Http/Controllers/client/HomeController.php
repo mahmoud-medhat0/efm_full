@@ -114,8 +114,8 @@ class HomeController extends Controller
         }
         $user = Client::find(auth()->id());
         $user->update(['telegram_verified' => 1]);
-        $appName = env('APP_NAME');
-        $messageText = "🎉Congratulations! 🎉\nVerification have been successfully done ✅\nWelcome to 💲{$appName}💲\nYour Money is The Max 💲 .. Enjoy & Relax 😊";
+        $userName = $user->name;
+        $messageText = "🎉 مبروك {$userName} ! 🎉\n\nلقد تم تفعيل عضويتك بنجاح في أقوى شركة تسويق،EFM ! 🚀\nنتمنى لك النجاح والتفوق والوصول إلى الثراء معنا 💪💰\nكن على أتم الاستعداد لتنفيذ بعض المهام الجديدة المثيرة 🌟 التي ستساعدك في تحقيق أهدافك المالية 💸✨";
         $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
         $telegram->sendMessage([
             'chat_id' => $user->telegram_id,
