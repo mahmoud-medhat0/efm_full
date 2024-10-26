@@ -23,5 +23,6 @@ Route::get('/set-webhook', function () {
 });
 Route::post('/webhook/telegram/{token}', [TelegramController::class, 'handleWebhook'])->withoutMiddleware('verifyCsrfToken');
 
+Route::get('/storage/attachments/private/{filename}', 'FileController@showPrivateFile')->name('private.files');
 require __DIR__ . '/client.php';
 require __DIR__ . '/auth.php';

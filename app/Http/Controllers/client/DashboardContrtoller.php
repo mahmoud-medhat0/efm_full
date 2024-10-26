@@ -92,7 +92,8 @@ class DashboardContrtoller extends Controller
         }
         if ($request->hasFile('attachment')) {
             $attachment = $request->file('attachment');
-            $attachmentPath = $attachment->storeAs('attachments', $attachment->getClientOriginalName().'-'.time(), 'private');
+            $filename = 'deposit-' . time() . '-' . pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $attachment->getClientOriginalExtension();
+            $attachmentPath = $attachment->storeAs('attachments/private', $filename, 'public');
         } else {
             $attachmentPath = null;
         }
@@ -196,7 +197,7 @@ class DashboardContrtoller extends Controller
         }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
         $total = $request->amount - $fees;
-        $tnx = 'WITH' . time();
+        $tnx = "WITH" . time();
         Transaction::create([
             'amount' => $request->amount,
             'fee' => $fees,
@@ -523,8 +524,9 @@ class DashboardContrtoller extends Controller
         if(auth()->user()->hasActiveSubscription){
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
-        DB::transaction(function () use ($request) {
-            $plan = Membershib::find($request->plan);
+        try{
+            DB::transaction(function () use ($request) {
+                $plan = Membershib::find($request->plan);
             $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
             $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
             $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
@@ -565,15 +567,18 @@ class DashboardContrtoller extends Controller
         }
         SubscriptionMembership::create([
             'client_id' => auth()->user()->id,
-            'membership_id' => $request->plan,
-            'status' => 'active',
-            'start_date' => now(),
-            'end_date' => $plan->is_lifetime == true
+                    'membership_id' => $request->plan,
+                    'status' => 'active',
+                    'start_date' => now(),
+                    'end_date' => $plan->is_lifetime == true
                 ? null 
-                : now()->addDays($plan->duration),
-            ]);
+                    : now()->addDays($plan->duration),
+                ]);
+            });
             return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
-        });
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
+        }
     }
     public function upgradeBalanceGateway(Request $request)
     {

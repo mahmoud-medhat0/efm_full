@@ -16,6 +16,7 @@ use App\Nova\Actions\SetStatusCancelled;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use Laravel\Nova\Fields\Image;
+use Illuminate\Support\Facades\Storage;
 class Transaction extends Resource
 {
     /**
@@ -80,7 +81,9 @@ class Transaction extends Resource
             Currency::make('Total')->displayUsing(function ($total) {
                 return $total . ' ' . 'EGP';
             }),
-            Image::make('Attachment')->disk('private'),
+            Image::make('Attachment')->disk('public')->path('attachments')->displayUsing(function ($attachment) {
+                return $attachment ? Storage::disk('public')->url('attachments/' . $attachment) : 'No Attachment';
+            }),
             DateTime::make('Created At'),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();
