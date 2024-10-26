@@ -64,7 +64,7 @@ const Navbar = () => {
             </div>
             <ul className="flex items-center justify-between max-sm:hidden">
                 <li className="text-lg duration-200">
-                    <Link className="text-gray-400 px-3 py-2" href={route('client.home')}>
+                    <Link className="text-gold px-3 py-2" href={route('client.home')}>
                         {translate("home.title")}
                     </Link>
                 </li>
@@ -75,13 +75,13 @@ const Navbar = () => {
                 </li> */}
                 
                 <li className="text-lg duration-200">
-                    <Link className="text-gray-400 px-3 py-2" href={route("client.about-us")}>
+                    <Link className="text-gold px-3 py-2" href={route("client.about-us")}>
                         {translate("home.about-us")}
                     </Link>
                 </li>
                 <li className="text-lg duration-200">
                     <Link
-                        className="text-gray-400 px-3 py-2"
+                        className="text-gold px-3 py-2"
                         href={route('client.referral-contest')}
                     >
                         {translate("home.referral-contest")}
@@ -93,7 +93,7 @@ const Navbar = () => {
             <div className="flex flex-row items-center gap-2">
                 <Link href={route('client.dashboard')}>
                     <img
-                        className="w-16 h-16 hoving"
+                        className="w-20 h-20" // تم زيادة حجم الصورة
                         src={LogoImg}
                         alt={translate("home.logo")}
                     />
