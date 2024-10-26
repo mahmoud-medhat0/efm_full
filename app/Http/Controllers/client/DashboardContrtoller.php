@@ -89,7 +89,7 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
-        $total = $request->amount - $fees;
+        $total = $request->amount + $fees;
         $tnx = 'DEP' . time();
         Transaction::create([
             'amount' => $request->amount,
@@ -176,7 +176,7 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
-        $total = $request->amount + $fees;
+        $total = $request->amount - $fees;
         $tnx = 'WITH' . time();
         Transaction::create([
             'amount' => $request->amount,
@@ -493,6 +493,9 @@ class DashboardContrtoller extends Controller
         if(auth()->user()->balance < Membershib::find($request->plan)->price){
             return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
         }
+        if(auth()->user()->hasActiveSubscription){
+            return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
+        }
         DB::beginTransaction();
         Transaction::create([
             'amount' => Membershib::find($request->plan)->price,
@@ -505,7 +508,12 @@ class DashboardContrtoller extends Controller
             'client_id' => auth()->user()->id,
         ]);
         $LastActiveNumber = Client::whereNotNull('activator_count')->count();
-        auth()->user()->update(['balance' => auth()->user()->balance - Membershib::find($request->plan)->price,'activator_count' => $LastActiveNumber + 1]);
+        $user = Client::find(auth()->user()->id);
+        $planPrice = Membershib::find($request->plan)->price;
+        $user->update([
+            'balance' => $user->balance - $planPrice,
+            'activator_count' => $LastActiveNumber + 1
+        ]);
         if(auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()){
             $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type  ;
             $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;

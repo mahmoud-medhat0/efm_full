@@ -56,7 +56,7 @@ const OrdersPage = () => {
                 filteredOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-100 cursor-auto">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{order.order_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">${order.price}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">EGP{order.price}</td>
                     <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
                       order.status === 'completed' ? 'text-green-500' :
                       order.status === 'approved' ? 'text-green-500' :

@@ -67,7 +67,13 @@ export default function MembershipTabs() {
                   plan: selectedPlan.id,
                 });
                 if(response.data.success){
-                  Inertia.reload();
+                  toast.success('Membership upgraded successfully',{
+                    duration: 2000,
+                    position: 'top-right',
+                  });
+                  setTimeout(() => {
+                    Inertia.reload();
+                  }, 2000);
                 }else{
                   toast.error(response.data.message,{
                     duration: 5000,
