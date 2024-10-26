@@ -71,6 +71,7 @@ class DashboardContrtoller extends Controller
     {
         $rules = [
             'selectedMethod' => ['required', 'exists:gateways,id'],
+
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -89,6 +90,12 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentPath = $attachment->storeAs('attachments', $attachment->getClientOriginalName().'-'.time(), 'private');
+        } else {
+            $attachmentPath = null;
+        }
         $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
         $total = $request->amount + $fees;
         $tnx = 'DEP' . time();
@@ -102,6 +109,7 @@ class DashboardContrtoller extends Controller
             'description' => 'Deposit from ' . $gateway->name,
             'gateway_id' => $request->selectedMethod,
             'client_id' => auth()->user()->id,
+            'attachment' => $attachmentPath,
         ]);
         return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
     }
@@ -176,6 +184,16 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
+        if ($gateway->attachment == true) {
+            if ($request->attachment == null) {
+                return response()->json(['success' => false, 'message' => 'Attachment is required'], 200);
+            }
+        }
+        $attachmentPath = null;
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentPath = $attachment->storeAs('attachments', $attachment->getClientOriginalName().'-'.time(), 'private');
+        }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
         $total = $request->amount - $fees;
         $tnx = 'WITH' . time();
@@ -189,6 +207,7 @@ class DashboardContrtoller extends Controller
             'description' => 'Withdraw to ' . $gateway->name,
             'gateway_id' => $request->selectedMethod,
             'client_id' => auth()->user()->id,
+            'attachment' => $attachmentPath,
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $total]);
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);

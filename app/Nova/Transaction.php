@@ -15,6 +15,7 @@ use App\Nova\Actions\SetStatusSuccess;
 use App\Nova\Actions\SetStatusCancelled;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
+use Laravel\Nova\Fields\Image;
 class Transaction extends Resource
 {
     /**
@@ -79,6 +80,7 @@ class Transaction extends Resource
             Currency::make('Total')->displayUsing(function ($total) {
                 return $total . ' ' . 'EGP';
             }),
+            Image::make('Attachment')->disk('private'),
             DateTime::make('Created At'),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();
