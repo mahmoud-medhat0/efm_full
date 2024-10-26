@@ -94,7 +94,7 @@ export default function MembershipTabs() {
                   <input
                     className="cursor-pointer border-[1px] border-gray-300 shadow-lg focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary rounded-lg px-3 py-2 text-md w-full bg-transparent duration-200"
                     id="balance"
-                    value={page.auth.client.balance + " $"}
+                    value={page.auth.client.balance + " EGP"}
                     disabled
                     readOnly
                   />

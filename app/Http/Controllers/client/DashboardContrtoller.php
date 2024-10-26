@@ -468,7 +468,7 @@ class DashboardContrtoller extends Controller
             }),
             'plans' => Membershib::all()->map(function ($plan) {
                 return [
-                    'name' => $plan->name . ' - ' . $plan->price . 'EGP ' . $plan->duration,
+                    'name' => $plan->name . ' - ' . $plan->price . ' EGP ' . $plan->duration,
                     'id' => $plan->id,
                 ];
             }),
