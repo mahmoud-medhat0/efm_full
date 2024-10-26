@@ -15,6 +15,9 @@ class RedirectRoRegsiter
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(auth()->check()){
+            return redirect()->route('client.dashboard');
+        }
         if (!$request->is('register')) {
             return redirect()->route('client.register');
         }
