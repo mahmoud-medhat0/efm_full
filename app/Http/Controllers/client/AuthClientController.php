@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Rules\checkactiveReferralUserCode;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\ValidMail;
+use Laravel\Ui\Presets\React;
+
 class AuthClientController extends Controller
 {
     public function login()
@@ -85,9 +87,11 @@ class AuthClientController extends Controller
         }
         return response()->json(['success' => false, 'message' => 'Invalid code']);
     }
-    public function register()
+    public function register(Request $request)
     {
-        return Inertia::render('auth/Register.tsx');
+        return Inertia::render('auth/Register.tsx', [
+            'referral_code' => $request->ref,
+        ]);
     }
     public function registerPost(Request $request)
     {

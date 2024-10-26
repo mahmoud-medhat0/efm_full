@@ -13,9 +13,10 @@ import { Link } from "@inertiajs/inertia-react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import RootLayout from "../../layout";
-import axios from 'axios';
+import axios from 'axios'
 import { route } from "ziggy-js";
-import { Inertia } from '@inertiajs/inertia';
+import { usePage } from "@inertiajs/inertia-react";
+
 interface IFormInput {
   first_name: string;
   last_name: string;
@@ -30,6 +31,7 @@ interface IFormInput {
 const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
+  const { referral_code } = usePage().props;
   // const router = useNavigate();
 
   const {
@@ -59,7 +61,7 @@ const RegisterPage = () => {
           duration: 4000,
         });
         setTimeout(() => {
-          Inertia.get(route('client.dashboard'));
+          route("client.login");
         }, 1500);
       }
     } catch (error) {
@@ -95,6 +97,13 @@ const RegisterPage = () => {
                 <InputErrorMessage msg={"Phone is Required!"} />
               )}
             </div>
+          ) : name === "referral_code" ? (
+            <Input
+            value={referral_code}
+            type={type}
+              placeholder={placeholder}
+              {...register(name, validation)}
+            />
           ) : (
             <Input
               id={forl}

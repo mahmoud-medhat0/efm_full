@@ -20,7 +20,6 @@ const Navbar = () => {
     const handleChangeLang = (lang: string) => {
         Inertia.visit(route("client.set-lang", { lang }));
     };
-    console.log(page.props.lang);
     return (
         <nav className="w-full py-5 flex flex-row-reverse justify-between items-center px-4 shadow-md bg-[#f9f9f9]">
             <div className="flex flex-row-reverse items-center gap-4">
