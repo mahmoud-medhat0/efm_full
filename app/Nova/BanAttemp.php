@@ -46,7 +46,7 @@ class BanAttemp extends Resource
             Text::make('Video ID', 'video_id'),
             Text::make('Cause', 'cause'),
             BelongsTo::make('Task', 'task', Task::class),
-            BelongsTo::make('Client', 'client', Client::class),
+            BelongsTo::make('Client', 'client', Client::class)->display(fn ($client) => $client->name),
         ];
     }
 
