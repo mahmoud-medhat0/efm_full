@@ -14,7 +14,7 @@ class FileController extends Controller
         if (!auth('admin')->check()) {
             abort(403);
         }
-        $path = storage_path('app/private/attachments/' . $filename);
+        $path = storage_path('app/public/attachments/' . $filename);
 
         if (!File::exists($path)) {
             abort(404);
