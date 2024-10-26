@@ -37,7 +37,7 @@ export default function MembershipTabs() {
           >
             <WalletIcon className="w-5 h-5" /> Upgrade using purchase balance
           </Tab>
-          <Tab
+          {/* <Tab
             className={({ selected }) =>
               classNames(
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
@@ -50,7 +50,7 @@ export default function MembershipTabs() {
           >
             <CurrencyDollarIcon className="w-5 h-5" />
             Upgrade using payment gateways
-          </Tab>
+          </Tab> */}
         </Tab.List>
         <Tab.Panels className="mt-2 rounded-md">
           <Tab.Panel
@@ -102,7 +102,7 @@ export default function MembershipTabs() {
               </form>
             </div>
           </Tab.Panel>
-          <Tab.Panel
+          {/* <Tab.Panel
             className={classNames(
               "rounded-md bg-white p-3",
               "focus:outline-none"
@@ -151,7 +151,7 @@ export default function MembershipTabs() {
                 </div>
               </form>
             </div>
-          </Tab.Panel>
+          </Tab.Panel> */}
         </Tab.Panels>
       </Tab.Group>
     </div>

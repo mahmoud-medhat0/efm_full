@@ -72,15 +72,15 @@ export default function DashboardTabs() {
   return (
     <div className="w-full px-2 py-12 sm:px-0">
       <Tab.Group>
-        <Tab.List className="w-full mb-6 flex space-x-1 rounded-xl bg-background/20 p-1">
+        <Tab.List className="w-full mb-6 flex space-x-1 rounded-xl bg-primary p-1">
           <Tab
             className={({ selected }) =>
               classNames(
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
                 "ring-white/60 ring-offset-2 focus:outline-none focus:ring-2 duration-150",
                 selected
-                  ? "bg-white text-black font-medium shadow"
-                  : "text-primary hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white text-primary font-medium shadow"
+                  : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
               )
             }
           >
@@ -92,8 +92,8 @@ export default function DashboardTabs() {
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
                 "ring-white/60 ring-offset-2 focus:outline-none focus:ring-2 duration-150",
                 selected
-                  ? "bg-white text-black font-medium shadow"
-                  : "text-primary hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white text-primary font-medium shadow"
+                  : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
               )
             }
           >
@@ -105,8 +105,8 @@ export default function DashboardTabs() {
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
                 "ring-white/60 ring-offset-2 focus:outline-none focus:ring-2 duration-150",
                 selected
-                  ? "bg-white text-black font-medium shadow"
-                  : "text-primary hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white text-primary font-medium shadow"
+                  : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
               )
             }
           >
@@ -118,8 +118,8 @@ export default function DashboardTabs() {
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
                 "ring-white/60 ring-offset-2 focus:outline-none focus:ring-2 duration-150",
                 selected
-                  ? "bg-white text-black font-medium shadow"
-                  : "text-primary hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white text-primary font-medium shadow"
+                  : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
               )
             }
           >
@@ -180,7 +180,7 @@ export default function DashboardTabs() {
                 <h3 className="text-2xl mb-3">Daily Tasks</h3>
                 <InfoAlert
                   msg="You can earn
-                  $0.51 by completing the following tasks."
+                  good money by completing the following tasks."
                 />
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-[550px] flex flex-row justify-between">
@@ -214,16 +214,16 @@ export default function DashboardTabs() {
               <div className="my-8">
                 <h3 className="text-2xl mb-3">Referral Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Direct Referrals</p>
                     <span className="text-font">0</span>
                   </div>
-                  <Link to={"/dashboard/withdraw"} className="text-primary">
+                  {/* <Link to={"/dashboard/withdraw"} className="text-primary">
                     Buy Referrals
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Earned so far</p>
                     <span className="text-font">0.00000000</span>
                   </div>
@@ -232,22 +232,22 @@ export default function DashboardTabs() {
               <div className="my-8">
                 <h3 className="text-2xl mb-3">Your advertisement clicks</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Your clicks</p>
                     <span className="text-font">0</span>
                   </div>
                 </div>
-                <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
+                {/* <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-[352px] flex flex-row justify-between">
                     <p>Your referral clicks</p>
                     <span className="text-font">0</span>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="my-8">
                 <h3 className="text-2xl mb-3">Video Ads Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-fulla flex flex-row justify-between">
                     <p>Total plays</p>
                     <span className="text-font">0</span>
                   </div>
