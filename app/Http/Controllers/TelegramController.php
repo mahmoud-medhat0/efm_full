@@ -31,7 +31,9 @@ class TelegramController extends Controller
         try {
             $message = $request->all();
             if (isset($message['message']['new_chat_member']) || isset($message['my_chat_member'])) {
-                $this->handleGroupManagement($message['message']);
+                if(isset($message['message'])){
+                    $this->handleGroupManagement($message['message']);
+                }
             }
             elseif (isset($message['message'])) {
                 $this->handleCommand($message);
@@ -73,13 +75,14 @@ class TelegramController extends Controller
         }
         if (Str::contains($text, '/')) {
             switch ($text) {
-                case '/start':
-                    $image = InputFile::create("https://test.efmhub.com/images/welcome.jpg");
-                    $text = "اهلا وسهلا بك في شركة <b>EFM</b> للتسويق الالكتروني والريح من الانترنت\nالشركه التي صممت لتقودك للثراء وبنيت لتدوم\nهنا تجد الفرصه الذهبيه لدخول عالم المال والثراء \nاشترك معنا ولا تضيع وقتك \nwww.efmhub.com";
-                    $this->deleteMessage($chatId, $message_id);
-                    $this->sendPhoto($chatId, $image, $text,null,'HTML');
-                    break;
+                // case '/start':
+                //     $image = InputFile::create("https://test.efmhub.com/images/welcome.jpg");
+                //     $text = "اهلا وسهلا بك في شركة <b>EFM</b> للتسويق الالكتروني والريح من الانترنت\nالشركه التي صممت لتقودك للثراء وبنيت لتدوم\nهنا تجد الفرصه الذهبيه لدخول عالم المال والثراء \nاشترك معنا ولا تضيع وقتك \nwww.efmhub.com";
+                //     $this->deleteMessage($chatId, $message_id);
+                //     $this->sendPhoto($chatId, $image, $text,null,'HTML');
+                //     break;
                 case '/getid':
+                        $this->deleteMessage($chatId,$message_id);
                         $this->sendMessage($chatId, "Your Id Is \n```\n{$userId}\n```\n");
                         break;
                 case '/about':
@@ -120,14 +123,20 @@ class TelegramController extends Controller
                 case '/help':
                         $text = "Chat With Agent in Out Telegram Support :\nBy Go To @EFMhub_Support_bot";
                         $this->deleteMessage($chatId,$message_id);
-                        $this->sendMessage($chatId, $text);
+                        $this->sendMessage($chatId, $text,null,'HTML');
                         break;
-                case '/gateway':
+                case '/gateways':
                     $image = InputFile::create("https://test.efmhub.com/images/gateway.jpg");
-                    $text = "📤 الايداع والسحب 📤\n\n👇وسائل الايداع والحسب 👇\n\n⚜️ المحافظ الالكترونية مثل فودافون كاش\n⚜️ التحويل الفوري انيستا باي\n⚜️ التحويل البنكي على حساب الشركة\n⚜️ الايداع المباشر في حساب الشركة\n⚜️ التواصل مع الوسيط المالي والوحيد لدينا\n\n🕙 مدة التنفيذ ⏱\nمن دقيقه الى ساعتين 🤩⏳\n\n⚠️ ملاحظة: لا تنسى الاحتفاظ بايصال الدفع وارفاقه في الطلب الخاص بك على موقع الشركة ⚠️";
+                    $text= "📤 الايداع والسحب 📤\n\n👇وسائل الايداع والسحب 👇\n\n⚜️ المحافظ الالكترونية مثل فودافون كاش \n⚜️ التحويل الفوري انيستا باي\n⚜️ التواصل مع الوسيط المالي والوحيد لدينا : https://t.me/EFM_hub \n⚜️ التحويل البنكي على حساب الشركة\n⚜️ الايداع المباشر في حساب الشركة \n \n⚠️ ملاحظة : يجب احتساب ضريبة القيمة المضافة وتحويلها مع مبلغ الاشتراك اذا اختار العميل الدفع من خلال البنك سواء ايداع او تحويل ⚠️\n\n🕙 مدة التنفيذ ⏱\nمن دقيقه الى ساعتين 🤩⏳\n\n⚠️ ملاحظة: لا تنسى الاحتفاظ بايصال الدفع وارفاقه في الطلب الخاص بك على موقع الشركة ⚠️";
                     $this->deleteMessage($chatId,$message_id);
                     $this->sendPhoto($chatId, $image, $text);
                     break;
+                case '/partnerships':
+                    $image = InputFile::create("https://test.efmhub.com/images/partnetships.jpg");
+                    $text = "🚀 إعلان تعاون استراتيجي بين شركتي ENG MONEY و EFM 🚀\n\nيسرنا أن نعلن عن توقيع تعاون استراتيجي مع شركة ENG MONEY الرائدة في عالم الاستثمار في الاسواق المالية العالمية 🌟\n\n📈 تم تفعيل محفظة استثمارية باسم شركة EFM مع ENG MONEY 🤩\nهذه المحفظة ستكون بمثابة مركز لتجميع قيم الاشتراكات لكل عضو معنا في EFM 🤗✨\nحيث سيتم الاستثمار بها  والاستفادة من خبرة ENG MONEY في هذا المجال وستقوم الشركة بتوزيع الأرباح المحققة في نهاية كل شهر ميلادي على حساب كل مشترك في EFM 💰✨";
+                    $this->deleteMessage($chatId,$message_id);
+                    $this->sendPhoto($chatId, $image, $text);
+                    break;  
                 case '/unban':
                     if (isset($message['message']['reply_to_message'])) {
                         $repliedUserId = $message['message']['reply_to_message']['from']['id'];
@@ -140,18 +149,11 @@ class TelegramController extends Controller
                         $this->sendMessage($chatId, 'Please reply to the message of the user you want to unban.' );
                     }
                     break;
-                case '/services':
-                    $text = "🌟 خدمات شركة EFM 🌟\n
-                    تُعتبر EFM الشركة الوحيدة التي تقدم مميزات فريدة لا تضاهى وجوائز قوية تجعلها الخيار الأمثل للجميع 👌✨\n
-
-                    تضم الشركة نوعين من المستفدين :\n
-
-                    مستخدموا EFM ( الجمهور ) : 👥\n
-                    ينضم الينا الشخص من خلال عضوية خاصة مفعلة مدى الحياة، ويقوم بتنفيذ مهام بسيطة من خلال الانترنت لكسب الأرباح باستمرار وزيادة الدخل في أوقات الفراغ🤯\n
-
-                    عملاء EFM ( العملاء ) : 💼\n
-                    نقدم لهم باقات متنوعة تهدف إلى نشر الحملات والدعاية الإعلانية أونلاين لمشاريعهم أو شركاتهم، مع التركيز على استقطاب أكبر عدد ممكن من الجمهور المستهدف🎯";
-                    $this->sendMessage($chatId, $text, $message_id);
+                case '/registration':
+                    $image = InputFile::create("https://test.efmhub.com/images/registration.jpg");
+                    $text = "خطوات التسجيل 👌🤩\n\n1️⃣ الضغط رابط الموقع www.efmhub.com او رابط دعوة الصديق\n‼️ملاحظة هامة: في الوضع الحالي يجب اختيار وضع الـ Desktop وليس الموبايل لكل من يفتح الموقع من الموبايل‼️\n\n2️⃣ تسجيل بياناتك كاملة وتآكيد الايميل\n‼️ملاحظة: قد تأتي رسالة التفعيل على الإيميل في خانة Spam أو Junk ‼️\n\n3️⃣ توثيق حساب التليجرام كما هو موضح في الفيديو ادناه 🎥\nhttps://t.me/ENG_MONEY_LTD_CHANNEL/41\n\n4️⃣ تفعيل العضوية💰\n\n🎉 مبروك! لقد أتممت التسجيل وتفعيل عضويتك واصبح جاهزا لدعوة اصدقائك والكسب من نظام الاحاله 🥳";
+                    $this->deleteMessage($chatId,$message_id);
+                    $this->sendPhoto($chatId, $image, $text,null,'HTML');
                     break;
             }
         }
@@ -167,7 +169,7 @@ class TelegramController extends Controller
             'parse_mode' => 'HTML'
         ]);
 
-        $messageId = $response->getMessageId();
+        return $response->getMessageId();
     }
     private function deleteMessage($chat_id, $message_id)
     {
@@ -186,14 +188,14 @@ class TelegramController extends Controller
             return null;
         }
     }
-    private function sendMessage($chat_id, $text, $reply_to_message_id = null, $reply_markup = null)
+    private function sendMessage($chat_id, $text, $reply_to_message_id = null, $markdown = null, $reply_markup = null)
     {
         $endpoint = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN') . "/sendMessage";
 
         $payload = [
             'chat_id' => $chat_id,
             'text' => $text,
-            'parse_mode' => $reply_markup == null ? 'Markdown' : 'HTML',
+            'parse_mode' => $markdown == null ? 'Markdown' : 'HTML',
         ];
         if ($reply_to_message_id !== null) {
             $payload['reply_to_message_id'] = $reply_to_message_id;
@@ -282,12 +284,16 @@ class TelegramController extends Controller
                     $this->deleteMessage($chat['id'], $message->message_id);
                 }
                 WelcomeBotMessages::where('status','new')->delete();
-                $participantName = '<b>'.$chatMemberUpdate['new_chat_participant']['first_name'].' '.isset($chatMemberUpdate['new_chat_participant']['last_name'])?' '.$chatMemberUpdate['new_chat_participant']['last_name']:'</b>';
+                $welcomeImage = InputFile::create("https://test.efmhub.com/images/welcome.jpg");
+                $participantName = '<b>'.$chatMemberUpdate['new_chat_participant']['first_name'];
+                if (isset($chatMemberUpdate['new_chat_participant']['last_name'])) {
+                    $participantName .= ' '.$chatMemberUpdate['new_chat_participant']['last_name'];
+                }
+                $participantName .= '</b>';
                 // \Log::info('New chat participant added', ['participant' => $participantName]);
                 // Send a welcome message to the new participant
                 $welcomeText = "مرحباً {$participantName} في شركة EFM للتسويق الإلكتروني والربح من الإنترنت ! 🌟💼\n\nنحن هنا لنفتح لك أبواب الفرص الحقيقية لتحقيق الثراء المالي والوصول إلى حياة الرفاهية التي تستحقها 🌍💰\n\nانضم إلينا في مسيرة نجاح بنيت لتدوم، حيث نقدم لك منصة شاملة لتحقيق طموحاتك المالية، عبر استراتيجيات مدروسة وفرص ذهبية لدخول عالم المال والثراء 💸🔑\n\nفي EFM نسعى جاهدين لتوفير بيئة عمل مريحة وداعمة تساعدك على تحقيق أهدافك المالية بخطوات ثابتة. من خلال تنفيذ مهام بسيطة، ستحصل على مكافآت مالية وفرص للفوز في المسابقات المثيرة 🎉🏆✨\n\nبمجرد اشتراكك، ستتاح لك الفرصة للتعلم الربح والمشاركة في حملات تسويقية تصل إلى جمهور واسع وتحقق لك دخلاً إضافياً من خلال التسويق الإلكتروني 📈🖥\n\nكل ما عليك هو اتخاذ الخطوة الأولى والانضمام إلينا اليوم، وسوف تكون على الطريق الصحيح نحو النجاح المالي والاستقرار 🚀👊\n\nلا تضيع الفرصة، كن جزءًا من عائلتنا الآن، واكتشف كيف يمكن لـEFM مساعدتك في تحقيق أحلامك وتحقيق الثروة ! 💪🌟";
-                $response = $this->sendMessage($chat['id'], $welcomeText,null,'HTML');
-                $messageId = json_decode($response->getBody()->getContents(), true)['result']['message_id'];
+                $messageId = $this->sendPhoto($chat['id'],$welcomeImage,$welcomeText);
                 WelcomeBotMessages::create([
                     'message_id' => $messageId,
                     'status' => 'new',

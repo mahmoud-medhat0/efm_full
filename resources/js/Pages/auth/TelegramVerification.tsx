@@ -2,7 +2,7 @@
 /* eslint-disable no-constant-condition */
 import { Link } from "@inertiajs/inertia-react";
 import Button from "../../components/schema/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../../components/schema/Input";
 import { TELEGRAM_FORM } from "../../data";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,7 +29,7 @@ interface IModalInput {
 
 const AuthTelegramPage = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [modalFormData, setModalFormData] = useState<IModalInput>({ id: "", username: "" });
 
     const openModal = () => setIsOpen(true);
@@ -156,7 +156,6 @@ const AuthTelegramPage = () => {
             </div>
         )
     );
-
     return (
         <RootLayout>
         <section className="w-[800px] my-20 mx-auto">
