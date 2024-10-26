@@ -26,6 +26,9 @@ export default {
         hover: "#dd6236",
         accent: "#FFC801",
         font: "#8fb635",
+        gold: "#be9e88",
+        rom:"#2d3a4a",
+        black:"#2d3a4a"
       },
     },
   },

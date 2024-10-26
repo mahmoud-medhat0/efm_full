@@ -35,7 +35,7 @@ export default function MembershipTabs() {
               )
             }
           >
-            <WalletIcon className="w-5 h-5" /> Upgrade using purchase balance
+            <WalletIcon className="w-5 h-5" /> Upgrade using balance
           </Tab>
           {/* <Tab
             className={({ selected }) =>

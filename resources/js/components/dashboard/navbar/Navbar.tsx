@@ -14,13 +14,13 @@ const DashboardNavbar = () => {
   const isLoggedIn = usePage().props.authed ? auth.client !== null : false;
 
   return (
-    <nav className="w-full  flex flex-row-reverse justify-between items-center px-4 shadow-md">
+    <nav className="w-full  flex flex-row-reverse justify-between items-center px-4 shadow-md ">
       <div className="flex flex-row-reverse items-center gap-4">
         <div className="flex flex-row gap-3">
           {!isLoggedIn ? (
             <div className="flex flex-row gap-3">
               <Link
-                className="bg-primary dark:text-white dark:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
+                className="bg-primary dark:text-white rom:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
                 href={route('client.login')}
               >
                 Login
@@ -43,22 +43,22 @@ const DashboardNavbar = () => {
       </div>
       <ul className="flex items-center justify-between max-sm:hidden">
         <li className="text-lg duration-200">
-          <Link className="text-gray-400 px-3 py-2" href={route('client.dashboard')}>
+          <Link className="text-gold hover:text-rom px-2 py-1" href={route('client.dashboard')}>
             Home
           </Link>
         </li>
         {/* <li className="text-lg duration-200">
-          <Link className="text-gray-400 px-3 py-2" href={route('client.advertise')}>
+          <Link className="text-gray-400 hover:text-rom px-3 py-2" href={route('client.advertise')}>
             Advertise
           </Link>
         </li>
         <li className="text-lg duration-200">
-          <Link className="text-gray-400 px-3 py-2" href={route('client.btc-game')}>
+          <Link className="text-gray-400 hover:text-rom px-3 py-2" href={route('client.btc-game')}>
             Bitcoin Game
           </Link>
         </li> */}
         <li className="text-lg duration-200">
-          <Link className="text-gray-400 px-3 py-2" href={route('client.referral-contest')}>
+          <Link className="text-gold hover:text-rom px-2 py-2" href={route('client.referral-contest')}>
             Referral Contest
           </Link>
         </li>

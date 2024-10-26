@@ -9,60 +9,59 @@ const WelcomeTab = () => {
     const user = page.props.auth.client;
   
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-lg shadow-md ">
-        {/* القسم الأول: محتوى مرحباً */}
-        <div className="col-span-2 sm:col-span-2 flex flex-col justify-center text-center ml-40 ">
-          <h1 className="text-2xl font-bold text-black fs-1">
-            Welcome, <span>{user.name.split(" ")[0]}</span>
-            <span className="ml-1">{user.name.split(" ")[1]}</span>
-          </h1>
-        </div>
-  
-        {/* القسم الثاني: معلومات العضوية */}
-        <div className="col-span-2 sm:col-span-2 flex flex-row justify-between">
-          <div className="flex flex-col w-1/2 pr-2">
-            <h4 className="text-xl text-black font-bold">
-              Your Membership:
-              <br /> {/* Add a line break here */}
-              <span className="text-primary font-semibold">
-                {user.membership?.name ?? "Free"}
-              </span>
-            </h4>
-            {user.membership == null && (
-              <Link
-                href={route("client.dashboard.membership")}
-                className="flex items-center gap-2 text-lg text-primary hover:underline mt-2"
-              >
-                <ArrowUpCircleIcon className="text-primary w-5 h-5" />
-                Upgrade Account
-              </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-primary shadow-md">
+          {/* القسم الأيسر: محتوى مرحباً */}
+          <div className="col-span-2 flex flex-col justify-center text-center sm:text-left ml-10 ">
+            <h1 className="text-2xl font-bold text-rom " >
+              Welcome, <span>{user.name.split(" ")[0]}</span>
+              <span className="ml-1">{user.name.split(" ")[1]}</span>
+            </h1>
+    
+            {/* معلومات العضوية */}
+            <div className="flex flex-col mt-4">
+              <h4 className="text-xl text-black ">
+                Your Membership:
+                <span className="text-black font-semibold ml-2">
+                  {user.membership?.name ?? "Free"}
+                </span>
+              </h4>
+              {user.membership == null && (
+                <Link
+                  href={route("client.dashboard.membership")}
+                  className="flex items-center gap-2 text-lg text-black hover:underline mt-2"
+                >
+                  Upgrade Account
+                  <ArrowUpCircleIcon className="text-black w-5 h-5" />
+                </Link>
+              )}
+            </div>
+    
+            {/* رابط الإحالة */}
+            {user.membership && (
+              <div className="flex flex-col mt-4">
+                <h3 className="flex items-center gap-2 text-lg text-primary-700 font-bold">
+                  <LinkIcon className="text-primary w-5 h-5" />
+                  Your referral link:
+                </h3>
+                <input
+                  readOnly
+                  className="cursor-pointer mt-2 rounded-md p-2 w-full text-lg font-bold border border-primary"
+                  value={`https://www.efmhub.com/ref/${user.username}`}
+                />
+              </div>
             )}
           </div>
-  
-          {/* القسم الثالث: رابط الإحالة */}
-          <div className="flex flex-col w-1/2 pl-2">
-            <h3 className="flex items-center gap-2 text-lg text-gray-700 font-bold">
-              <LinkIcon className="text-primary w-5 h-5 font-bold" />
-              Your referral link:
-            </h3>
-            <input
-              readOnly
-              className="cursor-pointer mt-2 border border-gray-300 rounded-md p-2 w-full text-lg font-bold"
-              value={`https://www.efmhub.com/ref/${user.username}`}
+    
+          {/* القسم الأيمن: الصورة */}
+          <div className="flex justify-center items-start">
+            <img
+              className="w-36 h-36 sm:w-48 sm:h-48 rounded-full cursor-pointer object-cover"
+              src={accImg}
+              alt="account"
             />
           </div>
         </div>
-  
-        {/* القسم الرابع: الصورة على الجانب الأيمن */}
-        <div className="col-span-1 flex justify-center items-center">
-          <img
-            className="w-16 h-28 sm:w-36 sm:h-36 rounded-full cursor-pointer object-cover "
-            src={accImg}
-            alt="account"
-          />
-        </div>
-      </div>
-    );
-  };
-  
-  export default WelcomeTab;
+      );
+    };
+    
+    export default WelcomeTab;

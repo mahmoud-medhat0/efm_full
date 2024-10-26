@@ -125,9 +125,8 @@ const Sidebar = () => {
     <>
       {collapsed && (
         <button
-          className="expand-btn fixed top-4 left-4 p-2 bg-primary text-white rounded-full z-50 
-          "
-          style={{ pointerEvents: "auto",marginRight:"2rem" , marginTop:"5rem"}}
+          className="expand-btn fixed top-4 left-4 p-2 text-white z-50"
+          style={{ pointerEvents: "auto", marginRight: "2rem", marginTop: "5rem", borderRadius: "0", backgroundColor: "transparent" }}
           type="button"
           onClick={handleExpandClick}
         >
@@ -148,8 +147,7 @@ const Sidebar = () => {
         >
  {!collapsed && (
         <button
-          className="expand-btn fixed top-4 left-4 p-2 bg-primary text-white rounded-full z-50 
-          "
+          className="expand-btn fixed top-4 left-4 p-2 text-white z-50"
           style={{ pointerEvents: "auto",marginLeft:"16rem"}}
           type="button"
           onClick={handleExpandClick}
