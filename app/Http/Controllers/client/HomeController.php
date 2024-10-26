@@ -92,7 +92,7 @@ class HomeController extends Controller
         }
         $otp = rand(100000, 999999);
         $user = Client::find(auth()->id());
-        $user->update(['telegram_username' => $request->username, 'telegram_id' => $request->id, 'telegram_code' => $otp]);
+        $user->update(['telegram_username' => str_replace(trim($request->username), '@', ''), 'telegram_id' => $request->id, 'telegram_code' => $otp]);
         $appName = env('APP_NAME');
         $messageText = "Hello! Your OTP for *{$appName}* is: ```{$otp}``` \nPlease enter this code on our website to complete your verification.\nDo not share this OTP with anyone.";
         $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
