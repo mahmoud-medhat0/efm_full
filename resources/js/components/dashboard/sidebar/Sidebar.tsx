@@ -25,7 +25,7 @@ import {
   UserGroupIcon,
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/20/solid";
-import Img from "../../../assets/dev.jpg";
+import Img from "../../../assets/character.jpg";
 import Logo from "../../../assets/logo.png";
 import { Link } from "@inertiajs/inertia-react";
 import { route } from "ziggy-js";
@@ -76,7 +76,7 @@ const Sidebar = () => {
     { href: route('client.dashboard.tasks'), icon: <RectangleGroupIcon />, label: "Tasks" },
     { href: route('client.dashboard.orders'), icon: <SquaresPlusIcon />, label: "Orders" },
     // { href: route('client.dashboard.convert-points'), icon: <WrenchIcon />, label: "Convert Points" },
-    { href: "#dashboard", icon: <Cog6ToothIcon />, label: "Personal Settings" },
+    // { href: "#dashboard", icon: <Cog6ToothIcon />, label: "Personal Settings" },
     {
       href: route('client.dashboard.2fa'),
       icon: <ShieldCheckIcon />,
@@ -92,12 +92,12 @@ const Sidebar = () => {
       label: "Direct Referrals",
       isNew: false,
     },
-    {
-      href: "#team",
-      icon: <ShoppingBagIcon />,
-      label: "Buy Referrals",
-      isNew: false,
-    },
+    // {
+    //   href: "#team",
+    //   icon: <ShoppingBagIcon />,
+    //   label: "Buy Referrals",
+    //   isNew: false,
+    // },
   ];
 
   const logsLinks = [

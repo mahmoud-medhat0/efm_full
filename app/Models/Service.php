@@ -27,4 +27,12 @@ class Service extends Model
     {
         return $this->hasMany(Task::class);
     }
+    public function pending_tasks($client)
+    {
+        return $this->hasMany(Task::class)->where('status', 'pending')->where('client_id', $client->id);
+    }
+    public function completed_tasks($client)
+    {
+        return $this->hasMany(Task::class)->where('status', 'completed')->where('client_id', $client->id);
+    }
 }

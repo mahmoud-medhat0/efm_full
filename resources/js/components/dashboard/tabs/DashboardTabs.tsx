@@ -25,49 +25,50 @@ export default function DashboardTabs() {
     { name: "1/3", uv: 760, pv: 400 },
   ];
   const { props } = usePage();
+  const client = props.auth.client;
   const loginAttempts = props.loginFailures;
-  const renderLineChart = (
-    <div className="flex flex-col justify-center items-center">
-      <h3 className="w-[250px] cursor-pointer text-center mb-3 bg-hover border-primary border-[1px] p-1 rounded-md text-white">
-        Your advertisement clicks
-      </h3>
-      <AreaChart
-        width={730}
-        height={250}
-        data={data}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-      >
-        <defs>
-          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        <Area
-          type="monotone"
-          dataKey="uv"
-          stroke="#8884d8"
-          fillOpacity={1}
-          fill="url(#colorUv)"
-        />
-        <Area
-          type="monotone"
-          dataKey="pv"
-          stroke="#82ca9d"
-          fillOpacity={1}
-          fill="url(#colorPv)"
-        />
-      </AreaChart>
-    </div>
-  );
+  // const renderLineChart = (
+  //   <div className="flex flex-col justify-center items-center">
+  //     <h3 className="w-[250px] cursor-pointer text-center mb-3 bg-hover border-primary border-[1px] p-1 rounded-md text-white">
+  //       Your advertisement clicks
+  //     </h3>
+  //     <AreaChart
+  //       width={730}
+  //       height={250}
+  //       data={data}
+  //       margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+  //     >
+  //       <defs>
+  //         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+  //           <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+  //           <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+  //         </linearGradient>
+  //         <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+  //           <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+  //           <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+  //         </linearGradient>
+  //       </defs>
+  //       <XAxis dataKey="name" />
+  //       <YAxis />
+  //       <CartesianGrid strokeDasharray="3 3" />
+  //       <Tooltip />
+  //       <Area
+  //         type="monotone"
+  //         dataKey="uv"
+  //         stroke="#8884d8"
+  //         fillOpacity={1}
+  //         fill="url(#colorUv)"
+  //       />
+  //       <Area
+  //         type="monotone"
+  //         dataKey="pv"
+  //         stroke="#82ca9d"
+  //         fillOpacity={1}
+  //         fill="url(#colorPv)"
+  //       />
+  //     </AreaChart>
+  //   </div>
+  // );
 
   return (
     <div className="w-full px-2 py-12 sm:px-0">
@@ -99,7 +100,7 @@ export default function DashboardTabs() {
           >
             Advertiser Stats
           </Tab>
-          <Tab
+          {/* <Tab
             className={({ selected }) =>
               classNames(
                 "w-full rounded-md py-2.5 text-sm font-medium leading-5",
@@ -111,7 +112,7 @@ export default function DashboardTabs() {
             }
           >
             Charts
-          </Tab>
+          </Tab> */}
           <Tab
             className={({ selected }) =>
               classNames(
@@ -139,7 +140,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px]">
                   <div className="w-[350px] flex flex-row justify-between">
                     <p>Balance</p>
-                    <span className="text-font">$1</span>
+                    <span className="text-font">${client.balance}</span>
                   </div>
                   <Link to={"/dashboard/withdraw"} className="text-primary mb-3">
                     Withdraw
@@ -166,7 +167,7 @@ export default function DashboardTabs() {
                     <span className="text-font">$0</span>
                   </div>
                 </div>
-                <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
+                {/* <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-[352px] flex flex-row justify-between">
                     <p>Points</p>
                     <span className="text-font">0.00 pts</span>
@@ -174,7 +175,7 @@ export default function DashboardTabs() {
                   <Link to={"/dashboard/withdraw"} className="text-primary">
                     Convert points
                   </Link>
-                </div>
+                </div> */}
               </div>
               <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Daily Tasks</h3>
@@ -182,30 +183,16 @@ export default function DashboardTabs() {
                   msg="You can earn
                   good money by completing the following tasks."
                 />
-                <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[550px] flex flex-row justify-between">
+                {props.services.map((service, index) => (
+                  <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
+                    <div className="w-full flex flex-row justify-between">
                     <p className="flex flex-row items-center gap-2">
-                      <ClockIcon className="w-5 h-5 text-primary" /> PTC Ads
+                      <ClockIcon className="w-5 h-5 text-primary" /> {service.name}
                     </p>
-                    <span className="text-font">0/6</span>
+                    <span className="text-font">{service.pending}/{service.completed}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[550px] flex flex-row justify-between">
-                    <p className="flex flex-row items-center gap-2">
-                      <ClockIcon className="w-5 h-5 text-primary" /> Video Ads
-                    </p>
-                    <span className="text-font">0/6</span>
-                  </div>
-                </div>
-                <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[550px] flex flex-row justify-between">
-                    <p className="flex flex-row items-center gap-2">
-                      <ClockIcon className="w-5 h-5 text-primary" /> Points
-                    </p>
-                    <span className="text-font">0/25</span>
-                  </div>
-                </div>
+                ))}
                 <h3 className="text-primary mt-8 cursor-pointer">
                   Earn points by inviting your friends{" "}
                   <Link to={"/"}>(Link)</Link>
@@ -225,7 +212,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Earned so far</p>
-                    <span className="text-font">0.00000000</span>
+                    <span className="text-font">{client.points}</span>
                   </div>
                 </div>
               </div>
@@ -247,13 +234,13 @@ export default function DashboardTabs() {
               <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Video Ads Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-fulla flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Total plays</p>
                     <span className="text-font">0</span>
                   </div>
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Earned</p>
                     <span className="text-font">$0</span>
                   </div>
@@ -342,14 +329,14 @@ export default function DashboardTabs() {
               </div>
             </div>
           </Tab.Panel>
-          <Tab.Panel
+          {/* <Tab.Panel
             className={classNames(
               "rounded-md bg-white p-3",
               "focus:outline-none"
             )}
           >
             <div>{renderLineChart}</div>
-          </Tab.Panel>
+          </Tab.Panel> */}
           <Tab.Panel
             className={classNames(
               "rounded-md bg-white p-3",

@@ -31,7 +31,7 @@ const AddFundsPage = () => {
       }
   
       // Calculate the total by subtracting the charge from the amount
-      const calculatedTotal = parseFloat(amount) - charge;
+      const calculatedTotal = parseFloat(amount) + charge;
   
       // Ensure the total is not negative
       setTotal(calculatedTotal > 0 ? calculatedTotal : 0);

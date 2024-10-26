@@ -1,4 +1,4 @@
-import accImg from "../../../assets/dev.jpg";
+import accImg from "../../../assets/character.jpg";
 import { Link } from "@inertiajs/inertia-react";
 import { ArrowUpCircleIcon, LinkIcon } from "@heroicons/react/20/solid";
 import { usePage } from "@inertiajs/inertia-react";

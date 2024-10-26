@@ -31,7 +31,15 @@ class DashboardContrtoller extends Controller
     {
         $loginFailed = auth()->user()->loginAttempts()->where('successful', false)->get();
         return Inertia::render('settings/index.tsx', [
-            'loginFailures' => $loginFailed
+            'loginFailures' => $loginFailed,
+            'services' => Service::where('status', 'active')->get()->map(function ($service) {
+                return [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'pending' => $service->pending_tasks(auth()->user())->count(),
+                    'completed' => $service->completed_tasks(auth()->user())->count(),
+                ];
+            }),
         ]);
     }
     public function advertiserPanel()

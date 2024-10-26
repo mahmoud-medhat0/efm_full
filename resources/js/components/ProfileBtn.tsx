@@ -74,7 +74,7 @@ export default function ProfileBtn() {
                       </span>
                     </Link>
                   </div>
-                  <div className="bg-gray-200 h-[1px] my-1 ml-5" />
+                  {/* <div className="bg-gray-200 h-[1px] my-1 ml-5" />
                   <div className=" px-2">
                     <Link
                       href={route('client.dashboard')}
@@ -87,8 +87,8 @@ export default function ProfileBtn() {
                         </span>
                       </span>
                     </Link>
-                  </div>
-                  <div className="bg-gray-200 h-[1px] my-1 ml-5" />
+                  </div> */}
+                  {/* <div className="bg-gray-200 h-[1px] my-1 ml-5" />
                   <div className=" px-2">
                     <Link
                       to="/dashboard/settings"
@@ -101,7 +101,7 @@ export default function ProfileBtn() {
                         </span>
                       </span>
                     </Link>
-                  </div>
+                  </div> */}
                   <div className="bg-gray-200 h-[1px] my-1 ml-5" />
                   <div className=" px-2">
                     <Link

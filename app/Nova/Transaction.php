@@ -70,9 +70,15 @@ class Transaction extends Resource
             Text::make('Tnx')->readonly(),
             Text::make('Note'),
             Text::make('Description'),
-            Currency::make('Amount'),
-            Currency::make('Fee'),
-            Currency::make('Total'),
+            Currency::make('Amount')->displayUsing(function ($amount) {
+                return $amount . ' ' . 'EGP';
+            }),
+            Currency::make('Fee')->displayUsing(function ($fee) {
+                return $fee . ' ' . 'EGP';
+            }),
+            Currency::make('Total')->displayUsing(function ($total) {
+                return $total . ' ' . 'EGP';
+            }),
             DateTime::make('Created At'),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();
