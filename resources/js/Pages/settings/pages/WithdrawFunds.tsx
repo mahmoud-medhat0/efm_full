@@ -18,7 +18,7 @@ const WithdrawFundsPage = () => {
   const page = usePage();
   const methods = page.props.methods;
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
   const [total, setTotal] = useState(0);
   const calcTotal = () => {
     if (amount > 0) {
@@ -42,7 +42,7 @@ const WithdrawFundsPage = () => {
 
   const handleAmountChange = (e) => {
     const value = parseFloat(e.target.value);
-    setAmount(value || 0);
+    setAmount(value);
   };
   
   useEffect(() => {

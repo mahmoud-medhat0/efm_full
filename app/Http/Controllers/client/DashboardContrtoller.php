@@ -176,7 +176,7 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
-        $total = $request->amount - $fees;
+        $total = $request->amount + $fees;
         $tnx = 'WITH' . time();
         Transaction::create([
             'amount' => $request->amount,

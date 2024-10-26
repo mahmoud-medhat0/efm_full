@@ -25,7 +25,7 @@ class SetStatusSuccess extends Action
     {
         foreach ($models as $model) {
             $model->update(['status' => 'success']);
-            $model->client->update(['balance' => $model->client->balance + $model->total]);
+            $model->client->update(['balance' => $model->client->balance + $model->amount]);
         }
         return Action::message('Status Updated to Success.');
     }

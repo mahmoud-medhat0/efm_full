@@ -15,7 +15,7 @@ const AddFundsPage = () => {
   const page = usePage();
   const methods = page.props.methods;
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [total, setTotal] = useState(0);
   const [attachment, setAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +42,7 @@ const AddFundsPage = () => {
 
   const handleAmountChange = (e) => {
     const value = parseFloat(e.target.value);
-    setAmount(value || 0);
+    setAmount(value);
   };
 
   const handleAttachmentChange = (file) => {
@@ -152,7 +152,7 @@ const AddFundsPage = () => {
               <label htmlFor="amount" className="text-black text-base">
                 Amount
               </label>
-                <Input id="amount" type="number" placeholder="0.00" value={amount}
+                <Input id="amount" type="number" value={amount}
                 onChange={handleAmountChange}
                 onInput={handleAmountChange}
                 onKeyDown={(e) => {
