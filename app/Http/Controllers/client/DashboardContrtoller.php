@@ -493,18 +493,23 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
-        if(auth()->user()->balance < Membershib::find($request->plan)->price){
+        $plan = Membershib::find($request->plan);
+        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+        $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
+
+        if(auth()->user()->balance < $planPrice){
             return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
         }
         if(auth()->user()->hasActiveSubscription){
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
-        DB::beginTransaction();
-        $plan = Membershib::find($request->plan);
-        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
-        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
-        $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
-        Transaction::create([
+        DB::transaction(function () use ($request) {
+            $plan = Membershib::find($request->plan);
+            $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+            $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+            $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
+            Transaction::create([
             'amount' => $planPrice,
             'fee' => 0,
             'total' => $planPrice,
@@ -547,9 +552,9 @@ class DashboardContrtoller extends Controller
             'end_date' => $plan->is_lifetime == true
                 ? null 
                 : now()->addDays($plan->duration),
-        ]);
-        DB::commit();
-        return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
+            ]);
+            return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
+        });
     }
     public function upgradeBalanceGateway(Request $request)
     {
