@@ -53,7 +53,7 @@ const WelcomeTab = () => {
                   <LinkIcon className="text-primary w-5 h-5" />
                   Your referral link:
                 </h3>
-                <div className="flex items-center w-[35rem]">
+                <div className="flex flex-col sm:flex-row items-center w-full sm:w-[35rem]">
                   <input
                     readOnly
                     className="cursor-pointer rounded-md p-2 w-full text-lg font-bold border border-primary"
@@ -61,7 +61,7 @@ const WelcomeTab = () => {
                   />
                   <button
                     onClick={copyToClipboard}
-                    className="ml-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center justify-center"
+                    className="mt-2 sm:mt-0 sm:ml-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center justify-center"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" viewBox="0 0 512 350" xmlSpace="preserve">
                       <g>
