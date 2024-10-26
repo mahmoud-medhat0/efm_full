@@ -133,9 +133,9 @@ export default function DashboardTabs() {
               "focus:outline-none"
             )}
           >
-            <div className="py-3 px-3">
+            <div className="py-3 px-3 text-black">
               <div className="mb-4">
-                <h3 className="text-2xl mb-3">Earning Balance Stats</h3>
+                <h3 className="text-black text-2xl mb-3">Earning Balance Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px]">
                   <div className="w-[350px] flex flex-row justify-between">
                     <p>Balance</p>
@@ -176,7 +176,7 @@ export default function DashboardTabs() {
                   </Link>
                 </div>
               </div>
-              <div className="my-8">
+              <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Daily Tasks</h3>
                 <InfoAlert
                   msg="You can earn
@@ -211,7 +211,7 @@ export default function DashboardTabs() {
                   <Link to={"/"}>(Link)</Link>
                 </h3>
               </div>
-              <div className="my-8">
+              <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Referral Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
@@ -229,7 +229,7 @@ export default function DashboardTabs() {
                   </div>
                 </div>
               </div>
-              <div className="my-8">
+              <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Your advertisement clicks</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
@@ -244,7 +244,7 @@ export default function DashboardTabs() {
                   </div>
                 </div> */}
               </div>
-              <div className="my-8">
+              <div className="my-8 text-black">
                 <h3 className="text-2xl mb-3">Video Ads Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-fulla flex flex-row justify-between">
@@ -267,7 +267,7 @@ export default function DashboardTabs() {
               "focus:outline-none"
             )}
           >
-            <div className="py-3 px-3">
+            <div className="py-3 px-3 text-black">
               <div className="mb-4">
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-[352px] flex flex-row justify-between">
@@ -356,7 +356,7 @@ export default function DashboardTabs() {
               "focus:outline-none"
             )}
           >
-            <div className="mb-8">
+            <div className="mb-8 text-black">
               <h3 className="text-lg mb-2">Login Failures :</h3>
               <table className="w-full shadow-md">
             <thead className="border-b border-black font-normal">

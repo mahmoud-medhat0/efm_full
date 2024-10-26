@@ -124,6 +124,7 @@ const Sidebar = () => {
   return (
     <>
       {collapsed && (
+        <div className="fixed top-4 left-4 p-2 text-white z-50">
         <button
           className="expand-btn fixed top-4 left-4 p-2 text-white z-50"
           style={{ pointerEvents: "auto", marginRight: "2rem", marginTop: "5rem", borderRadius: "0", backgroundColor: "transparent" }}
@@ -132,6 +133,7 @@ const Sidebar = () => {
         >
           <ChevronRightIcon className="w-6 h-6" />
         </button>
+        </div>
       )}
 
       {!collapsed && (
