@@ -24,6 +24,7 @@ use PragmaRX\Google2FALaravel\Google2FA;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\DB;
+use App\Models\RegistrationOffer;
 use App\Models\ReferralSetting;
 class DashboardContrtoller extends Controller
 {
@@ -454,6 +455,8 @@ class DashboardContrtoller extends Controller
     }
     public function membership()
     {
+        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
         return Inertia::render('settings/pages/Membership.tsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
                 return [
@@ -466,9 +469,9 @@ class DashboardContrtoller extends Controller
                     'charge_deposit' => $gateway->charge_deposit,
                 ];
             }),
-            'plans' => Membershib::all()->map(function ($plan) {
+            'plans' => Membershib::all()->map(function ($plan) use ($registrationOffer) {
                 return [
-                    'name' => $plan->name . ' - ' . $plan->price . ' EGP ' . $plan->duration,
+                    'name' => $plan->name . ' - ' . ($registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price) . ' EGP ' . $plan->duration,
                     'id' => $plan->id,
                 ];
             }),
@@ -497,19 +500,23 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
         DB::beginTransaction();
+        $plan = Membershib::find($request->plan);
+        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+        $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
         Transaction::create([
-            'amount' => Membershib::find($request->plan)->price,
+            'amount' => $planPrice,
             'fee' => 0,
-            'total' => Membershib::find($request->plan)->price,
+            'total' => $planPrice,
             'tnx_type' => 'sub',
             'tnx' => 'SUB' . time(),
             'type' => 'membership',
-            'description' => 'Upgrade to ' . Membershib::find($request->plan)->name,
+            'description' => 'Upgrade to ' . $plan->name,
             'client_id' => auth()->user()->id,
+            'status' => 'success',
         ]);
         $LastActiveNumber = Client::whereNotNull('activator_count')->count();
         $user = Client::find(auth()->user()->id);
-        $planPrice = Membershib::find($request->plan)->price;
         $user->update([
             'balance' => $user->balance - $planPrice,
             'activator_count' => $LastActiveNumber + 1
@@ -517,7 +524,7 @@ class DashboardContrtoller extends Controller
         if(auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()){
             $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type  ;
             $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
-            $rewardvalue = $activatorReward == 'percentage' ? (Membershib::find($request->plan)->price * $activatorRewardValue / 100) : $activatorRewardValue;
+            $rewardvalue = $activatorReward == 'percentage' ? ($planPrice * $activatorRewardValue / 100) : $activatorRewardValue;
             if($rewardvalue > 0){
                 Transaction::create([
                     'amount' => $rewardvalue,
@@ -537,9 +544,9 @@ class DashboardContrtoller extends Controller
             'membership_id' => $request->plan,
             'status' => 'active',
             'start_date' => now(),
-            'end_date' => Membershib::find($request->plan)->is_lifetime == true
+            'end_date' => $plan->is_lifetime == true
                 ? null 
-                : now()->addDays(Membershib::find($request->plan)->duration),
+                : now()->addDays($plan->duration),
         ]);
         DB::commit();
         return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
