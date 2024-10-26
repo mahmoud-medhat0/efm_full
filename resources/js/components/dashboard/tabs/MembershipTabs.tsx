@@ -89,7 +89,7 @@ export default function MembershipTabs() {
                 </div>
                 <div className="space-y-2 pb-1">
                   <label htmlFor="balance" className="text-black text-base">
-                    Purchase balance
+                    Current balance
                   </label>
                   <input
                     className="cursor-pointer border-[1px] border-gray-300 shadow-lg focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary rounded-lg px-3 py-2 text-md w-full bg-transparent duration-200"
