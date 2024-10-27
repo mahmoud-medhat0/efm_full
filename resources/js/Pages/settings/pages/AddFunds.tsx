@@ -10,7 +10,7 @@ import axios from "axios";
 import { route } from 'ziggy-js'; // Added import for route
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
+import { Inertia } from "@inertiajs/inertia";
 const AddFundsPage = () => {
   const page = usePage();
   const methods = page.props.methods;
@@ -19,6 +19,7 @@ const AddFundsPage = () => {
   const [total, setTotal] = useState(0);
   const [attachment, setAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const calcTotal = () => {
     if (amount > 0) {
       let charge = 0;
@@ -107,7 +108,7 @@ const AddFundsPage = () => {
       if(response.data.success){
         toast.success(response.data.message + ' with transaction id: ' + response.data.tnx);
         setTimeout(() => {
-          window.location.replace(route('client.dashboard'));
+          Inertia.visit(route('client.dashboard'));
       }, 1000);
       }else{
         Object.keys(response.data.errors).forEach((key) => {
@@ -120,7 +121,7 @@ const AddFundsPage = () => {
       });
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.error('Error submitting form:', error);
     } finally {
       setIsLoading(false);
     }
