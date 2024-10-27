@@ -61,14 +61,33 @@ class Transaction extends Resource
             ]),
             Select::make('Status')->options([
                 'pending' => 'Pending',
-                'completed' => 'Completed',
+                'success' => 'Success',
                 'failed' => 'Failed',
                 'cancelled' => 'Cancelled',
-            ]),
+            ])->onlyOnForms(),
+            Text::make('Status', function () {
+                $colors = [
+                    'pending' => 'orange',
+                    'success' => 'green',
+                    'failed' => 'red',
+                    'cancelled' => 'gray',
+                ];
+                $color = $colors[$this->status] ?? 'black';
+                return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$this->status}</span>";
+            })->asHtml()->hideWhenCreating()->hideWhenUpdating(),
             Select::make('tnx_type')->options([
                 'add' => 'Add',
                 'subtract' => 'Subtract',
-            ]),
+            ])->onlyOnForms(),
+            Text::make('Tnx Type', function () {
+                $colors = [
+                    'add' => 'green',
+                    'subtract' => 'red',
+                ];
+                $color = $colors[$this->tnx_type] ?? 'red';
+                $text = $this->tnx_type == 'add' ? 'Add' : 'Subtract';
+                return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$text}</span>";
+            })->asHtml(),
             Text::make('Tnx')->readonly(),
             Text::make('Note'),
             Text::make('Description'),
