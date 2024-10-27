@@ -111,6 +111,7 @@ class AuthClientController extends Controller
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
         $fullname = $request->first_name . ' ' . $request->last_name;
+        $parent_id = $request->referral_code != null ? Client::where('username', $request->referral_code)->first()->id : null;
         Client::create([
             'name' => $fullname,
             'username' => $request->username,
@@ -118,6 +119,7 @@ class AuthClientController extends Controller
             'password' => Hash::make($request->password),
             'telegram_username' => $request->telegram,
             'phone' => $request->phone,
+            'ref_id' => $parent_id,
         ]);
         return response()->json(['success' => true, 'message' => 'Register is done, you will navigate after 2 seconds!'], 200);
     }
