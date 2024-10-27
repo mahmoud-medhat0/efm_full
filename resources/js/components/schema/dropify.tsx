@@ -66,9 +66,18 @@ const FileUpload = ({ inputName, allowedExtensions, onFileSelect }) => {
         className="dropify"
         onChange={handleFileChange}
         accept={allowedExtensions.map(ext => `.${ext}`).join(',')}
+        style={{ color: 'red' }}
       />
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      {file && <div>Selected file: {file.name}</div>}
+      {error && (
+        <div style={{ color: 'red', wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal' }}>
+          {error}
+        </div>
+      )}
+      {file && (
+        <div style={{ wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', }}>
+          Selected file: {file.name}
+        </div>
+      )}
     </div>
   );
 };

@@ -94,6 +94,10 @@ class Client extends Authenticatable implements MustVerifyEmail
     }
     public function parent()
     {
-        return $this->belongsTo(Client::class, 'ref_id', 'id');
+        return $this->hasOne(Client::class, 'id', 'ref_id');
+    }
+    public function referrals()
+    {
+        return $this->hasMany(Client::class, 'ref_id', 'id');
     }
 }

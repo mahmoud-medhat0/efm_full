@@ -138,31 +138,31 @@ export default function DashboardTabs() {
               <div className="mb-4">
                 <h3 className="text-black text-2xl mb-3">Earning Balance Stats</h3>
                 <div className="flex flex-row justify-between border-b-[1px]">
-                  <div className="w-[350px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Balance</p>
                     <span className="text-font">EGP{client.balance}</span>
                   </div>
-                  <Link to={"/dashboard/withdraw"} className="text-primary mb-3">
+                  {/* <Link to={"/dashboard/withdraw"} className="text-primary mb-3">
                     Withdraw
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Purchase balance</p>
                     <span className="text-font">EGP0</span>
                   </div>
-                  <Link to={"/dashboard/withdraw"} className="text-primary">
+                  {/* <Link to={"/dashboard/withdraw"} className="text-primary">
                     Add funds
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Pending Withdrawls</p>
                     <span className="text-font">EGP0</span>
                   </div>
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
-                  <div className="w-[352px] flex flex-row justify-between">
+                  <div className="w-full flex flex-row justify-between">
                     <p>Payments Received</p>
                     <span className="text-font">EGP0</span>
                   </div>

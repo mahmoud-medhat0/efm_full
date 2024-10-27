@@ -11,6 +11,7 @@ import { route } from 'ziggy-js'; // Added import for route
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Inertia } from "@inertiajs/inertia";
+
 const AddFundsPage = () => {
   const page = usePage();
   const methods = page.props.methods;
@@ -19,6 +20,14 @@ const AddFundsPage = () => {
   const [total, setTotal] = useState(0);
   const [attachment, setAttachment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const copyToClipboard = () => {
+    const referralLink = selectedMethod.target_deposit;
+    navigator.clipboard.writeText(referralLink).then(() => {
+        toast.success("Data copied to clipboard!");
+    }).catch(err => {
+        toast.error("Failed to copy: ", err);
+    });
+};
 
   const calcTotal = () => {
     if (amount > 0) {
@@ -133,12 +142,26 @@ const AddFundsPage = () => {
       <WelcomeTab />
       <div className="w-full px-2 py-12 sm:px-0">
         <h3 className="text-lg mb-5">Add funds</h3>
-        { selectedMethod && selectedMethod.description_deposit!=null  && selectedMethod.description_deposit !='' && (
+        { selectedMethod && selectedMethod.description_deposit != null && selectedMethod.description_deposit != '' && (
           <div className="space-y-2 pb-1">
-            <label htmlFor="description" className="text-black text-base">
+            <label htmlFor="description" className="text-black text-base flex items-center">
               Description
-        </label>
-        <div id="description" style={{ border: "3px solid black", backgroundColor: "white" }} dangerouslySetInnerHTML={{ __html: selectedMethod.description_deposit }} />
+              <button
+                onClick={copyToClipboard}
+                className="ml-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center justify-center"
+                style={{ height: '30px', width: '30px' }} // Adjusted size
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="25px" width="30px" version="1.1" id="Capa_1" viewBox="0 0 512 350" xmlSpace="preserve">
+                  <g>
+                    <path d="M35,270h45v45c0,8.284,6.716,15,15,15h200c8.284,0,15-6.716,15-15V75c0-8.284-6.716-15-15-15h-45V15   c0-8.284-6.716-15-15-15H35c-8.284,0-15,6.716-15,15v240C20,263.284,26.716,270,35,270z M280,300H110V90h170V300z M50,30h170v30H95   c-8.284,0-15,6.716-15,15v165H50V30z"/>
+                    <path d="M155,120c-8.284,0-15,6.716-15,15s6.716,15,15,15h80c8.284,0,15-6.716,15-15s-6.716-15-15-15H155z"/>
+                    <path d="M235,180h-80c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h80c8.284,0,15-6.716,15-15S243.284,180,235,180z"/>
+                    <path d="M235,240h-80c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h80c8.284,0,15-6.716,15-15C250,246.716,243.284,240,235,240z   "/>
+                  </g>
+                </svg>
+              </button>
+            </label>
+            <div id="description" style={{ border: "3px solid black", backgroundColor: "white" }} dangerouslySetInnerHTML={{ __html: selectedMethod.description_deposit }} />
           </div>
         )}
         <div className="pb-3">

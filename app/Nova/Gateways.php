@@ -123,6 +123,7 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->sortable(),
+            Text::make('Target Deposit', 'target_deposit')->sortable(),
             Translatable::make([
                 TinymceEditor::make('Description Deposit', 'description_deposit')->dependsOn('deposit', function (TinymceEditor $field, NovaRequest $request) {
                     if ($request->deposit) {

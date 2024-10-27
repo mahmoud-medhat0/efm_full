@@ -9,6 +9,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 class Order extends Model
 {
     use HasFactory,LogsActivity;
@@ -16,6 +17,7 @@ class Order extends Model
     protected $casts = [
         'last_action_at' => 'datetime',
     ];
+    protected $appends = ['service_name'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -33,7 +35,10 @@ class Order extends Model
     {
         return $this->belongsTo(Service::class);
     }
-
+    public function getServiceNameAttribute()
+    {
+        return $this->service->name;
+    }
     public function RejectionCause(): BelongsTo
     {
         return $this->belongsTo(RejectionCause::class);
@@ -53,5 +58,9 @@ class Order extends Model
     public function categories()
     {
         return $this->belongsToMany(InterestCategory::class, 'order_categories');
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d H:i:s A');
     }
 }

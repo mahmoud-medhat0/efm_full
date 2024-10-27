@@ -43,6 +43,34 @@ class DashboardContrtoller extends Controller
             }),
         ]);
     }
+    public function PersonalSettings()
+    {
+        return Inertia::render('settings/pages/settings/PersonalSettings.tsx');
+    }
+    public function ChangePassword(Request $request)
+    {
+        $rules = [
+            'current_password' => ['required'],
+            'new_password' => ['required', 'min:8', 'confirmed'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+
+        $user = auth()->user();
+
+        if (!password_verify($request->current_password, $user->password)) {
+            return response()->json(['success' => false, 'message' => 'Current password is incorrect'], 200);
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Password changed successfully'], 200);
+    }
     public function advertiserPanel()
     {
         return Inertia::render('settings/pages/AdvertiserPanel/index.tsx');
@@ -60,6 +88,7 @@ class DashboardContrtoller extends Controller
                     'description_deposit' => $gateway->description_deposit,
                     'charge_type_deposit' => $gateway->charge_type_deposit,
                     'charge_deposit' => $gateway->charge_deposit,
+                    'target_deposit' => $gateway->target_deposit,
                 ];
             }),
             'plan' => $request->plan ?? null,
@@ -214,6 +243,20 @@ class DashboardContrtoller extends Controller
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
     //logs methods
+    public function LogOrders()
+    {
+        $orders = auth()->user()->orders()->get();
+        return Inertia::render('settings/pages/Userlogs/OrderLogs.tsx', [
+            'orders' => $orders
+        ]);
+    }
+    public function LogTransaction()
+    {
+        $transactions = Transaction::where('client_id', auth()->user()->id)->get();
+        return Inertia::render('settings/pages/Userlogs/TransactionLogs.tsx', [
+            'transactions' => $transactions
+        ]);
+    }
     public function LogLoginAttempts()
     {
         $loginAttempts = auth()->user()->loginAttempts()->get();
@@ -591,5 +634,17 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
         return response()->json(['success' => true, 'message' => 'You Will Be Redirected To Payment Page','route' => route('client.dashboard.deposit', ['method' => $request->method,'amount' => Membershib::find($request->plan)->price])]);
+    }
+    public function referrals()
+    {
+        return Inertia::render('settings/pages/settings/Referrals.tsx', [
+            'referrals' => auth()->user()->referrals->map(function ($referral) {
+                return [
+                    'id' => strtoupper(substr(explode(' ', $referral->name)[0], 0, 1) . substr(explode(' ', $referral->name)[1], 0, 1)),
+                    'name' => $referral->name,
+                ];
+            }),
+            'parent' => auth()->user()->parent,
+        ]);
     }
 }

@@ -21,8 +21,8 @@ const WelcomeTab = () => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-primary shadow-md">
           {/* القسم الأيسر: محتوى مرحباً */}
-          <div className="col-span-2 flex flex-col justify-center text-center sm:text-left ml-10 ">
-            <h1 className="text-2xl font-bold text-rom " >
+          <div className="col-span-2 flex flex-col justify-center text-center sm:text-left ml-10 mr-8">
+            <h1 className="text-2xl font-bold text-rom  " >
               Welcome, <span>{user.name.split(" ")[0]}</span>
               <span className="ml-1">{user.name.split(" ")[1]}</span>
             </h1>
@@ -49,14 +49,14 @@ const WelcomeTab = () => {
             {/* رابط الإحالة */}
             {user.membership && (
               <div className="flex flex-col mt-4">
-                <h3 className="flex items-center gap-2 text-lg text-primary-700 font-bold">
-                  <LinkIcon className="text-primary w-5 h-5" />
+                <h3 className="flex   text-lg text-primary-700 font-bold mr-1   text-black">
+                  <LinkIcon className="text-primary w-1 h-4 " />
                   Your referral link:
                 </h3>
-                <div className="flex flex-col sm:flex-row items-center w-full sm:w-[35rem]">
+                <div className="flex flex-col sm:flex-row items-center w-full sm:w-[35rem] mt-2">
                   <input
                     readOnly
-                    className="cursor-pointer rounded-md p-2 w-full text-lg font-bold border border-primary"
+                    className="cursor-pointer rounded-md p-2 w-full text-lg font-bold border border-primary mr-6"
                     value={`https://www.efmhub.com/register?ref=${user.username}`}
                   />
                   <button
@@ -67,7 +67,7 @@ const WelcomeTab = () => {
                       <g>
                         <path d="M35,270h45v45c0,8.284,6.716,15,15,15h200c8.284,0,15-6.716,15-15V75c0-8.284-6.716-15-15-15h-45V15   c0-8.284-6.716-15-15-15H35c-8.284,0-15,6.716-15,15v240C20,263.284,26.716,270,35,270z M280,300H110V90h170V300z M50,30h170v30H95   c-8.284,0-15,6.716-15,15v165H50V30z"/>
 	                    <path d="M155,120c-8.284,0-15,6.716-15,15s6.716,15,15,15h80c8.284,0,15-6.716,15-15s-6.716-15-15-15H155z"/>
-                        <path d="M235,180h-80c-8.284,0-15,6.716-15,15s6.716,15,15,15h80c8.284,0,15-6.716,15-15S243.284,180,235,180z"/>
+                        <path d="M235,180h-80c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h80c8.284,0,15-6.716,15-15S243.284,180,235,180z"/>
                         <path d="M235,240h-80c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h80c8.284,0,15-6.716,15-15C250,246.716,243.284,240,235,240z   "/>
                       </g>
                     </svg>

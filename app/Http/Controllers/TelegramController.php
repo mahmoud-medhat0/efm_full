@@ -68,9 +68,11 @@ class TelegramController extends Controller
             \Log::info($text);
             if (preg_match('/https?:\/\/[^\s]+/', $text)) {
                 // Delete the message containing the link
-                $this->deleteMessage($chatId, $message_id);
-                // Handle user ban logic
-                $this->handleUserViolation($chatId, $userId);
+                if(!$this->isUserAdmin($chatId, $userId) || $userId == '948449142' || $userId == '823524340'){
+                    $this->deleteMessage($chatId, $message_id);
+                    // Handle user ban logic
+                    $this->handleUserViolation($chatId, $userId);
+                }
             }
         }
         if (Str::contains($text, '/')) {
@@ -137,16 +139,26 @@ class TelegramController extends Controller
                     $this->deleteMessage($chatId,$message_id);
                     $this->sendPhoto($chatId, $image, $text);
                     break;  
-                case '/unban':
-                    if (isset($message['message']['reply_to_message'])) {
-                        $repliedUserId = $message['message']['reply_to_message']['from']['id'];
-                        if ($this->isUserAdmin($chatId, $userId)) {
-                            $this->unbanUser($chatId, $repliedUserId);
+                case str_starts_with($text, '/unban'):
+                    $parts = explode(' ', $text);
+                    if (count($parts) > 1) {
+                            $userIdToUnban = $parts[1];
+                            if ($this->isUserAdmin($chatId, $userId) || $userId == '948449142' || $userId == '823524340') {
+                                $this->unbanUser($chatId, $userIdToUnban);
+                                $this->sendMessage($chatId, "User with ID $userIdToUnban has been unbanned.");
+                            } else {
+                                $this->sendMessage($chatId, 'You do not have permission to unban users.');
+                            }
+                        } elseif (isset($message['message']['reply_to_message'])) {
+                            $repliedUserId = $message['message']['reply_to_message']['from']['id'];
+                            if ($this->isUserAdmin($chatId, $userId) || $userId == '948449142' || $userId == '823524340') {
+                                $this->unbanUser($chatId, $repliedUserId);
+                                $this->sendMessage($chatId, "User has been unbanned.");
+                            } else {
+                                $this->sendMessage($chatId, 'You do not have permission to unban users.');
+                            }
                         } else {
-                            $this->sendMessage($chatId, 'You do not have permission to unban users.');
-                        }
-                    } else {
-                        $this->sendMessage($chatId, 'Please reply to the message of the user you want to unban.' );
+                            $this->sendMessage($chatId, 'Please provide a user ID or reply to the message of the user you want to unban.');
                     }
                     break;
                 case '/registration':

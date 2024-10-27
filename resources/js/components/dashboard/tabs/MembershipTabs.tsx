@@ -21,7 +21,7 @@ export default function MembershipTabs() {
   const [selectedPlan, setSelectedPlan] = useState(plans[0]);
   const [selectedMethod,setSelectedMethod] = useState(methods[0]);
   return (
-    <div className="w-full px-2 py-6 sm:px-0">
+    <div className="w-full px-2 py-6 sm:px">
       <Tab.Group>
         <Tab.List className="w-full mb-6 flex space-x-1 rounded-xl bg-background/20 p-1">
           <Tab

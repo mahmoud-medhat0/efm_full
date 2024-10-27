@@ -88,10 +88,10 @@ export default function ProfileBtn() {
                       </span>
                     </Link>
                   </div> */}
-                  {/* <div className="bg-gray-200 h-[1px] my-1 ml-5" />
+                  <div className="bg-gray-200 h-[1px] my-1 ml-5" />
                   <div className=" px-2">
                     <Link
-                      to="/dashboard/settings"
+                      href={route('client.dashboard.personal-settings')}
                       className="flow-root rounded-md px-2 py-2 transition hover:bg-[#ebe7e7] ease-in-out duration-200 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                     >
                       <span className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export default function ProfileBtn() {
                         </span>
                       </span>
                     </Link>
-                  </div> */}
+                  </div>
                   <div className="bg-gray-200 h-[1px] my-1 ml-5" />
                   <div className=" px-2">
                     <Link

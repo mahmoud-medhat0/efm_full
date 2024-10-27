@@ -76,7 +76,7 @@ const Sidebar = () => {
     { href: route('client.dashboard.tasks'), icon: <RectangleGroupIcon />, label: "Tasks" },
     { href: route('client.dashboard.orders'), icon: <SquaresPlusIcon />, label: "Orders" },
     // { href: route('client.dashboard.convert-points'), icon: <WrenchIcon />, label: "Convert Points" },
-    // { href: "#dashboard", icon: <Cog6ToothIcon />, label: "Personal Settings" },
+    { href: route('client.dashboard.personal-settings'), icon: <Cog6ToothIcon />, label: "Personal Settings" },
     {
       href: route('client.dashboard.2fa'),
       icon: <ShieldCheckIcon />,
@@ -87,7 +87,7 @@ const Sidebar = () => {
 
   const referralsLinks = [
     {
-      href: "#team",
+      href: route('client.dashboard.referrals'),
       icon: <UserGroupIcon />,
       label: "Direct Referrals",
       isNew: false,
@@ -101,6 +101,18 @@ const Sidebar = () => {
   ];
 
   const logsLinks = [
+    {
+      href: route('client.dashboard.logs.orders'),
+      icon: <DocumentTextIcon />,
+      label: "Orders History",
+      isNew: false,
+    },
+    {
+      href: route('client.dashboard.logs.transaction'),
+      icon: <DocumentTextIcon />,
+      label: "Transaction History",
+      isNew: false,
+    },
     {
       href: route('client.dashboard.logs.deposit'),
       icon: <DocumentTextIcon />,

@@ -54,6 +54,9 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
     Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
+            Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');
+            Route::post('change-password', 'ChangePassword')->name('change-password');
+            Route::get('referrals', 'referrals')->name('referrals');
             Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');
             Route::get('messages', 'messages')->name('messages');
             Route::get('membership', 'membership')->name('membership');
@@ -86,6 +89,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
                 Route::get('deposit', 'LogDeposit')->name('deposit');
                 Route::get('withdraw', 'LogWithdraw')->name('withdraw');
                 Route::get('login', 'LogLoginAttempts')->name('login');
+                Route::get('transaction', 'LogTransaction')->name('transaction');
             });
         });
     });

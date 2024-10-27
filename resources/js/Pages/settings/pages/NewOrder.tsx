@@ -263,9 +263,9 @@ const NewOrderPage = () => {
                 <Input id="number" className="w-full bg-transparent" aria-describedby="Price" value={price} disabled />
               </div>
             </div>
-            <div className="flex flex-row items-center justify-between space-x-5">
+            <div className="flex flex-row items-center justify-between space-x-5 mt-6">
               <Button fullWidth type="submit">Submit</Button>
-              <Button fullWidth className="text-white" variant={"cancel"}>Cancel</Button>
+              <Button fullWidth className=" text-black " variant={"cancel"}>Cancel</Button>
             </div>
             </form>
           </div>
