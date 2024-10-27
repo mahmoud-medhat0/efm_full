@@ -48,11 +48,11 @@ class RejectionCause extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                Text::make('Name'),
-                Textarea::make('Description'),
+                Text::make('Name')->sortable(),
+                Textarea::make('Description')->sortable(),
             ]),
-            HasMany::make('Orders', 'orders', Order::class)->onlyOnDetail(),
-            MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class),
+            HasMany::make('Orders', 'orders', Order::class)->onlyOnDetail()->sortable(),
+            MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

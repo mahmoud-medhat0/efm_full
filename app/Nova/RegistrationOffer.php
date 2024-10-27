@@ -44,14 +44,14 @@ class RegistrationOffer extends Resource
     {
         return [
             ID::make()->sortable(),
-            Boolean::make('Is Active', 'is_active'),
-            Number::make('Min Activator Count', 'min_activator_count'),
-            Number::make('Max Activator Count', 'max_activator_count'),
+            Boolean::make('Is Active', 'is_active')->sortable(),
+            Number::make('Min Activator Count', 'min_activator_count')->sortable(),
+            Number::make('Max Activator Count', 'max_activator_count')->sortable(),
             Select::make('Type', 'type')->options([
                 'percentage' => 'Percentage',
                 'fixed' => 'Fixed',
             ]),
-            Number::make('Value', 'value'),
+            Number::make('Value', 'value')->sortable(),
         ];
     }
 

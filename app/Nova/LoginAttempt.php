@@ -46,12 +46,12 @@ class LoginAttempt extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ip_address'),
-            Text::make('country'),
-            Text::make('email'),
-            Boolean::make('successful'),
-            MorphTo::make('authenticatable'),
-            DateTime::make('created_at'),
+            Text::make('ip_address')->sortable(),
+            Text::make('country')->sortable(),
+            Text::make('email')->sortable(),
+            Boolean::make('successful')->sortable(),
+            MorphTo::make('authenticatable')->sortable(),
+            DateTime::make('created_at')->sortable(),
         ];
     }
     public static function authorizedToCreate(Request $request)

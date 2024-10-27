@@ -46,11 +46,11 @@ class Feedback extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('name'),
-            Image::make('image'),
-            Text::make('comment'),
-            Date::make('date'),
-            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class),
+            Text::make('name')->sortable(),
+            Image::make('image')->sortable(),
+            Text::make('comment')->sortable(),
+            Date::make('date')->sortable(),
+            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

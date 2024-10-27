@@ -55,25 +55,25 @@ class Task extends Resource
                 'completed' => 'Completed',
                 'failed' => 'Failed',
                 'in_progress' => 'In Progress',
-            ]),
-            ToggleSwitchField::make('Paid', 'paid'),
-            Boolean::make('Removed', 'removed'),
-            Number::make('Points Reward', 'points_reward')->step(0.01)->default(0),
-            Text::make('Link', 'link')->readonly(),
-            Text::make('IP', 'ip')->readonly(),
-            Text::make('User Agent', 'user_agent')->readonly(),
-            Text::make('Country', 'country')->readonly(),
+            ])->sortable(),
+            ToggleSwitchField::make('Paid', 'paid')->sortable(),
+            Boolean::make('Removed', 'removed')->sortable(),
+            Number::make('Points Reward', 'points_reward')->step(0.01)->default(0)->sortable(),
+            Text::make('Link', 'link')->readonly()->sortable(),
+            Text::make('IP', 'ip')->readonly()->sortable(),
+            Text::make('User Agent', 'user_agent')->readonly()->sortable(),
+            Text::make('Country', 'country')->readonly()->sortable(),
             BelongsTo::make('Order', 'order', Order::class)->displayUsing(function ($order) {
                 return $order->order_id;
-            }),
+            })->sortable(),
             BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
                 return $client->name;
-            }),
+            })->sortable(),
             BelongsTo::make('Service', 'service', Service::class)->displayUsing(function ($service) {
                 return $service->name;
-            }),
-            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class),
-            MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class),
+            })->sortable(),
+            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class)->sortable(),
+            MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

@@ -45,17 +45,17 @@ class Membershib extends Resource
     {
         return [
             ID::make()->sortable(),
-            Boolean::make('Is Active'),
-            Text::make('Name'),
-            Boolean::make('Is Lifetime'),
+            Boolean::make('Is Active')->sortable(),
+            Text::make('Name')->sortable(),
+            Boolean::make('Is Lifetime')->sortable(),
             Number::make('Days')->dependsOn('is_lifetime', function (Number $field, NovaRequest $request) {
                 if ($request->is_lifetime) {
                     $field->hide();
                 } else {
                     $field->show();
                 }
-            }),
-            Currency::make('Price'),
+            })->sortable(),
+            Currency::make('Price')->sortable(),
         ];
     }
 

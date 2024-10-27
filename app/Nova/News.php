@@ -48,11 +48,11 @@ class News extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                Text::make('title'),
-                TinymceEditor::make('description'),
+                Text::make('title')->sortable(),
+                TinymceEditor::make('description')->sortable(),
             ]),
-            DateTime::make('published_at')->default(now()),
-            MorphMany::make('activityLogs','activityLogs', ActivityLog::class),
+            DateTime::make('published_at')->default(now())->sortable(),
+            MorphMany::make('activityLogs','activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

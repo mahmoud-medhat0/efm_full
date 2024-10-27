@@ -43,10 +43,10 @@ class BanAttemp extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Video ID', 'video_id'),
-            Text::make('Cause', 'cause'),
-            BelongsTo::make('Task', 'task', Task::class),
-            BelongsTo::make('Client', 'client', Client::class)->display(fn ($client) => $client->name),
+            Text::make('Video ID', 'video_id')->sortable(),
+            Text::make('Cause', 'cause')->sortable(),
+            BelongsTo::make('Task', 'task', Task::class)->sortable(),
+            BelongsTo::make('Client', 'client', Client::class)->display(fn ($client) => $client->name)->sortable(),
         ];
     }
 

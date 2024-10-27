@@ -47,11 +47,11 @@ class FaqQuestion extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                Text::make('question'),
-                Text::make('answer')->hideFromIndex(),
+                Text::make('question')->sortable(),
+                Text::make('answer')->hideFromIndex()->sortable(),
             ]),
-            ToggleSwitchField::make('is_active')->default(1),
-            MorphMany::make('Activities', 'activities', ActivityLog::class),
+            ToggleSwitchField::make('is_active')->default(1)->sortable(),
+            MorphMany::make('Activities', 'activities', ActivityLog::class)->sortable(),
         ];
     }
 

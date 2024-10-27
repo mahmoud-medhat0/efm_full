@@ -23,6 +23,7 @@ use App\Models\InterestCategory as InterestCategoryModel;
 use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\HasOne;
 class Client extends Resource
 {
     /**
@@ -58,50 +59,51 @@ class Client extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name', 'name'),
-            Email::make('Email', 'email'),
-            Currency::make('Balance', 'balance')->currency('USD')->onlyOnDetail()->displayUsing(function ($value, $resource, $attribute) {
+            Text::make('Name', 'name')->sortable(),
+            Email::make('Email', 'email')->sortable(),
+            Currency::make('Balance', 'balance')->onlyOnDetail()->displayUsing(function ($value, $resource, $attribute) {
                 return number_format($resource->balance, 2);
             }),
-            Number::make('Points', 'points')->onlyOnDetail(),
+            Number::make('Points', 'points')->onlyOnDetail()->sortable(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
             ToggleSwitchField::make('Email Verified', 'email_verified')->color('#3AB95A'),
             ToggleSwitchField::make('Active', 'is_active')->color('#3AB95A'),
-            Text::make('Phone', 'phone'),
-            Text::make('Username', 'username'),
+            Text::make('Phone', 'phone')->sortable(),
+            Text::make('Username', 'username')->sortable(),
             Select::make('Gender', 'gender')->options([
                 'male' => 'Male',
                 'female' => 'Female',
             ]),
             Text::make('Personal Number', 'personal_number'),
-            Number::make('Telegram ID', 'telegram_id'),
-            Text::make('Telegram Username', 'telegram_username'),
-            ToggleSwitchField::make('Telegram Verified', 'telegram_verified')->color('#3AB95A'),
-            DateTime::make('Telegram Verified At', 'telegram_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
+            Number::make('Telegram ID', 'telegram_id')->sortable(),
+            Text::make('Telegram Username', 'telegram_username')->sortable(),
+            ToggleSwitchField::make('Telegram Verified', 'telegram_verified')->color('#3AB95A')->sortable(),
+            DateTime::make('Telegram Verified At', 'telegram_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview()->sortable(),
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
             Text::make('Session ID', 'session_kyc_id')->readonly(),
             Text::make('Session Status', 'session_kyc_status')->readonly(),
-            URL::make('Session URL', 'kyc_url')->readonly(),
-            ToggleSwitchField::make('KYC Verified', 'kyc_verified')->color('#3AB95A'),
-            DateTime::make('KYC Verified At', 'kyc_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
-            ToggleSwitchField::make('2FA Status', 'is_2a')->color('#3AB95A'),
+            URL::make('Session URL', 'kyc_url')->readonly()->sortable(),
+            ToggleSwitchField::make('KYC Verified', 'kyc_verified')->color('#3AB95A')->sortable(),
+            DateTime::make('KYC Verified At', 'kyc_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview()->sortable(),
+            ToggleSwitchField::make('2FA Status', 'is_2a')->color('#3AB95A')->sortable(),
             Multiselect::make('Interests')->fillUsing(function ($request, $model, $attribute) {
                 $interests = $request->input($attribute);
                 $model->interests()->sync($interests);
             })
                 ->options(InterestCategoryModel::all()->pluck('name', 'id'))
                 ->saveAsJSON(false) // Ensures it saves as a relationship
-                ->placeholder('Select interests')->showOnCreating()->showOnUpdating()->hideFromDetail(),
-            HasMany::make('Interests', 'interests', InterestCategory::class),
-            MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class),
-            HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class),
-            HasMany::make('Transactions', 'transactions', Transaction::class),
-            HasMany::make('Tasks', 'tasks', Task::class),
-            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class),
-            MorphMany::make('Activities', 'activities', ActivityLog::class),
+                ->placeholder('Select interests')->showOnCreating()->showOnUpdating()->hideFromDetail()->sortable(),
+            HasOne::make('Parent', 'parent', Client::class)->sortable(),
+            HasMany::make('Interests', 'interests', InterestCategory::class)->sortable(),
+            MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class)->sortable(),
+            HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
+            HasMany::make('Transactions', 'transactions', Transaction::class)->sortable(),
+            HasMany::make('Tasks', 'tasks', Task::class)->sortable(),
+            HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class)->sortable(),
+            MorphMany::make('Activities', 'activities', ActivityLog::class)->sortable(),
         ];
     }
     /**

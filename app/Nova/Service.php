@@ -52,24 +52,24 @@ class Service extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                Text::make('name'),
+                Text::make('name')->sortable(),
             ]),
             Image::make('icon'),
-            Boolean::make('is_category_required'),
+            Boolean::make('is_category_required')->sortable(),
             Select::make('status')->options([
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ]),
-            Number::make('reward_point'),
-            Number::make('price_per_one_point'),
-            Currency::make('price_per_one_balance')->step(0.01),
-            Number::make('min_amount'),
-            Number::make('max_amount'),
-            Code::make('credentials'),
-            Code::make('calculation_formula'),
+            Number::make('reward_point')->sortable(),
+            Number::make('price_per_one_point')->sortable(),
+            Currency::make('price_per_one_balance')->step(0.01)->sortable(),
+            Number::make('min_amount')->sortable(),
+            Number::make('max_amount')->sortable(),
+            Code::make('credentials')->sortable(),
+            Code::make('calculation_formula')->sortable(),
             Code::make('fields'),
-            HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail(),
-            MorphMany::make('activityLogs','activityLogs', ActivityLog::class),
+            HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail()->sortable(),
+            MorphMany::make('activityLogs','activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

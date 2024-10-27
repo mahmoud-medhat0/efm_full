@@ -48,37 +48,37 @@ class SubscriptionMembership extends Resource
             ID::make()->sortable(),
             BelongsTo::make('Client')->display(function($client){
                 return $client->name;
-            }),
+            })->sortable(),
             BelongsTo::make('Membership','membership',Membershib::class)->display(function($membership){
                 return $membership->name;
-            }),
+            })->sortable(),
             Select::make('Status','status')->options([
                 'active'=>'Active',
                 'inactive'=>'Inactive',
                 'expired'=>'Expired',
-            ]),
+            ])->sortable(),
             DateTime::make('Start Date','start_date')->dependsOn('is_lifetime',function($field,$request,$formData){
                 if($formData['is_lifetime'] == 0){
                     $field->show();
                 }else{
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             DateTime::make('End Date','end_date')->dependsOn('is_lifetime',function($field,$request,$formData){
                 if($formData['is_lifetime'] == 0){
                     $field->show();
                 }else{
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Number::make('Remaining Days','remaining_days')->hideWhenCreating()->hideWhenUpdating()->dependsOn('is_lifetime',function($field,$request,$formData){
                 if($formData['is_lifetime'] == 0){
                     $field->show();
                 }else{
                     $field->hide();
                 }
-            }),
-            Boolean::make('Is Lifetime','is_lifetime'),
+            })->sortable(),
+            Boolean::make('Is Lifetime','is_lifetime')->sortable(),
         ];
     }
 

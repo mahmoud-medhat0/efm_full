@@ -48,10 +48,10 @@ class WithdrawAccount extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Gateways', 'gateway', Gateways::class)->displayUsing(fn ($gateway) => $gateway->name),
-            BelongsTo::make('Client', 'client', Client::class)->displayUsing(fn ($user) => $user->name),
-            Code::make('Data'),
-            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class),    
+            BelongsTo::make('Gateways', 'gateway', Gateways::class)->displayUsing(fn ($gateway) => $gateway->name)->sortable(),
+            BelongsTo::make('Client', 'client', Client::class)->displayUsing(fn ($user) => $user->name)->sortable(),
+            Code::make('Data')->sortable(),
+            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),    
         ];
     }
     protected static function afterUpdateValidation(NovaRequest $request, $validator)

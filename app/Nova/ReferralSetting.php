@@ -45,14 +45,14 @@ class ReferralSetting extends Resource
     {
         return [
             ID::make()->sortable(),
-            Boolean::make('Is Active', 'is_active'),
-            Text::make('Name', 'name'),
-            Text::make('Code', 'code'),
+            Boolean::make('Is Active', 'is_active')->sortable(),
+            Text::make('Name', 'name')->sortable(),
+            Text::make('Code', 'code')->sortable(),
             Select::make('Type', 'type')->options([
                 'percentage' => 'Percentage',
                 'fixed' => 'Fixed',
             ]),
-            Currency::make('Value', 'value'),
+            Currency::make('Value', 'value')->sortable(),
         ];
     }
 

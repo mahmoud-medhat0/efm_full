@@ -59,16 +59,16 @@ class Order extends Resource
                 'rejected' => 'Rejected',
                 'completed' => 'Completed',
                 'in_progress' => 'In Progress',
-            ]),
+            ])->sortable(),
             BelongsTo::make('ApprovedBy', 'ApprovedBy', User::class)->displayUsing(function ($approvedBy) {
                 return $approvedBy->name;
             })->hideWhenCreating()->hideWhenUpdating(),
             BelongsTo::make('Provider Client', 'provider', Client::class)->displayUsing(function ($provider) {
                 return $provider->name;
-            }),
+            })->sortable(),
             BelongsTo::make('service')->displayUsing(function ($service) {
                 return $service->name;
-            }),
+            })->sortable(),
             BelongsTo::make('RejectionCause')->displayUsing(function ($rejectionCause) {
                 return $rejectionCause->name;
             })->dependsOn('status', function ($field, $request) {
@@ -90,7 +90,7 @@ class Order extends Resource
             Select::make('order_type')->options([
                 'full_time' => 'Full Time',
                 'custom_time' => 'Custom Time',
-            ]),
+            ])->sortable(),
             Number::make('time_start')->onlyOnForms()->dependsOn('order_type', function ($field, $request) {
                 if ($request->order_type === 'custom_time') {
                     $field->show();
@@ -105,22 +105,22 @@ class Order extends Resource
                     $field->hide();
                 }
             }),
-            Number::make('Target Amount','target_amount'),
-            Number::make('Current Amount','current_amount')->readonly(),
+            Number::make('Target Amount','target_amount')->sortable(),
+            Number::make('Current Amount','current_amount')->readonly()->sortable(),
             Currency::make('Price')->displayUsing(function ($value, $resource, $attribute) {
                 return number_format($resource->price, 2);
-            }),
-            Text::make('Last Action','last_action')->hideWhenCreating()->readonly(),
-            DateTime::make('Last Action At','last_action_at',)->readonly()->onlyOnDetail(),
+            })->sortable(),
+            Text::make('Last Action','last_action')->hideWhenCreating()->readonly()->sortable(),
+            DateTime::make('Last Action At','last_action_at',)->readonly()->onlyOnDetail()->sortable(),
             BelongsTo::make('Last Action By', 'LastActionBy', User::class)->displayUsing(function ($user) {
                 return $user->name;
-            })->readonly()->onlyOnDetail(),
-            Code::make('Data','data')->readonly()->onlyOnDetail(),
-            DateTime::make('created_at')->readonly()->onlyOnDetail(),
-            DateTime::make('updated_at')->readonly()->onlyOnDetail(),
-            BelongsToMany::make('Categories', 'categories', InterestCategory::class)->onlyOnDetail(),
-            HasMany::make('Activity Log', 'activityLogs', ActivityLog::class)->onlyOnDetail(),
-            HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail(),
+            })->readonly()->onlyOnDetail()->sortable(),
+            Code::make('Data','data')->readonly()->onlyOnDetail()->sortable(),
+            DateTime::make('created_at')->readonly()->onlyOnDetail()->sortable(),
+            DateTime::make('updated_at')->readonly()->onlyOnDetail()->sortable(),
+            BelongsToMany::make('Categories', 'categories', InterestCategory::class)->onlyOnDetail()->sortable(),
+            HasMany::make('Activity Log', 'activityLogs', ActivityLog::class)->onlyOnDetail()->sortable(),
+            HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail()->sortable(),
         ];
     }
     public static function afterUpdate(NovaRequest $request, Model $model)

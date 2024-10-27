@@ -53,42 +53,42 @@ class Gateways extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                Text::make('Name'),
+                Text::make('Name')->sortable(),
             ]),
-            Image::make('Logo'),
-            ToggleSwitchField::make('Is Active', 'is_active'),
-            ToggleSwitchField::make('Attachment', 'attachment')->default(false),
-            Boolean::make('Auto', 'auto')->default(false),
-            Boolean::make('Deposit', 'deposit')->default(false),
-            Boolean::make('Withdraw', 'withdraw')->default(false),
+            Image::make('Logo')->sortable(),
+            ToggleSwitchField::make('Is Active', 'is_active')->sortable(),
+            ToggleSwitchField::make('Attachment', 'attachment')->default(false)->sortable(),
+            Boolean::make('Auto', 'auto')->default(false)->sortable(),
+            Boolean::make('Deposit', 'deposit')->default(false)->sortable(),
+            Boolean::make('Withdraw', 'withdraw')->default(false)->sortable(),
             Currency::make('Minimum Deposit', 'min_deposit')->dependsOn('deposit', function (Currency $field, NovaRequest $request) {
                 if ($request->deposit) {
                     $field->show();
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Currency::make('Maximum Deposit', 'max_deposit')->dependsOn('deposit', function (Currency $field, NovaRequest $request) {
                 if ($request->deposit) {
                     $field->show();
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Currency::make('Minimum Withdraw', 'min_withdraw')->dependsOn('withdraw', function (Currency $field, NovaRequest $request) {
                 if ($request->withdraw) {
                     $field->show();
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Currency::make('Maximum Withdraw', 'max_withdraw')->dependsOn('withdraw', function (Currency $field, NovaRequest $request) {
                 if ($request->withdraw) {
                     $field->show();
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Select::make('Charge Type Deposit', 'charge_type_deposit')->dependsOn('deposit', function (Select $field, NovaRequest $request) {
                 if ($request->deposit) {
                     $field->show();
@@ -105,7 +105,7 @@ class Gateways extends Resource
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Select::make('Charge Type Withdraw', 'charge_type_withdraw')->dependsOn('withdraw', function (Select $field, NovaRequest $request) {
                 if ($request->withdraw) {
                     $field->show();
@@ -122,7 +122,7 @@ class Gateways extends Resource
                 } else {
                     $field->hide();
                 }
-            }),
+            })->sortable(),
             Translatable::make([
                 TinymceEditor::make('Description Deposit', 'description_deposit')->dependsOn('deposit', function (TinymceEditor $field, NovaRequest $request) {
                     if ($request->deposit) {
@@ -147,10 +147,10 @@ class Gateways extends Resource
                 } else {
                     $field->hide();
                 }
-            }),
-            HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class),
-            HasMany::make('Transactions', 'transactions', Transaction::class),
-            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class),
+            })->sortable(),
+            HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
+            HasMany::make('Transactions', 'transactions', Transaction::class)->sortable(),
+            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

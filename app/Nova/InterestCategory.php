@@ -46,9 +46,9 @@ class InterestCategory extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
-            DateTime::make('Created At', 'created_at')->readonly()->sortable()->hideWhenCreating(),
-            DateTime::make('Updated At', 'updated_at')->readonly()->sortable()->hideWhenCreating(),
-            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class),
+            DateTime::make('Created At', 'created_at')->readonly()->sortable()->hideWhenCreating()->sortable(),
+            DateTime::make('Updated At', 'updated_at')->readonly()->sortable()->hideWhenCreating()->sortable(),
+            MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

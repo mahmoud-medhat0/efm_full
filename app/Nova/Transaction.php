@@ -58,7 +58,7 @@ class Transaction extends Resource
                 'transfer' => 'Transfer',
                 'refund' => 'Refund',
                 'fee' => 'Fee',
-            ]),
+            ])->sortable(),
             Select::make('Status')->options([
                 'pending' => 'Pending',
                 'success' => 'Success',
@@ -74,7 +74,7 @@ class Transaction extends Resource
                 ];
                 $color = $colors[$this->status] ?? 'black';
                 return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$this->status}</span>";
-            })->asHtml()->hideWhenCreating()->hideWhenUpdating(),
+            })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
             Select::make('tnx_type')->options([
                 'add' => 'Add',
                 'subtract' => 'Subtract',
@@ -87,36 +87,36 @@ class Transaction extends Resource
                 $color = $colors[$this->tnx_type] ?? 'red';
                 $text = $this->tnx_type == 'add' ? 'Add' : 'Subtract';
                 return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$text}</span>";
-            })->asHtml(),
-            Text::make('Tnx')->readonly(),
-            Text::make('Note'),
-            Text::make('Description'),
+            })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
+            Text::make('Tnx')->readonly()->sortable(),
+            Text::make('Note')->sortable(),
+            Text::make('Description')->sortable(),
             Currency::make('Amount')->displayUsing(function ($amount) {
                 return $amount . ' ' . 'EGP';
-            }),
+            })->sortable(),
             Currency::make('Fee')->displayUsing(function ($fee) {
                 return $fee . ' ' . 'EGP';
-            }),
+            })->sortable(),
             Currency::make('Total')->displayUsing(function ($total) {
                 return $total . ' ' . 'EGP';
-            }),
+            })->sortable(),
             Image::make('Attachment')->disk('public')->path('attachments')->displayUsing(function ($attachment) {
                 return $attachment ? Storage::disk('public')->url('attachments/' . $attachment) : 'No Attachment';
-            }),
-            DateTime::make('Created At'),
+            })->sortable(),
+            DateTime::make('Created At')->sortable(),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();
-            }),
+            })->sortable(),
             BelongsTo::make('Gateway', 'gateway', Gateways::class)->displayUsing(function ($gateway) {
                 return $gateway->name;
-            }),
+            })->sortable(),
             BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
                 return $client->name;
-            }),
+            })->sortable(),
             BelongsTo::make('Admin', 'admin', User::class)->displayUsing(function ($admin) {
                 return $admin->name;
-            }),
-            MorphMany::make('Activity', 'activityLogs', ActivityLog::class),
+            })->sortable(),
+            MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 
