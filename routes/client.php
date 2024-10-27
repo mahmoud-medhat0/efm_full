@@ -39,7 +39,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('support', 'support')->name('support');
             Route::get('terms', 'terms')->name('terms');
         });
-        Route::middleware(['auth', 'telegram.verified', '2fa'])->group(function () {
+        Route::middleware(['auth', '2fa'])->group(function () {
             Route::get('profile', 'profile')->name('profile');
             Route::get('dashboard', 'dashboard')->name('dashboard');
         });
@@ -51,9 +51,9 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('telegram-resend', 'telegramResend')->name('telegram-resend');
         });
     });
-    Route::controller(DashboardContrtoller::class)->middleware(['auth', 'telegram.verified', '2fa'])->prefix('dashboard')->group(function () {
+    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
-        Route::name('dashboard.')->middleware('telegram.verified')->group(function () {
+        Route::name('dashboard.')->group(function () {
             Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');
             Route::get('messages', 'messages')->name('messages');
             Route::get('membership', 'membership')->name('membership');
@@ -73,9 +73,11 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::get('coupons', 'coupons')->name('coupons');
             Route::get('deposit', 'deposit')->name('deposit');
             Route::post('deposit', 'depositPost')->name('deposit.post');
-            Route::get('withdraw', 'withdraw')->name('withdraw');
-            Route::post('withdraw', 'withdrawPost')->name('withdraw.post');
-            Route::post('withdraw-account', 'withdrawAccount')->name('withdraw-account');
+            Route::middleware('telegram.verified')->group(function () {
+                Route::get('withdraw', 'withdraw')->name('withdraw');
+                Route::post('withdraw', 'withdrawPost')->name('withdraw.post');
+                Route::post('withdraw-account', 'withdrawAccount')->name('withdraw-account');
+            });
             Route::get('2fa', 'twoFa')->name('2fa');
             Route::get('banners', 'banners')->name('banners');
             Route::get('logs', 'logs')->name('logs');
