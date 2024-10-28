@@ -6,11 +6,11 @@ const Membershipe = () => {
   const app_url = usePage().props.app_url;
   const locale = usePage().props.lang;
     return (
-        <section style={{ boxShadow: ' 0px 5px 10px #be9e88' }} className='w-full mb-5 container-light pt-5'>
+        <section style={{ boxShadow: ' 0px 5px 10px #be9e88' }} className='w-full mb-5 container-light pt-5' id='membership' dir={locale === 'ar' ? 'ltr' : ''}>
           <h1 className='text-black' style={{ textAlign: 'center', fontSize: '3em', marginBottom: '20px' }}>
             <span className="mark-zigzag-black">{membershipSections.title[locale]}</span>
           </h1>
-          <div className='w-full flex-container'>
+          <div className='w-full flex-container' dir={locale === 'ar' ? 'ltr' : 'rtl'}>
             <div className='image-container'>
               <img 
                 src={`${app_url}/storage/${membershipSections.image}`} 
@@ -20,7 +20,7 @@ const Membershipe = () => {
               />
             </div>
             <div className='text-container'>
-              <p className='text-black pb-4' dangerouslySetInnerHTML={{ __html: membershipSections.description[locale] }}></p>
+              <p className='text-black pb-4' dir={locale === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{ __html: membershipSections.description[locale] }}></p>
             </div>
           </div>
           <style>

@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
 import { route } from "ziggy-js";
+import { translate } from "../../../utils/functions";
 const EarnMoney = () => {
   return (
     <div>
@@ -28,7 +29,7 @@ const EarnMoney = () => {
         >
           <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
             <div className="px-1 py-1">
-              <Link href={route('client.view-ads')}>
+              <Link href={route('client.home')+'#membership'}>
                 <Menu.Item>
                   {({ active }) => (
                     <button
@@ -46,12 +47,12 @@ const EarnMoney = () => {
                           aria-hidden="true"
                         />
                       )}
-                      {translate("home.view-advertisements")}
+                      {translate("home.membership")}
                     </button>
                   )}
                 </Menu.Item>
               </Link>
-              <Link href={route('client.view-videos')}>
+              <Link href={route('client.home')+'#referral'}>
                 <Menu.Item>
                   {({ active }) => (
                     <button
@@ -69,7 +70,7 @@ const EarnMoney = () => {
                           aria-hidden="true"
                         />
                       )}
-                      {translate("home.view-videos")}
+                      {translate("home.referral")}
                     </button>
                   )}
                 </Menu.Item>

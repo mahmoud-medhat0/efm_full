@@ -47,7 +47,7 @@ const PaymentsSection = () => {
   };
 
   return (
-    <section style={{backgroundColor:"#2d3a4a"}}  className='w-full container-dark text-gold pt-5 '>
+    <section style={{backgroundColor:"#2d3a4a"}}  className='w-full container-dark text-gold pt-5'>
       <div className="text-center mb-16 ">
         <h2 className="text-5xl text-gold mb-5" style={{ fontSize: '4em'}}>We process <span className="mark-zigzag ">payments</span><br /> via!</h2>
 

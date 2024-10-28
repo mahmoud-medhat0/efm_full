@@ -22,7 +22,7 @@ const HomePage = () => {
         <PaymentsSection />
         <Membershipe />
         <Advertise />
-      <Referal />
+        <Referal />
       
         {/* <AdvertiseSection /> */}
         {/* <VisionSection /> */}

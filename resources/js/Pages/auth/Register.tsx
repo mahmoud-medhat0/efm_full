@@ -16,6 +16,7 @@ import RootLayout from "../../layout";
 import axios from 'axios'
 import { route } from "ziggy-js";
 import { usePage } from "@inertiajs/inertia-react";
+import { translate } from "../../utils/functions";
 
 interface IFormInput {
   first_name: string;
@@ -120,20 +121,20 @@ const RegisterPage = () => {
 
   return (
     <RootLayout>
-    <section className="w-[800px] my-24 mx-auto max-sm:w-full max-sm:px-3">
-      <h2 className="text-primary text-2xl pb-6">Register with a new account!</h2>
+    <section className="w-[800px] my-24 mx-auto max-sm:w-full max-sm:px-3 pt-20">
+      <h2 className="text-primary text-2xl pb-6 text-center">{translate("Register with a new account!")}</h2>
       <form
         className="w-[800px] space-y-3 mx-auto max-sm:w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         {renderRegisterForm}
         <Button fullWidth isLoading={isLoading}>
-          Register
+          {translate("Register")}
         </Button>
         <div className="flex flex-col space-y-2">
           <Link href={route('client.login')} className="text-black">
-            Having an account here?
-            <span className="underline ml-1 text-primary">Login now!</span>
+            {translate("Having an account here?")}
+            <span className="underline ml-1 text-primary">{translate("Login now!")}</span>
           </Link>
         </div>
       </form>

@@ -7,7 +7,7 @@ const NewsPage = () => {
   const news = props.news;
   return (
     <RootLayout>
-    <main className="w-full h-full my-20 container">
+    <main className="w-full h-full my-20 container pt-20">
       <div className="mb-2">
         <h2 className="text-4xl text-black mb-4">
           Latest <span className="mark-zigzag">Announcements / News</span>

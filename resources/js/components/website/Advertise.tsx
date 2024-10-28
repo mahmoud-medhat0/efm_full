@@ -35,11 +35,11 @@ const Advertise = () => {
                     }
                 `}
             </style>
-            <section style={{ boxShadow: '0px 5px 10px #be9e88' }} className='w-full container-dark pt-5'>
+            <section style={{ boxShadow: '0px 5px 10px #be9e88' }} className='w-full container-dark pt-5' dir={locale === 'ar' ? 'ltr' : 'rtl'}>
                 <h1 style={{ textAlign: 'center', fontSize: '4em', marginBottom: '20px' }} className='text-gold'>
                     <span className="mark-zigzag">{advertiseSections.title[locale]}</span>
                 </h1>
-                <div className='advertise-content w-full'>
+                <div className='advertise-content w-full' dir={locale === 'ar' ? 'rtl' : 'ltr'}>
                     <div className='advertise-image'>
                         <img
                             src={`${app_url}/storage/${advertiseSections.image}`}
@@ -54,7 +54,7 @@ const Advertise = () => {
                         />
                     </div>
                     <div className='advertise-text'>
-                        <p className='text-black' dangerouslySetInnerHTML={{ __html: advertiseSections.description[locale] }}>
+                        <p className='text-black' dir={locale === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{ __html: advertiseSections.description[locale] }}>
                         </p>
                     </div>
                 </div>

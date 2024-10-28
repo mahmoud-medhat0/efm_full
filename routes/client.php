@@ -34,8 +34,8 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('advertise', 'advertise')->name('advertise');
         Route::get('btc-game', 'btcGame')->name('btc-game');
         Route::get('referral-contest', 'referralContest')->name('referral-contest');
-        Route::get('view-videos', 'viewVideos')->name('view-videos');
-        Route::get('view-ads', 'viewAds')->name('view-ads');
+        // Route::get('view-videos', 'viewVideos')->name('view-videos');
+        // Route::get('view-ads', 'viewAds')->name('view-ads');
         Route::get('faq', 'faq')->name('faq');
         Route::get('news', 'news')->name('news');
         Route::get('support', 'support')->name('support');

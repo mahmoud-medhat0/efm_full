@@ -4,16 +4,16 @@ export default function About() {
   const { aboutSections } = usePage().props;
   const { lang: locale, app_url } = usePage().props;
   return (
-    <section style={{boxShadow: '0px 5px 10px #be9e88'}} className='w-full mb-5 container-light pt-5'>
+    <section style={{boxShadow: '0px 5px 10px #be9e88'}} className='w-full mb-5 container-light pt-5' id='about' dir={locale === 'ar' ? 'ltr' : ''}>
       <h1 className='text-black' style={{textAlign: 'center', fontSize: '3em', marginBottom: '20px'}}>
         <span className="mark-zigzag-black">{aboutSections.title[locale]}</span>
       </h1>
-      <div className='w-full flex-container'>
+      <div className='w-full flex-container' dir={locale === 'ar' ? 'rtl' : 'ltr'}>
         <div className='image-container'>
           <img src={`${app_url}/storage/${aboutSections.image}`} alt="Owner" style={{width: '100%', height: 'auto'}} className='pb-5'/>
         </div>
         <div className='text-container'>
-          <p className='text-black pb-3' dangerouslySetInnerHTML={{__html: aboutSections.description[locale]}}></p>
+          <p className='text-black pb-3 ' dir={locale === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{__html: aboutSections.description[locale]}}></p>
         </div>
       </div>
       <style>

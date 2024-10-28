@@ -6,7 +6,7 @@ const TermsPage = () => {
   const terms = props.terms;
   return (
     <RootLayout>
-    <main className="w-full h-full my-20 container">
+    <main className="w-full h-full my-20 container pt-20">
       <div className="mb-2">
         <h2 className="text-4xl text-black mb-4">
           Terms of <span className="mark-zigzag">Services</span>

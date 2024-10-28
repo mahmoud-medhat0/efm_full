@@ -13,6 +13,7 @@ import { usePage } from "@inertiajs/inertia-react";
 import UK from "../assets/uk.png";
 import UAE from "../assets/uae.png";
 import { Inertia } from "@inertiajs/inertia";
+import { translate } from "../utils/functions";
 const Navbar = () => {
     const page = usePage();
     const { auth } = page.props;
@@ -21,7 +22,7 @@ const Navbar = () => {
         Inertia.visit(route("client.set-lang", { lang }));
     };
     return (
-        <nav className="w-full fixed z-50  py-5 flex flex-row-reverse justify-between items-center px-4 shadow-md bg-[#f9f9f9]">
+        <nav className="fixed top-0 z-50 w-full py-5 flex flex-row-reverse justify-between items-center px-20 shadow-md bg-[#f9f9f9]">
             <div className="flex flex-row-reverse items-center gap-4">
                 {!isLoggedIn ? (
                     <div className="flex flex-row gap-3">
@@ -36,7 +37,7 @@ const Navbar = () => {
                             className="bg-primary dark:text-white dark:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
                             href={route("client.register")}
                         >
-                            Register
+                            {window.translate("navbar.register")}
                             <FingerPrintIcon className="h-6 w-6 text-white" />
                         </Link>
                     </div>
@@ -74,20 +75,30 @@ const Navbar = () => {
                 </li> */}
                 
                 <li className="text-lg duration-200">
-                    <Link className="text-gold px-3 py-2" href={route("client.about-us")}>
+                    <Link className="text-gold px-3 py-2" href={route("client.home")+'#about'}>
                         {translate("home.about-us")}
                     </Link>
                 </li>
-                <li className="text-lg duration-200">
+                {/* <li className="text-lg duration-200">
                     <Link
                         className="text-gold px-3 py-2"
                         href={route('client.referral-contest')}
                     >
                         {translate("home.referral-contest")}
                     </Link>
+                </li> */}
+                <li className="text-lg duration-200">
+                    <Link href={route('client.home') + '#membership'} className="text-gold px-3 py-2">
+                        {translate("home.membership")}
+                    </Link>
                 </li>
-                <EarnMoney />
-                <Help />
+                <li className="text-lg duration-200">
+                    <Link href={route('client.home') + '#referral'} className="text-gold px-3 py-2">
+                        {translate("home.referral")}
+                    </Link>
+                </li>
+                {/* <EarnMoney /> */}
+                {/* <Help /> */}
             </ul>
             <div className="flex flex-row gap-2">
                 <Link href={route('client.dashboard')}>

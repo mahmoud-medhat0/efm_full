@@ -103,7 +103,7 @@ export const REGISTER_FORM: IRegisterInput[] = [
 export const LOGIN_FORM: ILoginInput[] = [
   {
     name: "username",
-    placeholder: "Type your Username ..",
+    placeholder: "type-your-username",
     type: "text",
     forl: "username",
     placel: "Username :",
@@ -114,7 +114,7 @@ export const LOGIN_FORM: ILoginInput[] = [
   },
   {
     name: "password",
-    placeholder: "Type your Password ..",
+    placeholder: "type-your-password",
     type: "password",
     forl: "password",
     placel: "Password :",

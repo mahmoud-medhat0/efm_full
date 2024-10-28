@@ -1,7 +1,36 @@
 {
+    "hero": {
+        "welcome": "Welcome to",
+        "efm": "EFM",
+        "hub": "hub",
+        "designed": "Designed to Lead",
+        "and": "and",
+        "built": "Built to Last"
+    },
+    "login": {
+        "title": "Login To",
+        "efm": "EFM",
+        "hub": "hub.com",
+        "login": "Login",
+        "forgot": "Forgot your password?",
+        "reset": "Reset Password!",
+        "dontHave": "Don't have an account here?"
+    },
+    "username": "Username :",
+    "Password": "Password",
+    "type-your-username": "Type your Username ..",
+    "type-your-password": "Type your Password ..",
+    "Having an account here?": "Having an account here?",
+    "Register with a new account!": "Register with a new account!",
+    "Login now!": "Login now!",
+    "Register": "Register",
     "navbar": {
         "login": "Login",
         "register": "Register"
+    },
+    "payments": {
+        "title": "We process",
+        "via": "via!"
     },
     "home": {
         "title": "Home",
@@ -23,6 +52,7 @@
         "two-factor-authentication": "Two Factor Authentication",
         "logout":"Logout",
         "logo":"logo",
-        "about-us": "About Us"
+        "about-us": "About Us",
+        "membership": "Membership"
     }
 }

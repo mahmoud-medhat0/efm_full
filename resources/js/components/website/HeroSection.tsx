@@ -21,12 +21,12 @@ const HeroSection = () => {
     >
       <div className="flex flex-col justify-center items-center text-center space-y-8">
         <motion.h3 className="text-7xl text-white font-medium max-sm:text-4xl mt-8">
-         Welcome to   
-        <span className="mark text-gold"> EFM </span>
-        hub
+         {window.translate("hero.welcome")}   
+        <span className="mark text-gold"> {window.translate("hero.efm")} </span>
+        {window.translate("hero.hub")}
         </motion.h3>
         <div className=" flex-col items-start max-sm:px-3 text-center">
-      <h1 className="text-2xl text-white">Designed to lead...<br/> and built to last.</h1>
+      <h1 className="text-2xl text-white mx-2">{window.translate("hero.designed")} <span className="mx-1"> {window.translate("hero.and")}</span> {window.translate("hero.built")}</h1>
       
       <div className="relative overflow-hidden rounded-b-full bg-gray-800 flex items-center justify-center  pb-10 pt-20 mt-4">
         <img

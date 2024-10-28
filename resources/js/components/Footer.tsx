@@ -30,18 +30,21 @@ const Footer = () => {
           <div className="grid grid-cols-8 max-sm:grid-cols-4 gap-5">
             <Link
               to={"/"}
+              disabled={true}
               className="rounded-full border-[#323C52] border-[1px] hover:border-primary duration-300"
             >
               <img src={discord} alt="" />
             </Link>
             <Link
               to={"/"}
+              disabled={true}
               className="rounded-full border-[#323C52] border-[1px] hover:border-primary duration-300"
             >
               <img src={facebook} alt="" />
             </Link>
             <Link
               to={"/"}
+              disabled={true}
               className="rounded-full border-[#323C52] border-[1px] hover:border-primary duration-300"
             >
               <img src={instagram} alt="" />

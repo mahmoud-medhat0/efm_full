@@ -9,10 +9,11 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "@inertiajs/react";
 import {route} from 'ziggy-js'
+import { translate } from "../../../utils/functions";
 const Help = () => {
   return (
     <div>
-      <Menu as="div" className="relative inline-block text-right">
+      <Menu as="div" className="relative inline-block text-left">
         <div className="text-gold sely">
           <Menu.Button className="inline-flex w-full justify-center rounded-md bg-transparent px-2 py-2 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
             {translate("home.help")}
@@ -76,7 +77,7 @@ const Help = () => {
                   )}
                 </Menu.Item>
               </Link>
-              <Link href={route('client.support')}>
+              {/* <Link href={route('client.support')}>
                 <Menu.Item>
                   {({ active }) => (
                     <button
@@ -98,7 +99,7 @@ const Help = () => {
                     </button>
                   )}
                 </Menu.Item>
-              </Link>
+              </Link> */}
               <Link href={route('client.terms')}>
                 <Menu.Item>
                   {({ active }) => (

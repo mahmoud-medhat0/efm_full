@@ -1,4 +1,34 @@
 {
+    "hero": {
+        "welcome": "مرحبا بك في",
+        "efm": "EFM",
+        "hub": "hub",
+        "designed": "صممت لتقود",
+        "and": "و",
+        "built": "بنيت لتدوم"
+    },
+    "login": {
+        "title": "تسجيل الدخول إلى",
+        "efm": "EFM",
+        "hub": "hub.com",
+        "login": "تسجيل الدخول",
+        "forgot": "هل نسيت كلمة المرور؟",
+        "reset": "إعادة تعيين كلمة المرور!",
+        "register": "انشاء حساب",
+        "dontHave": "ليس لديك حساب هنا؟"
+    },
+    "username": "اسم المستخدم :",
+    "password": "كلمة المرور",
+    "type-your-username": "اكتب اسم المستخدم ..",
+    "type-your-password": "اكتب كلمة المرور ..",
+    "Having an account here?": "لديك حساب هنا؟",
+    "Login now!": "تسجيل الدخول الآن!",
+    "Register": "انشاء حساب",
+    "Register with a new account!": "انشاء حساب حساب جديد!",
+    "payments": {
+        "title": "نحن نتعامل مع",
+        "via": "بالطريقة"
+    },
     "navbar": {
         "login": "تسجيل الدخول",
         "register": "انشاء حساب"
@@ -23,6 +53,7 @@
         "two-factor-authentication": "المصادقة الثنائية",
         "logout":"تسجيل الخروج",
         "logo":"logo",
-        "about-us": "من نحن"
+        "about-us": "من نحن",
+        "membership": "العضوية"
     }
 }

@@ -14,7 +14,7 @@ import RootLayout from "../../layout";
 import axios from 'axios';
 import { route } from "ziggy-js";
 import { Inertia } from '@inertiajs/inertia';
-
+import { translate } from "../../utils/functions";
 interface IFormInput {
   username: string;
   password: string;
@@ -77,29 +77,37 @@ const LoginPage = () => {
 
   // ** Renders
   const renderLoginForm = LOGIN_FORM.map(
-    ({ name, placeholder, type, forl, placel, validation }, idx) => (
-      <div key={idx}>
-        <div className="space-y-2 pb-1">
-          <label htmlFor={forl} className="text-black text-xl">
-            {placel}
-          </label>
-          <Input
-            id={forl}
-            type={type}
-            placeholder={placeholder}
-            {...register(name, validation)}
-          />
+    ({ name, placeholder, type, forl, placel, validation }, idx) => {
+      console.log(name);
+      console.log(placeholder); 
+      const translatedName = translate(name);
+      const translatedPlaceholder = translate(placeholder);
+      console.log(translatedName);
+      console.log(translatedPlaceholder);
+      return (
+        <div key={idx}>
+          <div className="space-y-2 pb-1">
+            <label htmlFor={forl} className="text-black text-xl">
+              {placel}
+            </label>
+            <Input
+              id={forl}
+              type={type}
+              placeholder={translatedPlaceholder}
+              {...register(translatedName, validation)}
+            />
+          </div>
+          {errors[translatedName] && <InputErrorMessage msg={errors[translatedName]?.message} />}
         </div>
-        {errors[name] && <InputErrorMessage msg={errors[name]?.message} />}
-      </div>
-    )
+      );
+    }
   );
 
   return (
     <RootLayout>
-    <section className="w-[800px] my-20 mx-auto max-sm:w-full max-sm:px-3">
-      <h2 className="text-black text-2xl pb-6">
-        Login To <span className="text-primary">EFM</span>hub.com
+    <section className="w-full my-20 mx-auto max-sm:w-full max-sm:px-3 pt-20">
+      <h2 className="text-black text-2xl pb-6 text-center">
+        {window.translate("login.title")} <span className="text-primary">{window.translate("login.efm")}</span>{window.translate("login.hub")}
       </h2>
       <form
         className="w-[800px] space-y-3 mx-auto max-sm:w-full"
@@ -107,16 +115,16 @@ const LoginPage = () => {
       >
         {renderLoginForm}
         <Button fullWidth isLoading={isLoading}>
-          Login
+          {window.translate("login.login")}
         </Button>
         <div className="flex flex-col space-y-1">
           <Link href={route('client.reset-password')} className="text-black">
-            Forgot your password?
-            <span className="underline ml-1 text-primary">Reset Password!</span>
+            {window.translate("login.forgot")}
+            <span className="underline ml-1 text-primary">{window.translate("login.reset")}</span>
           </Link>
           <Link href={route('client.register')} className="text-black">
-            Don&#39;t have an account here?
-            <span className="underline ml-1 text-primary">Register here!</span>
+            {window.translate("login.dontHave")}
+            <span className="underline ml-1 text-primary">{window.translate("login.register")}</span>
           </Link>
         </div>
       </form>
