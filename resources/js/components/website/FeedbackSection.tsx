@@ -32,10 +32,10 @@ const FeedbackSection = () => {
     ],
   };
   return (
-    <section id="feedbacks" className="h-auto mb-32">
+    <section id="feedbacks" className="h-auto mb-32 pt-20">
       <div className="text-center mb-16">
-        <h2 className="text-5xl text-black mb-2">Our Feedbacks!</h2>
-        <p className="text-xl text-gray-400">
+        <h2 className="text-5xl text-black mb-2  font-bold text-center">Our Feedbacks!</h2>
+        <p className="text-xl text-gray-400 ">
           Some of our feedbacks from different clients and companies!
         </p>
       </div>
@@ -49,17 +49,17 @@ const FeedbackSection = () => {
             for (let index = 0; index < feedbacks.length; index++) {
               const feedback = feedbacks[index];
               feedbackElements.push(
-                <div key={index} className="bg-primary rounded-md text-white px-3 pt-3 pb-1">
+                <div key={index} className="bg-primary rounded-md text-black px-3 pt-3 pb-1">
                   <div className="silder">
-                    <div className="bg-background w-9 h-9 flex justify-center items-center rounded-md z-10">
+                    <div className="bg-black w-9 h-9 flex justify-center items-center rounded-md z-10">
                       <img className="w-8 h-8" src={`${props.app_url}/storage/${feedback.image}`} alt={feedback.name} />
                     </div>
                     <h2 className="text-xl">{feedback.name}</h2>
                   </div>
-                  <p className="mt-3 text-white text-center">
+                  <p className="mt-3 text-black text-center">
                     " {feedback.comment} "
                   </p>
-                  <p className="text-gray-300 text-sm flex justify-end items-end mt-3">
+                  <p className="text-black-300 text-sm flex justify-end items-end mt-3">
                     {feedback.date}
                   </p>
                 </div>

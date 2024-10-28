@@ -13,8 +13,11 @@ import crypto3Icon from "../../assets/icons/cryptocurrency2.png";
 //   HeartIcon,
 //   RocketLaunchIcon,
 // } from "@heroicons/react/20/solid";
-
+import { usePage } from "@inertiajs/inertia-react";
 const PaymentsSection = () => {
+  const { gateways } = usePage().props;
+  const { app_url } = usePage().props;
+
   const settings = {
     dots: false,
     infinite: true,
@@ -52,48 +55,15 @@ const PaymentsSection = () => {
         </p>
       </div>
       <Slider className="flex items-center max-sm:gap-3" {...settings}>
-        <div>
-          <img
+        {gateways.map((gateway) => (
+          <div>
+            <img
             className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={cryptoIcon}
-            alt="cryptoIcon"
-          />
-        </div>
-        <div>
-          <img
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={crypto2Icon}
-            alt="cryptoIcon"
-          />
-        </div>
-        <div>
-          <img
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={crypto3Icon}
-            alt="cryptoIcon"
-          />
-        </div>
-        <div>
-          <img
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={ethereumIcon}
-            alt="ethereumIcon"
-          />
-        </div>
-        <div>
-          <img
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={solanaIcon}
-            alt="solanaIcon"
-          />
-        </div>
-        <div>
-          <img
-            className="w-32 h-32 max-sm:w-20 max-sm:h-20"
-            src={tetherIcon}
-            alt="tetherIcon"
-          />
-        </div>
+              src={`${app_url}/storage/${gateway.logo}`}
+            alt={gateway.name}
+            />
+          </div>
+        ))}
       </Slider>
       <div className="paymentSection">
         {/* <CreditCardIcon className="w-5 h-5 pn1" />

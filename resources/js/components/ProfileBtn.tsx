@@ -15,7 +15,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { route } from "ziggy-js";
 import { Inertia } from "@inertiajs/inertia";
+import { usePage } from "@inertiajs/inertia-react";
 export default function ProfileBtn() {
+  const { client } = usePage().props.auth;
 
   const handleLogout = () => {
     axios.post(route("client.logout")).then((res) => {
@@ -42,7 +44,7 @@ export default function ProfileBtn() {
             >
               <div className="flex items-center gap-2">
                 <UserCircleIcon className="w-6 h-6" />
-                <span className="text-sm">test</span>
+                <span className="text-sm">{client.name}</span>
               </div>
               <ChevronDownIcon
                 className={`${open ? "text-[#ffe6d0cc]" : "text-[#ffe6d0cc]/70"}

@@ -96,6 +96,14 @@ table thead th {
   position: relative;
   padding: 0 0 10px;
 }
+.file-icon p {
+  font-size: 34px !important; /* استخدام !important لتجاوز الأنماط الأخرى */
+}
+@media (max-width: 768px) {
+  .file-icon p {
+    font-size: 16px !important; /* تغيير حجم الخط للشاشات الأصغر */
+  }
+}
 
 .mark::after {
   content: "";

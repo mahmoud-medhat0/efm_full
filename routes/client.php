@@ -9,6 +9,8 @@ use App\Http\Controllers\client\DashboardContrtoller;
 use App\Http\Middleware\RedirectRoRegsiter;
 Route::get('/', [HomeController::class, 'index'])->middleware(RedirectRoRegsiter::class);
 Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
+Route::get('email/verify', [HomeController::class, 'verifyEmail'])->name('verification.notice');
+
 Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function () {
     Route::controller(AuthClientController::class)->middleware(['web', 'guest'])->group(function () {
         Route::get('login', 'login')->name('login');
@@ -26,7 +28,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         });
     });
     Route::controller(HomeController::class)->group(function () {
-        Route::middleware(RedirectRoRegsiter::class)->group(function () {
+        // Route::middleware(RedirectRoRegsiter::class)->group(function () {
         Route::get('home', 'index')->name('home');
         Route::get('about-us', 'aboutUs')->name('about-us');
         Route::get('advertise', 'advertise')->name('advertise');
@@ -38,12 +40,11 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('news', 'news')->name('news');
         Route::get('support', 'support')->name('support');
             Route::get('terms', 'terms')->name('terms');
-        });
+        // });
         Route::middleware(['auth', '2fa'])->group(function () {
             Route::get('profile', 'profile')->name('profile');
             Route::get('dashboard', 'dashboard')->name('dashboard');
         });
-        Route::get('email/verify', 'verifyEmail')->name('verify-email');
         Route::middleware(['auth', 'telegram.not.verified', '2fa'])->group(function () {
             Route::get('telegram-verify', 'telegramVerify')->name('telegram-verify');
             Route::post('telegram-send', 'telegramSend')->name('telegram-send');
@@ -51,7 +52,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('telegram-resend', 'telegramResend')->name('telegram-resend');
         });
     });
-    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa'])->prefix('dashboard')->group(function () {
+    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa','verified'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
             Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');

@@ -13,7 +13,7 @@ const PartnersSection = () => {
   return (
     <section id="partners" className="h-auto mb-32">
       <div className="text-center mb-16">
-        <h2 className="text-5xl text-black mb-2">Our Partners in Success!</h2>
+        <h2 className="text-5xl text-black mb-2 text-center font-bold ">Our Partners in Success!</h2>
         <p className="text-xl text-gray-400">
           Our partners and supporters recently!
         </p>

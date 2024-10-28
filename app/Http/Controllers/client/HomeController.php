@@ -19,7 +19,11 @@ use App\Rules\UserIdInteractedToBot;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\UserIdRelatedToUsername;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\Gateways;
+use App\Models\Aboutsection;
+use App\Models\MembershipSection;
+use App\Models\AdvertiseSection;
+use App\Models\ReferralSection;
 class HomeController extends Controller
 {
     public function setLang($lang)
@@ -39,6 +43,11 @@ class HomeController extends Controller
                     'answer' => $faq->getTranslation('answer', app()->getLocale()),
                 ];
             }),
+            'gateways' => Gateways::where('is_active', 1)->get()->toArray(),
+            'aboutSections' => Aboutsection::first(),
+            'membershipSections' => MembershipSection::first(),
+            'advertiseSections' => AdvertiseSection::first(),
+            'referralSections' => ReferralSection::first(),
         ]);
     }
     public function aboutUs()
