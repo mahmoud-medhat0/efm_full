@@ -8,7 +8,7 @@ const FeedbackSection = () => {
     // dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 1500,
@@ -49,7 +49,7 @@ const FeedbackSection = () => {
             for (let index = 0; index < feedbacks.length; index++) {
               const feedback = feedbacks[index];
               feedbackElements.push(
-                <div key={index} className="bg-black rounded-md text-primary px-3 pt-3 pb-1">
+                <div key={feedback.id || index} className="bg-black rounded-md text-primary px-3 pt-3 pb-1">
                   <div className="silder">
                     <div className="bg-primary w-9 h-10 flex justify-center items-center rounded-md z-10">
                       <img className="w-8 h-8" src={`${props.app_url}/storage/${feedback.image}`} alt={feedback.name} />
