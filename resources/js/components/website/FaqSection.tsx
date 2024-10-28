@@ -13,14 +13,16 @@ const FaqSection = () => {
   return (
     <section
       id="faq"
-     
+     style={{ boxShadow: ' 0px 5px 10px #be9e88'}}
+     className='container-dark pt-5 pb-10'
+
     >
-      <div className="text-center  font-bold">
-      <h3 className="text-2xl text-black max-sm:text-center  ">
-        Frequently <span className="mark-zigzag">Asked</span> Questions!
+      <div className="text-center">
+      <h3 className="text-gold max-sm:text-center" style={{ fontSize: '4em'}}>
+        Frequently Asked <span className="mark-zigzag">Questions</span>!
         </h3>
       </div>
-      <div className="text-center">
+      <div className="text-center text-gold">
         {faqQuestions.map((question) => (
           <Disclosure
             key={question.question}
@@ -28,7 +30,7 @@ const FaqSection = () => {
             answer={question.answer}
           />
         ))}
-        <p className="text-black px-5 mt-5">
+        <p className="text-gold px-5 mt-5 text-center">
           Have more questions?{" "}
           {/* <Link className="text-primary underline" to={"/contact"}>
             Contact Us

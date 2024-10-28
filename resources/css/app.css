@@ -129,7 +129,46 @@ table thead th {
 .mark-zigzag {
   position: relative;
   padding: 0 0 10px;
+  display: inline-block;
 }
+.mark-zigzag-black {
+  position: relative;
+  padding: 0 0 10px;
+}
+.container-dark {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 6rem;
+  padding-left: 6rem;
+  background-color: #2d3a4a;
+}
+
+.container-light {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 6rem;
+  padding-left: 6rem;
+  background-color: #be9e88;
+}
+
+@media (max-width: 768px) {
+  .container-dark,
+  .container-light {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-dark,
+  .container-light {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
 
 .mark-zigzag::after {
   content: "";
@@ -151,9 +190,32 @@ table thead th {
   -webkit-mask-image: url(../js/assets/headline-underline-zigzag.svg);
   mask-image: url(../js/assets/headline-underline-zigzag.svg);
 }
+.mark-zigzag-black::after {
+  content: "";
+  position: absolute;
+  width: 91px;
+  height: 12px;
+  bottom: -5px;
+  left: 50%;
+  z-index: 7;
+  -webkit-transform: translate(-45px);
+  -ms-transform: translate(-45px);
+  transform: translate(-45px);
+  background-color: #2d3a4a;
+  -webkit-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-image: url(../js/assets/headline-underline-zigzag.svg);
+  mask-image: url(../js/assets/headline-underline-zigzag.svg);
+}
 @media not all and (min-width: 640px) {
   .mark-zigzag::after {
-    width: 0;
+    width: 100%;
+  }
+  .mark-zigzag-black::after {
+    width: 100%;
   }
 }
 /* --- UnderLine of Select Menu --- */

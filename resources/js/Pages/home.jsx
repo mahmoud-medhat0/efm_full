@@ -15,9 +15,8 @@ import Referal from "../components/website/referal";
 const HomePage = () => {
   return (
     <RootLayout>
-    <div className="w-full h-auto space-y-36 max-sm:space-y-32 max-sm:overflow-x-hidden">
+    <div className="w-full h-auto space-y-0 max-sm:space-y-0 max-sm:overflow-x-hidden" style={{ backgroundColor: 'rgb(234 234 234)' }}>
       <HeroSection />
-      <div className="sections container">
         <About />
         {/* <FeaturesSection /> */}
         <PaymentsSection />
@@ -32,7 +31,7 @@ const HomePage = () => {
         <FeedbackSection />
         <PartnersSection /> 
       </div>
-    </div>
+  
     </RootLayout>
   );
 };

@@ -58,8 +58,8 @@ const DashboardNavbar = () => {
           </Link>
         </li> */}
         <li className="text-lg duration-200">
-          <Link className="text-gold hover:text-rom px-2 py-2" href={route('client.dashboard.referrals')}>
-            Referral System 
+          <Link className="text-gold hover:text-rom px-2 py-2" href={route('client.referral-contest')}>
+            Referral Contest
           </Link>
         </li>
         <EarnMoney />

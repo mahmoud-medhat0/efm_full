@@ -15,15 +15,15 @@ const MyDisclosure = ({ question, answer }: IProps) => {
         <Disclosure as="div" className="mt-2 text-center">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full justify-between gap-10 rounded-lg bg-transparent py-2 text-center text-sm font-medium text-black focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
-                <span className="text-xl">{question}</span>
+              <Disclosure.Button className="flex w-full justify-between gap-10 rounded-lg bg-transparent py-2 text-center text-sm font-medium text-gold focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <span className="text-xl" style={{ fontSize: '2em'}}>{question}</span>
                 <ChevronDownIcon
                   className={`${
                     open ? "rotate-180 transform" : ""
                   } h-5 w-5 text-black`}
                 />
               </Disclosure.Button>
-              <Disclosure.Panel className="px-4 pb-2 pt-4 text-base text-gray-400">
+              <Disclosure.Panel className="px-4 pb-2 pt-4 text-gold-400" style={{ fontSize: '1.25em'}}>
                 {answer}
               </Disclosure.Panel>
             </>

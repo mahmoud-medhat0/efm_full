@@ -12,8 +12,8 @@ import threads from "../assets/media/threads.svg";
 
 const Footer = () => {
   return (
-    <footer className="border-t-[1px] border-[#323C52]">
-      <div className="container mb-10">
+    <footer className="border-t-[1px] border-[#323C52] container-light">
+      <div className="container">
         <div className="flex flex-row items-center mb-16 pt-16 max-sm:flex-col max-sm:gap-2">
           <Link
             to={"/"}
@@ -21,7 +21,7 @@ const Footer = () => {
           >
             <img className="w-10 h-10" src={logo} alt="logo" />
             <span>
-              <span className="text-primary">EFM</span>
+              <span className="text-black text-center">EFM</span>
               hub.com
             </span>
           </Link>

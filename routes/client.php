@@ -52,7 +52,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('telegram-resend', 'telegramResend')->name('telegram-resend');
         });
     });
-    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa','verified'])->prefix('dashboard')->group(function () {
+    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
             Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');

@@ -21,7 +21,7 @@ const Navbar = () => {
         Inertia.visit(route("client.set-lang", { lang }));
     };
     return (
-        <nav className="w-full py-5 flex flex-row-reverse justify-between items-center px-4 shadow-md bg-[#f9f9f9]">
+        <nav className="w-full fixed z-50  py-5 flex flex-row-reverse justify-between items-center px-4 shadow-md bg-[#f9f9f9]">
             <div className="flex flex-row-reverse items-center gap-4">
                 {!isLoggedIn ? (
                     <div className="flex flex-row gap-3">
@@ -89,10 +89,10 @@ const Navbar = () => {
                 <EarnMoney />
                 <Help />
             </ul>
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row gap-2">
                 <Link href={route('client.dashboard')}>
                     <img
-                        className="w-20 h-20" // تم زيادة حجم الصورة
+                        className="w-22 h-20 ml-16" // تم زيادة حجم الصورة
                         src={LogoImg}
                         alt={translate("home.logo")}
                     />

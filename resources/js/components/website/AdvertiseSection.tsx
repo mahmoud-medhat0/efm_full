@@ -12,7 +12,7 @@ const AdvertiseSection = () => {
       <div>
         <div className="text-center mb-16">
           <h2 className="text-5xl text-black mb-2">
-            Advertise on <span className="text-primary">EFM</span>hub!
+            Advertise on <span className="text-primary mark-zigzag-dark">EFM</span>hub!
           </h2>
           <p className="text-xl text-gray-400">
             Advertise with us and Promote your brand and get great results.

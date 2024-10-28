@@ -16,25 +16,23 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="flex flex-col justify-center items-center pt-44 pb-12 text-center space-y-16  bg-rounded max-sm:rounded-b-[40px] bg-rounded"
+      className="flex flex-col justify-center items-center  text-center space-y-16  bg-rounded  bg-rounded mb-15 "
+      style={{paddingTop: '120px'}}
     >
       <div className="flex flex-col justify-center items-center text-center space-y-8">
-        <motion.h3 className="text-6xl text-white font-medium max-sm:text-4xl">
-         welcome to   
-        <span className="mark"> EFM </span>
+        <motion.h3 className="text-7xl text-white font-medium max-sm:text-4xl mt-8">
+         Welcome to   
+        <span className="mark text-gold"> EFM </span>
         hub
         </motion.h3>
-       
+        <div className=" flex-col items-start max-sm:px-3 text-center">
+      <h1 className="text-2xl text-white">Designed to lead...<br/> and built to last.</h1>
       
-        <div className="flex flex-col items-start max-sm:px-3">
-      <h1 className="text-2xl text-white">Designed to lead... and built to last.</h1>
-      
-      <div className="relative w-60 h-70 overflow-hidden rounded-b-full bg-gray-800 flex items-center justify-center  ml-24 pb-10 pt-20 mt-4">
-        {/* الصورة */}
+      <div className="relative overflow-hidden rounded-b-full bg-gray-800 flex items-center justify-center  pb-10 pt-20 mt-4">
         <img
           src={hero}
           alt="logo"
-          className="w-full h-full object-cover object-bottom"
+          className="w-70 h-70 object-cover object-bottom "
         />
       </div>
     </div>

@@ -47,14 +47,12 @@ const PaymentsSection = () => {
   };
 
   return (
-    <section id="payments" className="h-auto mb-32">
-      <div className="text-center mb-16">
-        <h2 className="text-5xl text-black mb-2">We process payments via!</h2>
-        <p className="text-xl text-gray-400">
-          The cryptocurrencies we pay with here on our platform.
-        </p>
+    <section style={{backgroundColor:"#2d3a4a"}}  className='w-full container-dark text-gold pt-5 '>
+      <div className="text-center mb-16 ">
+        <h2 className="text-5xl text-gold mb-5" style={{ fontSize: '4em'}}>We process <span className="mark-zigzag ">payments</span><br /> via!</h2>
+
       </div>
-      <Slider className="flex items-center max-sm:gap-3" {...settings}>
+      <Slider className="flex items-center max-sm:gap-3 pb-10" {...settings}>
         {gateways.map((gateway) => (
           <div>
             <img
@@ -65,12 +63,6 @@ const PaymentsSection = () => {
           </div>
         ))}
       </Slider>
-      <div className="paymentSection">
-        {/* <CreditCardIcon className="w-5 h-5 pn1" />
-        <HeartIcon className="w-5 h-5 pn2" />
-        <RocketLaunchIcon className="w-5 h-5 pn3" />
-        <FireIcon className="w-5 h-5 pn4" /> */}
-      </div>
     </section>
   );
 };
