@@ -45,7 +45,7 @@ class Client extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'name', 'email', 'phone', 'username', 'telegram_id', 'telegram_username', 'personal_number', 'parent.name'
     ];
 
     /**
