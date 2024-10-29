@@ -2,7 +2,7 @@ import DashboardLayout from "../../../../Pages/settings/Layout";
 import { usePage } from "@inertiajs/inertia-react";
 import WelcomeTab from "../../../../components/dashboard/welcome/WelcomeTab";
 const Referrals = () => {
-  const { referrals, parent } = usePage().props;
+  const { referrals, parent, referral_count } = usePage().props;
   const treeData = {
     parent: {
       name: parent?.name ?? '',
@@ -118,7 +118,7 @@ const Referrals = () => {
           </>
         )}
         <div className="w-full mt-10" style={styles.referralTree}>
-        <h3>Referral Tree</h3>
+        <h3>Referral Tree ({referral_count})</h3>
         <div style={styles.childrenContainer}> {/* استخدام childrenContainer هنا */}
           {treeData.children.map((child, index) => (
             <div style={styles.child} key={index}>

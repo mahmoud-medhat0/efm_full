@@ -644,6 +644,7 @@ class DashboardContrtoller extends Controller
                     'name' => $referral->name,
                 ];
             }),
+            'referral_count' => auth()->user()->referrals->count(),
             'parent' => auth()->user()->parent,
         ]);
     }
