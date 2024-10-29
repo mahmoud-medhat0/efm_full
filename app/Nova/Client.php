@@ -66,6 +66,10 @@ class Client extends Resource
             }),
             Number::make('Points', 'points')->onlyOnDetail()->sortable(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
+            Password::make('Password')
+                ->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
             ToggleSwitchField::make('Email Verified', 'email_verified')->color('#3AB95A'),
             ToggleSwitchField::make('Active', 'is_active')->color('#3AB95A'),
             Text::make('Phone', 'phone')->sortable(),
@@ -96,7 +100,9 @@ class Client extends Resource
                 ->options(InterestCategoryModel::all()->pluck('name', 'id'))
                 ->saveAsJSON(false) // Ensures it saves as a relationship
                 ->placeholder('Select interests')->showOnCreating()->showOnUpdating()->hideFromDetail()->sortable(),
-            BelongsTo::make('Parent', 'parent', Client::class)->sortable(),
+            BelongsTo::make('Parent', 'parent', Client::class)->displayUsing(function ($value) {
+                return $value->name ?? 'No parent';
+            })->sortable()->readonly(),
             HasMany::make('Interests', 'interests', InterestCategory::class)->sortable(),
             MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class)->sortable(),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
