@@ -15,7 +15,6 @@ use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\BelongsToMany;
 use Outl1ne\MultiselectField\Multiselect;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Naif\ToggleSwitchField\ToggleSwitchField;
@@ -66,7 +65,7 @@ class Client extends Resource
             }),
             Number::make('Points', 'points')->onlyOnDetail()->sortable(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
-            Password::make('Password')
+            Password::make('Password', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),

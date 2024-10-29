@@ -6,8 +6,8 @@ const Referrals = () => {
   console.log(referrals);
   const treeData = {
     parent: {
-      name: parent?.name,
-      id: parent?.id,
+      name: parent?.name ?? '',
+      id: parent?.id ?? '',
     },
     children: referrals,
   };

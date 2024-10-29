@@ -10,6 +10,7 @@ use App\Models\WelcomeBotMessages;
 use Illuminate\Support\Str;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Api;
+use App\Models\Client as ClientUser;
 class TelegramController extends Controller
 {
     private $client;
@@ -20,8 +21,6 @@ class TelegramController extends Controller
     public function handleWebhook($token, Request $request)
     {
         // Log the entire request payload for debugging
-        \Log::info('Received webhook request:', $request->all());
-
         // Verify the token to ensure that the request is authorized
         if ($token !== env('TELEGRAM_BOT_TOKEN')) {
             \Log::warning('Unauthorized attempt to access webhook with token: ' . $token);
@@ -65,10 +64,9 @@ class TelegramController extends Controller
         $userId = $message['message']['from']['id'];
         $message_id = $message['message']['message_id'];
         if (isset($message['message']['chat'])) { // Check if 'chat' key exists
-            \Log::info($text);
             if (preg_match('/https?:\/\/[^\s]+/', $text)) {
                 // Delete the message containing the link
-                if(!$this->isUserAdmin($chatId, $userId) || $userId == '948449142' || $userId == '823524340'){
+                if(!$this->isUserAdmin($chatId, $userId) && $userId != '948449142' && $userId != 823524340){
                     $this->deleteMessage($chatId, $message_id);
                     // Handle user ban logic
                     $this->handleUserViolation($chatId, $userId);
@@ -167,6 +165,11 @@ class TelegramController extends Controller
                     $this->deleteMessage($chatId,$message_id);
                     $this->sendPhoto($chatId, $image, $text,null,'HTML');
                     break;
+                case '/count':
+                    $registeredUsers = ClientUser::count();
+                    $activeUsers = ClientUser::whereNotNull('activator_count')->count();
+                    $this->sendMessage($chatId, "Number of Users: " . $registeredUsers . "\nNumber of Active Users: " . $activeUsers);
+                    break;
             }
         }
     }
@@ -230,14 +233,10 @@ class TelegramController extends Controller
     private function isUserAdmin($chatId, $userId)
     {
         try {
-            $response = Telegram::getChatMember([
-                'chat_id' => $chatId,
-                'user_id' => $userId,
-            ]);
-
-            $status = $response->getStatus();
-            $this->sendMessage($chatId, $status);
-            return in_array($status, ['administrator', 'creator']);
+            $response = $this->client->get("https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN') . "/getChatAdministrators?chat_id=" . $chatId);
+            $admins = json_decode($response->getBody()->getContents(), true);
+            \Log::info('adminUsernames',[array_column(array_column($admins['result'], 'user'), 'id')]);
+            return in_array($userId, array_column(array_column($admins['result'], 'user'), 'id'));
         } catch (\Exception $e) {
             \Log::error("Error checking admin status: " . $e->getMessage());
             return false;

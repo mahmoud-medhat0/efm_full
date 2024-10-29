@@ -16,6 +16,9 @@ class Client extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable, LogsActivity;
     protected $guarded = [];
     protected $appends = ['has_active_subscription','referral_count','activator_count','membership'];
+    protected $casts = [
+        'password' => 'hashed',
+    ];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

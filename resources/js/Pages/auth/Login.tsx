@@ -119,8 +119,8 @@ const LoginPage = () => {
             <span className="underline ml-1 text-primary">{window.translate("login.reset")}</span>
           </Link> */}
           <Link href={route('client.register')} className="text-black">
-            {window.translate("login.dontHave")}
-            <span className="underline ml-1 text-primary">{window.translate("login.register")}</span>
+            {translate("login.dontHave")}
+            <span className="underline ml-1 text-primary">{translate("login.register")}</span>
           </Link>
         </div>
       </form>

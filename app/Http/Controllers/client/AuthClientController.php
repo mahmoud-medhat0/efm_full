@@ -123,4 +123,8 @@ class AuthClientController extends Controller
         ]);
         return response()->json(['success' => true, 'message' => 'Register is done, you will navigate after 2 seconds!'], 200);
     }
+    public function resetPassword()
+    {
+        return Inertia::render('auth/ResetPassword.tsx');
+    }
 }
