@@ -17,7 +17,7 @@ use App\Http\Controllers\FileController;
 Route::get('/set-webhook', function () {
     Telegram::removeWebhook();
     $response = Telegram::setWebhook([
-        'url' => env('APP_URL').'/webhook/telegram/'.env('TELEGRAM_BOT_TOKEN'), // Replace with your public URL
+        'url' => env('APP_URL').'webhook/telegram/'.env('TELEGRAM_BOT_TOKEN'), // Replace with your public URL
     ]);
     dd($response);
     return $response ? 'Webhook set successfully' : 'Failed to set webhook';
