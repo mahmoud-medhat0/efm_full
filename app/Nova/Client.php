@@ -23,7 +23,7 @@ use App\Models\InterestCategory as InterestCategoryModel;
 use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\BelongsTo;
 class Client extends Resource
 {
     /**
@@ -96,7 +96,7 @@ class Client extends Resource
                 ->options(InterestCategoryModel::all()->pluck('name', 'id'))
                 ->saveAsJSON(false) // Ensures it saves as a relationship
                 ->placeholder('Select interests')->showOnCreating()->showOnUpdating()->hideFromDetail()->sortable(),
-            HasOne::make('Parent', 'parent', Client::class)->sortable(),
+            BelongsTo::make('Parent', 'parent', Client::class)->sortable(),
             HasMany::make('Interests', 'interests', InterestCategory::class)->sortable(),
             MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class)->sortable(),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
