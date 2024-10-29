@@ -3,7 +3,6 @@ import { usePage } from "@inertiajs/inertia-react";
 import WelcomeTab from "../../../../components/dashboard/welcome/WelcomeTab";
 const Referrals = () => {
   const { referrals, parent } = usePage().props;
-  console.log(referrals);
   const treeData = {
     parent: {
       name: parent?.name ?? '',

@@ -640,7 +640,7 @@ class DashboardContrtoller extends Controller
         return Inertia::render('settings/pages/settings/Referrals.tsx', [
             'referrals' => auth()->user()->referrals->map(function ($referral) {
                 return [
-                    'id' => strtoupper(substr(explode(' ', $referral->name)[0], 0, 1) . substr(explode(' ', $referral->name)[1], 0, 1)),
+                    'id' => mb_strtoupper(mb_substr(explode(' ', $referral->name)[0], 0, 1) . mb_substr(explode(' ', $referral->name)[1], 0, 1)),
                     'name' => $referral->name,
                 ];
             }),
