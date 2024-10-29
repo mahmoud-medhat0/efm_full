@@ -78,12 +78,8 @@ const LoginPage = () => {
   // ** Renders
   const renderLoginForm = LOGIN_FORM.map(
     ({ name, placeholder, type, forl, placel, validation }, idx) => {
-      console.log(name);
-      console.log(placeholder); 
       const translatedName = translate(name);
       const translatedPlaceholder = translate(placeholder);
-      console.log(translatedName);
-      console.log(translatedPlaceholder);
       return (
         <div key={idx}>
           <div className="space-y-2 pb-1">
@@ -94,7 +90,7 @@ const LoginPage = () => {
               id={forl}
               type={type}
               placeholder={translatedPlaceholder}
-              {...register(translatedName, validation)}
+              {...register(name, validation)}
             />
           </div>
           {errors[translatedName] && <InputErrorMessage msg={errors[translatedName]?.message} />}
