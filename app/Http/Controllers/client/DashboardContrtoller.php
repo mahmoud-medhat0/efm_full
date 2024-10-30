@@ -106,6 +106,10 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
+        $pending_deposit = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->where('status', 'pending')->count();
+        if ($pending_deposit > 2) {
+            return response()->json(['success' => false, 'message' => 'You have a pending deposit Please wait for approval'], 200);
+        }
         $gateway = Gateways::find($request->selectedMethod);
         if ($gateway->attachment == true) {
             if ($request->attachment == null) {
