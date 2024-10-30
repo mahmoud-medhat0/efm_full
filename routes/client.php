@@ -41,7 +41,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('support', 'support')->name('support');
             Route::get('terms', 'terms')->name('terms');
         // });
-        Route::middleware(['auth', '2fa'])->group(function () {
+        Route::middleware(['auth', 'verified', '2fa'])->group(function () {
             Route::get('profile', 'profile')->name('profile');
             Route::get('dashboard', 'dashboard')->name('dashboard');
         });
@@ -52,7 +52,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('telegram-resend', 'telegramResend')->name('telegram-resend');
         });
     });
-    Route::controller(DashboardContrtoller::class)->middleware(['auth', '2fa'])->prefix('dashboard')->group(function () {
+    Route::controller(DashboardContrtoller::class)->middleware(['auth', 'verified', '2fa'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
             Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');

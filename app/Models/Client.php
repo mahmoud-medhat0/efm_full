@@ -103,4 +103,8 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Client::class, 'ref_id', 'id');
     }
+    public function hasVerifiedEmail()
+    {
+        return $this->email_verified == 1;
+    }
 }

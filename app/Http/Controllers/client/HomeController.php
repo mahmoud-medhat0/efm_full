@@ -157,6 +157,10 @@ class HomeController extends Controller
 
     public function verifyEmail()
     {
+        if (auth()->user()->hasVerifiedEmail()) {
+            return redirect()->route('client.dashboard');
+        }
+        auth()->user()->sendEmailVerificationNotification();
         return Inertia::render('auth/VerifyEmail.tsx');
     }
 
