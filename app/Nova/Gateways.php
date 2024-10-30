@@ -39,7 +39,7 @@ class Gateways extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name','min_deposit','max_deposit','min_withdraw','max_withdraw','charge_type_deposit','charge_deposit','charge_type_withdraw','charge_withdraw','target_deposit','description_withdraw','class_name'
     ];
 
     /**
