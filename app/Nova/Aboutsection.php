@@ -9,7 +9,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
 use Murdercode\TinymceEditor\TinymceEditor;
 use Spatie\NovaTranslatable\Translatable;
-
+use Laravel\Nova\Fields\MorphMany;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+use Laravel\Nova\Fields\MorphMany;
 class Aboutsection extends Resource
 {
     /**
@@ -50,6 +52,7 @@ class Aboutsection extends Resource
                 TinymceEditor::make('Description')->options(['init' => ['language' => app()->getLocale()]])
             ]),
             Image::make('Image'),
+            MorphMany::make('Activities', 'activities', ActivityLog::class)->sortable(),
         ];
     }
 

@@ -9,6 +9,8 @@ use Spatie\NovaTranslatable\Translatable;
 use Laravel\Nova\Fields\Text;
 use Murdercode\TinymceEditor\TinymceEditor;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphMany;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
 class ReferralSection extends Resource
 {
     /**
@@ -49,6 +51,7 @@ class ReferralSection extends Resource
                 TinymceEditor::make('Description')->options(['init' => ['language' => app()->getLocale()]])
             ]),
             Image::make('Image'),
+            MorphMany::make('Activities', 'activities', ActivityLog::class)->sortable(),
         ];
     }
 
