@@ -28,11 +28,11 @@ const HeroSection = () => {
         <div className=" flex-col items-start max-sm:px-3 text-center">
       <h1 className="text-2xl text-white mx-2">{window.translate("hero.designed")} <span className="mx-1"> {window.translate("hero.and")}</span> {window.translate("hero.built")}</h1>
       
-      <div className="relative overflow-hidden rounded-b-full bg-gray-800 flex items-center justify-center  pb-10 pt-20 mt-4">
+      <div className="relative overflow-hidden rounded-b-full flex items-center justify-center pt-16">
         <img
           src={hero}
           alt="logo"
-          className="w-70 h-70 object-cover object-bottom "
+          className="w-100 h-100 object-cover object-bottom "
         />
       </div>
     </div>

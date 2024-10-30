@@ -36,7 +36,7 @@ const Advertise = () => {
                 `}
             </style>
             <section style={{ boxShadow: '0px 5px 10px #be9e88' }} className='w-full container-dark pt-5' dir={locale === 'ar' ? 'ltr' : 'rtl'}>
-                <h1 style={{ textAlign: 'center', fontSize: '4em', marginBottom: '20px' }} className='text-gold'>
+                <h1 style={{ textAlign: 'center', fontSize: '3em', marginBottom: '20px' }} className='text-gold'>
                     <span className="mark-zigzag">{advertiseSections.title[locale]}</span>
                 </h1>
                 <div className='advertise-content w-full' dir={locale === 'ar' ? 'rtl' : 'ltr'}>
