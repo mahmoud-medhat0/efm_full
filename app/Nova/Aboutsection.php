@@ -11,7 +11,6 @@ use Murdercode\TinymceEditor\TinymceEditor;
 use Spatie\NovaTranslatable\Translatable;
 use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use Laravel\Nova\Fields\MorphMany;
 class Aboutsection extends Resource
 {
     /**
