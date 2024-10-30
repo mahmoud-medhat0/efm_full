@@ -69,23 +69,43 @@ abstract class Resource extends NovaResource
     }
     public static function authorizedToCreate(Request $request)
     {
-        return auth('admin')->user()->can('create' . static::getClassName());
+        $user = auth('admin')->user();
+        if ($user) {
+            return $user->can('create' . static::getClassName());
+        }
+        return false;
     }
     public function authorizedToUpdate(Request $request)
     {
-        return auth('admin')->user()->can('update' . static::getClassName());
+        $user = auth('admin')->user();
+        if ($user) {
+            return $user->can('update' . static::getClassName());
+        }
+        return false;
     }
     public function authorizedToDelete(Request $request)
     {
-        return auth('admin')->user()->can('delete' . static::getClassName());
+        $user = auth('admin')->user();
+        if ($user) {
+            return $user->can('delete' . static::getClassName());
+        }
+        return false;
     }
     public function authorizedToView(Request $request)
     {
-        return auth('admin')->user()->can('view' . static::getClassName());
+        $user = auth('admin')->user();
+        if ($user) {
+            return $user->can('view' . static::getClassName());
+        }
+        return false;
     }
     public static function authorizedToViewAny(Request $request)
     {
-        return auth('admin')->user()->can('viewAny' . static::getClassName());
+        $user = auth('admin')->user();
+        if ($user) {
+            return $user->can('viewAny' . static::getClassName());
+        }
+        return false;
     }
     public function authorizedToReplicate(Request $request)
     {
