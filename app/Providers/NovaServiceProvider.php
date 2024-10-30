@@ -66,11 +66,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [
+        $tools = [
             new \Bolechen\NovaActivitylog\NovaActivitylog(),
             new \Badinansoft\LanguageSwitch\LanguageSwitch(),
-            new \Sereny\NovaPermissions\NovaPermissions(),
         ];
+
+        $user = auth('admin')->user();
+
+        if ($user && $user->can('viewAnyRole') && $user->can('viewAnyPermission')) {
+            $tools[] = new \Sereny\NovaPermissions\NovaPermissions();
+        }
+
+        return $tools;
     }
 
     /**
