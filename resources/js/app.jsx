@@ -17,7 +17,7 @@ createInertiaApp({
         createRoot(el).render(
             <>
                 <App {...props} />
-                <Toaster />
+                <Toaster toastOptions={{ style: { fontSize: "24px" } }} />
             </>
         );
     },

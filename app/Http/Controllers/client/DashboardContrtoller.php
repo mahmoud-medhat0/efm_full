@@ -78,8 +78,11 @@ class DashboardContrtoller extends Controller
     //Finance methods
     public function deposit(Request $request)
     {
+        $secretKey = "bd07a49cd84f877bcb4861c567e8bcb12e206c860aa963ba92";
+        $queryParam = "Domain=15b7-196-133-116-223.ngrok-free.app&ProviderKey=FAWATERAK.1154";
+        $hash = hash_hmac( 'sha256' , $queryParam , $secretKey ,false);
         return Inertia::render('settings/pages/AddFunds.tsx', [
-            'methods' => Gateways::depositGateways()->map(function ($gateway) {
+            'methods' => Gateways::depositGateways()->map(function ($gateway) use ($hash) {
                 return [
                     'name' => $gateway->name,
                     'id' => $gateway->id,
@@ -89,11 +92,13 @@ class DashboardContrtoller extends Controller
                     'charge_type_deposit' => $gateway->charge_type_deposit,
                     'charge_deposit' => $gateway->charge_deposit,
                     'target_deposit' => $gateway->target_deposit,
+                    'auto' => $gateway->auto,
                 ];
             }),
             'plan' => $request->plan ?? null,
             'method' => $request->method ?? null,
             'amount' => $request->amount ?? null,
+            'hash' => $hash,
         ]);
     }
     public function depositPost(Request $request)
