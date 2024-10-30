@@ -48,7 +48,7 @@ const PersonalSettingsPage = () => {
       const file = event.target.files[0];
       setProfileImage(file);
       setImagePreview(URL.createObjectURL(file));
-      setIsImageSelected(true); // تحديد صورة جديدة
+      setIsImageSelected(true);
     }
   };
 
@@ -66,7 +66,9 @@ const PersonalSettingsPage = () => {
 
         if (response.data.success) {
           toast.success('Profile image updated successfully');
-          Inertia.visit("/home"); // توجيه المستخدم إلى الصفحة الرئيسية
+          setTimeout(() => {
+            Inertia.reload();
+          }, 2000);
         } else {
           toast.error(response.data.message);
         }

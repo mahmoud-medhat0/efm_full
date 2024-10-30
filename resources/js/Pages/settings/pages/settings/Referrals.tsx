@@ -123,10 +123,15 @@ const Referrals = () => {
           {treeData.children.map((child, index) => (
             <div style={styles.child} key={index}>
               <div style={styles.arrow}></div>
-              <div style={styles.circle}>{child.id}</div>
+              <div style={styles.circle}>
+                {child.profile_image ? (
+                  <img src={child.profile_image} alt={child.name} style={{ borderRadius: '50%', width: '100%', height: '100%' }} />
+                ) : (
+                  child.id
+                )}
+              </div>
               <div style={styles.label}>
                 {child.name} <br />
-                {/* Invest: {child.invest}, ROI Profit: {child.profit} */}
               </div>
             </div>
           ))}

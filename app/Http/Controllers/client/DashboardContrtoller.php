@@ -71,6 +71,17 @@ class DashboardContrtoller extends Controller
 
         return response()->json(['success' => true, 'message' => 'Password changed successfully'], 200);
     }
+    public function updateProfileImage(Request $request)
+    {
+        try{    
+            $user = auth()->user();
+            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
+            $user->save();
+            return response()->json(['success' => true, 'message' => 'Profile image updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to update profile image'], 200);
+        }
+    }
     public function advertiserPanel()
     {
         return Inertia::render('settings/pages/AdvertiserPanel/index.tsx');
@@ -652,6 +663,7 @@ class DashboardContrtoller extends Controller
                 return [
                     'id' => mb_strtoupper(mb_substr(explode(' ', $referral->name)[0], 0, 1) . mb_substr(explode(' ', $referral->name)[1], 0, 1)),
                     'name' => $referral->name,
+                    'profile_image' => $referral->profile_image ? '/storage/' . $referral->profile_image : null,
                 ];
             }),
             'referral_count' => auth()->user()->referrals->count(),

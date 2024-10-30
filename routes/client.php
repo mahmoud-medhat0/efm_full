@@ -56,6 +56,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
             Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');
+            Route::post('update-profile-image', 'updateProfileImage')->name('update-profile-image');
             Route::post('change-password', 'ChangePassword')->name('change-password');
             Route::get('referrals', 'referrals')->name('referrals');
             Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');

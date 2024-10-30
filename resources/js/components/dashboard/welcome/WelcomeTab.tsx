@@ -1,4 +1,4 @@
-import accImg from "../../../assets/character.jpg";
+import character from "../../../assets/character.jpg";
 import { Link } from "@inertiajs/inertia-react";
 import { ArrowUpCircleIcon, LinkIcon } from "@heroicons/react/20/solid";
 import { usePage } from "@inertiajs/inertia-react";
@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 const WelcomeTab = () => {
     const page = usePage();
     const user = page.props.auth.client;
-  
+    const accImg = user.profile_image ? '/storage/' + user.profile_image : character;
     const copyToClipboard = () => {
         const referralLink = `https://www.efmhub.com/register?ref=${user.username}`;
         navigator.clipboard.writeText(referralLink).then(() => {
@@ -20,14 +20,12 @@ const WelcomeTab = () => {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-primary shadow-md">
-          {/* القسم الأيسر: محتوى مرحباً */}
           <div className="col-span-2 flex flex-col justify-center text-center sm:text-left ml-10 mr-8">
             <h1 className="text-2xl font-bold text-rom  " >
               Welcome, <span>{user.name.split(" ")[0]}</span>
               <span className="ml-1">{user.name.split(" ")[1]}</span>
             </h1>
     
-            {/* معلومات العضوية */}
             <div className="flex flex-col mt-4">
               <h4 className="text-xl text-black ">
                 Your Membership:
