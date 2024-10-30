@@ -13,15 +13,10 @@ const PartnersSection = () => {
   return (
     <section style={{   boxShadow: ' 0px 5px 10px #be9e88'  }} className='w-full container-dark pt-5'>
       <div className="text-center mb-16">
-        <h2 className="text-5xl text-gold mb-8 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag-dark">Our Partners in Success!</span></h2>
+        <h2 className="text-5xl text-gold mb-8 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag">Our Partners in Success!</span></h2>
       </div>
       <div className="flex flex-col justify-between items-center gap-3 max-sm:gap-0">
-        <div className="grid grid-cols-8 max-sm:grid-cols-4 gap-5">
-          <img
-            className="w-16 h-16 grayscale hover:grayscale-0 cursor-pointer duration-300"
-            src={paypal}
-            alt="paypal"
-          />
+        <div className="grid grid-cols-6 max-sm:grid-cols-4 gap-5 mb-8">
           <img
             className="w-16 h-16 grayscale hover:grayscale-0 cursor-pointer duration-300"
             src={bank_transfer}
@@ -49,29 +44,10 @@ const PartnersSection = () => {
             alt="vodafone"
           />
           <img
-            className="w-16 h-16 grayscale hover:grayscale-0 cursor-pointer duration-300"
-            src={googlepay}
-            alt="react"
-          />
-          <img
-            className="w-14 h-14 grayscale hover:grayscale-0 cursor-pointer duration-300"
-            src={telda}
-            alt="react"
-          />
-        </div>
-        <div className="flex flex-row justify-between items-center gap-x-5">
-          <img
-            className="w-32 grayscale hover:grayscale-0 cursor-pointer duration-300"
-            src={western_union}
-            alt="western_union"
-          />
-          <div className="w-[130px] bg-background p-1 rounded-sm">
-            <img
-              className="w-32 grayscale hover:grayscale-0 cursor-pointer duration-300"
+              className="w-18 pt-6 grayscale hover:grayscale-0 cursor-pointer duration-300"
               src={instapay}
               alt="instapay"
             />
-          </div>
         </div>
       </div>
     </section>

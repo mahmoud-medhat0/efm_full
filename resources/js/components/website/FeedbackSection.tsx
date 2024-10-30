@@ -59,7 +59,7 @@ const FeedbackSection = () => {
                   <p className="mt-3 text-primary text-center">
                     " {feedback.comment} "
                   </p>
-                  <p className="text-black-300 text-sm flex justify-end items-end mt-3">
+                  <p className="text-black-300 text-sm flex justify-end items-end mt-3 pr-5">
                     {feedback.date}
                   </p>
                 </div>

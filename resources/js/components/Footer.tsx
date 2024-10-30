@@ -19,7 +19,6 @@ const Footer = () => {
             to={"/"}
             className="flex flex-row items-center text-black text-lg gap-1"
           >
-            <img className="w-10 h-10" src={logo} alt="logo" />
             <span>
               <span className="text-black text-center">EFM</span>
               hub.com
