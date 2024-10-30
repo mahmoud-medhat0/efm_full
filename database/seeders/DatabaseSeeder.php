@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\TransactionsApprovePermissions;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolesAndPermissionsSeeder::class,
+            // RolesAndPermissionsSeeder::class,
+            TransactionsApprovePermissions::class,
         ]);
     }
 }

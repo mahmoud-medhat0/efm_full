@@ -162,8 +162,12 @@ class Transaction extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new SetStatusSuccess),
-            (new SetStatusCancelled),
+            (new SetStatusSuccess)->canSee(function ($request) {
+                return auth('admin')->user()->can('ApproveTransaction');
+            }),
+            (new SetStatusCancelled)->canSee(function ($request) {
+                return auth('admin')->user()->can('RejectTransaction');
+            }),
         ];
     }
 }
