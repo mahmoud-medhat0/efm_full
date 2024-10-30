@@ -25,6 +25,7 @@
         "outl1ne/nova-multiselect-field": "^4.5",
         "pragmarx/google2fa-laravel": "^2.2",
         "resham/nova-dependent-filter": "^1.0",
+        "sereny/nova-permissions": "^1.6",
         "spatie/laravel-translatable": "^6.8",
         "spatie/nova-translatable": "^4.0",
         "stevebauman/location": "^7.3",

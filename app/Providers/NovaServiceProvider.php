@@ -69,6 +69,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             new \Bolechen\NovaActivitylog\NovaActivitylog(),
             new \Badinansoft\LanguageSwitch\LanguageSwitch(),
+            new \Sereny\NovaPermissions\NovaPermissions(),
         ];
     }
 

@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Bolechen\NovaActivitylog\Resources\ActivityLog; // Import the Activity model
 
@@ -65,6 +66,8 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+            MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
+            MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
             MorphMany::make('LoginAttempts', 'loginAttempts', LoginAttempt::class),
             HasMany::make('Transactions Executed', 'transactions', Transaction::class),
             MorphMany::make('Activities', 'activities', ActivityLog::class),

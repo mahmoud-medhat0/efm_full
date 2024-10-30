@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0769a9a35e5d72790fedbaed06d0c2f2",
+    "content-hash": "6211584a0e78612354ef35bd73cdb324",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -5396,6 +5396,65 @@
             "time": "2023-02-04T22:18:48+00:00"
         },
         {
+            "name": "sereny/nova-permissions",
+            "version": "v1.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/serenysoft/nova-permissions.git",
+                "reference": "d4309a8208ddfc749dabead97f318beac301611b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/serenysoft/nova-permissions/zipball/d4309a8208ddfc749dabead97f318beac301611b",
+                "reference": "d4309a8208ddfc749dabead97f318beac301611b",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": "^7.3|^8.0",
+                "spatie/laravel-permission": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sereny\\NovaPermissions\\ToolServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sereny\\NovaPermissions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leandro Guindani Gehlen",
+                    "email": "leandrogehlen@gmail.com",
+                    "homepage": "https://github.com/leandrogehlen"
+                }
+            ],
+            "description": "Laravel Nova 4 Grouped Permissions",
+            "keywords": [
+                "laravel",
+                "nova",
+                "permission",
+                "role"
+            ],
+            "support": {
+                "issues": "https://github.com/serenysoft/nova-permission/issues?state=open",
+                "source": "https://github.com/serenysoft/nova-permission"
+            },
+            "time": "2024-07-31T20:01:57+00:00"
+        },
+        {
             "name": "spatie/laravel-activitylog",
             "version": "4.8.0",
             "source": {
@@ -5545,6 +5604,88 @@
                 }
             ],
             "time": "2024-03-20T07:29:11+00:00"
+        },
+        {
+            "name": "spatie/laravel-permission",
+            "version": "6.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/fe973a58b44380d0e8620107259b7bda22f70408",
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/container": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/contracts": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/database": "^8.12|^9.0|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/passport": "^11.0|^12.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.4|^10.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.x-dev",
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 8.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/6.9.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-22T23:04:52+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
