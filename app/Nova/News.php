@@ -49,7 +49,7 @@ class News extends Resource
             ID::make()->sortable(),
             Translatable::make([
                 Text::make('title')->sortable(),
-                TinymceEditor::make('description')->sortable(),
+                TinymceEditor::make('description')->options(['init' => ['language' => app()->getLocale()]])->sortable(),
             ]),
             DateTime::make('published_at')->default(now())->sortable(),
             MorphMany::make('activityLogs','activityLogs', ActivityLog::class)->sortable(),

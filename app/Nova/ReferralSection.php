@@ -46,7 +46,7 @@ class ReferralSection extends Resource
             ID::make()->sortable(),
             Translatable::make([
                 Text::make('Title'),
-                TinymceEditor::make('Description'),
+                TinymceEditor::make('Description')->options(['init' => ['language' => app()->getLocale()]])
             ]),
             Image::make('Image'),
         ];

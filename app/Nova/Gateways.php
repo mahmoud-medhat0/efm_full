@@ -125,7 +125,7 @@ class Gateways extends Resource
             })->sortable(),
             Text::make('Target Deposit', 'target_deposit')->sortable(),
             Translatable::make([
-                TinymceEditor::make('Description Deposit', 'description_deposit')->dependsOn('deposit', function (TinymceEditor $field, NovaRequest $request) {
+                TinymceEditor::make('Description Deposit', 'description_deposit')->options(['init' => ['language' => app()->getLocale()]])->dependsOn('deposit', function (TinymceEditor $field, NovaRequest $request) {
                     if ($request->deposit) {
                         $field->show();
                     } else {
@@ -134,7 +134,7 @@ class Gateways extends Resource
                 }),
             ]),
             Translatable::make([
-                TinymceEditor::make('Description Withdraw', 'description_withdraw')->dependsOn('withdraw', function (TinymceEditor $field, NovaRequest $request) {
+                TinymceEditor::make('Description Withdraw', 'description_withdraw')->options(['init' => ['language' => app()->getLocale()]])->dependsOn('withdraw', function (TinymceEditor $field, NovaRequest $request) {
                     if ($request->withdraw) {
                         $field->show();
                 } else {

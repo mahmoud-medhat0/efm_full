@@ -46,7 +46,7 @@ class Term extends Resource
         return [
             ID::make()->sortable(),
             Translatable::make([
-                TinymceEditor::make('terms'),
+                TinymceEditor::make('terms')->options(['init' => ['language' => app()->getLocale()]]),
             ]),
             MorphMany::make('activityLogs','activityLogs', ActivityLog::class),
         ];
