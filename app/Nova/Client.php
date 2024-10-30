@@ -102,6 +102,7 @@ class Client extends Resource
             BelongsTo::make('Parent', 'parent', Client::class)->displayUsing(function ($value) {
                 return $value->name ?? 'No parent';
             })->sortable()->readonly(),
+            HasMany::make('Referrals', 'referrals', Client::class)->sortable(),
             HasMany::make('Interests', 'interests', InterestCategory::class)->sortable(),
             MorphMany::make('Login Attempts', 'loginAttempts', LoginAttempt::class)->sortable(),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),

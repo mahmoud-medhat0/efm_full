@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             HandleInertiaRequests::class,
+            \Badinansoft\LanguageSwitch\Http\Middleware\LanguageSwitch::class  
         ],
 
         'api' => [

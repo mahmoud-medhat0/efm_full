@@ -604,6 +604,7 @@ class DashboardContrtoller extends Controller
                     'type' => 'referral',
                     'description' => 'Referral reward for ' . auth()->user()->name,
                     'client_id' => auth()->user()->parent->id,
+                    'status' => 'success',
                 ]);
                 auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
             }
