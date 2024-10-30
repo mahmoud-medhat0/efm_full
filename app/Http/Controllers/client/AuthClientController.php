@@ -30,24 +30,34 @@ class AuthClientController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
+
         $ip = Location::get($request->ip());
         $loginAttempt = new LoginAttempt();
         $loginAttempt->ip_address = $request->ip();
-        $loginAttempt->country = $ip? $ip->countryName : null;
-        $loginAttempt->email = Client::where('username', $request->username)->first()!=null ? Client::where('username', $request->username)->first()->username : $request->username;
+        $loginAttempt->country = $ip ? $ip->countryName : null;
+
+        $client = Client::where('username', $request->username)
+                        ->orWhere('email', $request->username)
+                        ->first();
+
+        $loginAttempt->email = $client ? $client->email : $request->username;
         $loginAttempt->authenticatable_type = Client::class;
-        $loginAttempt->authenticatable_id = Client::where('username', $request->username)->first()!=null ? Client::where('username', $request->username)->first()->id : null;    
-        if (Auth::attempt($request->only('username', 'password'))) {
+        $loginAttempt->authenticatable_id = $client ? $client->id : null;
+
+        if ($client && Auth::attempt(['email' => $client->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $loginAttempt->successful = true;
-            $loginAttempt->authenticatable_id = Auth::user()->id;    
+            $loginAttempt->authenticatable_id = Auth::user()->id;
             $loginAttempt->save();
+
             $cookie = Cookie::make('session_id', session()->getId(), 120); // 120 minutes
 
             return response()->json(['message' => 'Login successful', 'user' => Auth::user()], 200)->cookie($cookie);
-     }
+        }
+
         $loginAttempt->successful = false;
         $loginAttempt->save();
+
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
