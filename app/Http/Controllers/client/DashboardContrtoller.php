@@ -104,6 +104,8 @@ class DashboardContrtoller extends Controller
                     'charge_deposit' => $gateway->charge_deposit,
                     'target_deposit' => $gateway->target_deposit,
                     'auto' => $gateway->auto,
+                    'vat_deposit_type' => $gateway->vat_deposit_type,
+                    'vat_deposit' => $gateway->vat_deposit,
                 ];
             }),
             'plan' => $request->plan ?? null,

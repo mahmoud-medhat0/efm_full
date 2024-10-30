@@ -21,6 +21,8 @@ const AddFundsPage = () => {
     const [total, setTotal] = useState(0);
     const [attachment, setAttachment] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [vat, setVat] = useState(0);
+    const [charge, setCharge] = useState(0);
     const copyToClipboard = () => {
         const referralLink = selectedMethod.target_deposit;
         navigator.clipboard
@@ -42,11 +44,19 @@ const AddFundsPage = () => {
                 charge =
                     (parseFloat(amount) * selectedMethod.charge_deposit) / 100;
             } else {
-                charge = parseFloat(selectedMethod.charge_deposit);
+                charge = parseFloat(selectedMethod.charge_deposit ?? "0");
             }
-
+            let vat = 0;
+            if (selectedMethod.vat_deposit_type === "percentage") { 
+                vat =
+                    (parseFloat(amount) * selectedMethod.vat_deposit) / 100;
+            } else {
+                vat = parseFloat(selectedMethod.vat_deposit ?? "0");
+            }
+            setVat(vat);
+            setCharge(charge);
             // Calculate the total by subtracting the charge from the amount
-            const calculatedTotal = parseFloat(amount) + charge;
+            const calculatedTotal = parseFloat(amount) + charge + vat;
 
             // Ensure the total is not negative
             setTotal(calculatedTotal > 0 ? calculatedTotal : 0);
@@ -322,6 +332,24 @@ const AddFundsPage = () => {
                                         />
                                     </div>
                                 )}
+                              <div className="space-y-2 pb-1">
+                                <label
+                                    htmlFor="charge"
+                                    className="text-black text-base"
+                                >
+                                    Charge
+                                </label>
+                                <Input id="charge" value={charge.toFixed(2)} readOnly />
+                              </div>
+                              <div className="space-y-2 pb-1">
+                                <label
+                                    htmlFor="vat"
+                                    className="text-black text-base"
+                                >
+                                    VAT
+                                </label>
+                                <Input id="vat" value={vat.toFixed(2)} readOnly />
+                              </div>
                             <div className="space-y-2 pb-1">
                                 <label
                                     htmlFor="total"

@@ -106,6 +106,23 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->sortable(),
+            Select::make('VAT Deposit Type', 'vat_deposit_type')->dependsOn('deposit', function (Select $field, NovaRequest $request) {
+                if ($request->deposit) {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            })->options([
+                'fixed' => 'Fixed',
+                'percentage' => 'Percentage',
+            ]),
+            Currency::make('VAT Deposit', 'vat_deposit')->dependsOn('vat_deposit_type', function (Currency $field, NovaRequest $request) {
+                if ($request->vat_deposit_type) {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
             Select::make('Charge Type Withdraw', 'charge_type_withdraw')->dependsOn('withdraw', function (Select $field, NovaRequest $request) {
                 if ($request->withdraw) {
                     $field->show();
@@ -113,6 +130,7 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->options([
+                'none' => 'None',
                 'percentage' => 'Percentage',
                 'fixed' => 'Fixed',
             ]),
@@ -123,6 +141,24 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->sortable(),
+            Select::make('VAT Withdraw Type', 'vat_withdraw_type')->dependsOn('withdraw', function (Select $field, NovaRequest $request) {
+                if ($request->withdraw) {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            })->options([
+                'nulll' => 'None',
+                'fixed' => 'Fixed',
+                'percentage' => 'Percentage',
+            ]),
+            Currency::make('VAT Withdraw', 'vat_withdraw')->dependsOn('vat_withdraw_type', function (Currency $field, NovaRequest $request) {
+                if ($request->vat_withdraw_type) {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
             Text::make('Target Deposit', 'target_deposit')->sortable(),
             Translatable::make([
                 TinymceEditor::make('Description Deposit', 'description_deposit')->options(['init' => ['language' => app()->getLocale()]])->dependsOn('deposit', function (TinymceEditor $field, NovaRequest $request) {
