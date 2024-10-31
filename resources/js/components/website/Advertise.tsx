@@ -46,8 +46,7 @@ const Advertise = () => {
                             alt="Owner"
                             style={{
                                 width: '100%',
-                                height: 'auto',
-                                maxWidth: '400px',
+                                height: '100%',
                                 objectFit: 'cover'
                             }}
                             className='pb-3'
