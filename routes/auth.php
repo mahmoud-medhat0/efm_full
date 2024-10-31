@@ -14,6 +14,6 @@ Route::group(['prefix' => 'client'], function () {
  
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
- auth()->user()->update(['email_cerified=>1']);
-    return redirect('/home');
+    auth()->user()->update(['email_verified' => 1,'email_verified_at'=>now()]);
+    return redirect(route('client.dashboard'));
 })->middleware(['auth', 'signed'])->name('verification.verify');
