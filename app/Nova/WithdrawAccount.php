@@ -37,7 +37,7 @@ class WithdrawAccount extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','gateway.name','client.name','data'
     ];
 
     /**

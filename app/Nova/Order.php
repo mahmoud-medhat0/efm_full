@@ -46,7 +46,7 @@ class Order extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','status','ApprovedBy.name','provider.name','service.name','RejectionCause.name','link','order_type','target_amount','current_amount','Price','last_action','LastActionBy.name','data','created_at','categories.name'
     ];
 
     /**

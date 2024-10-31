@@ -41,7 +41,7 @@ class Task extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','status','points_reward','link','ip','user_agent','country','order.order_id','client.name','service.name','banAttemps.cause'
     ];
 
     /**

@@ -32,7 +32,7 @@ class BanAttemp extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','Cause','client.name','client.email','task.id'
     ];
 
     /**

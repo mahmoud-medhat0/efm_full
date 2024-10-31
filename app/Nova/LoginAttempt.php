@@ -34,7 +34,7 @@ class LoginAttempt extends Resource
      * @var array
      */
     public static $search = [
-        'id','authenticatable.name','email'
+        'id','ip_address','country','email','successful','authenticatable.name','created_at'
     ];
 
     /**
