@@ -13,17 +13,19 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphMany;
+use App\Nova\Actions\ImpersonateClient;
+use App\Nova\Filters\Client\ParentFilter;
 use Outl1ne\MultiselectField\Multiselect;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Naif\ToggleSwitchField\ToggleSwitchField;
-use App\Models\InterestCategory as InterestCategoryModel;
-use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\BelongsTo;
-use App\Nova\Filters\Client\ParentFilter;
+use App\Models\InterestCategory as InterestCategoryModel;
+
 class Client extends Resource
 {
     /**
@@ -156,6 +158,10 @@ class Client extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new ImpersonateClient)->canSee(function ($request) {
+                return auth('admin')->user()->can('impersonate-client');
+            }),
+        ];
     }
 }

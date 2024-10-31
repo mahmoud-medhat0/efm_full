@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TransactionsApprovePermissions;
 use Database\Seeders\AddPermissionviewAnyActivitylog;
+use Database\Seeders\CanImpersonateClient;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,7 +18,8 @@ class DatabaseSeeder extends Seeder
             // RolesAndPermissionsSeeder::class,
             // TransactionsApprovePermissions::class,
             // AddPermissionviewAnyActivitylog::class,
-            ManualFieldPermission::class,
+            // ManualFieldPermission::class,
+            CanImpersonateClient::class,
         ]);
     }
 }
