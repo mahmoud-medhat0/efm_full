@@ -653,7 +653,9 @@ li.text-lg.duration-200 a:hover::before,
   font-size: 0.8em;
   color: #666;
 }
-
+footer {
+  margin-top: auto;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

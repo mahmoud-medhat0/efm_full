@@ -2,19 +2,23 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Naif\ToggleSwitchField\ToggleSwitchField;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
+use App\Nova\Filters\Task\PaidFilter;
+use App\Nova\Filters\Task\OrderFilter;
+use App\Nova\Filters\Task\ClientFilter;
+use App\Nova\Filters\Task\StatusFilter;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Naif\ToggleSwitchField\ToggleSwitchField;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-
+use App\Nova\Filters\Task\ServiceFilter;
 class Task extends Resource
 {
     /**
@@ -96,7 +100,13 @@ class Task extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new StatusFilter,
+            new PaidFilter,
+            new OrderFilter,
+            new ClientFilter,
+            new ServiceFilter,
+        ];
     }
 
     /**

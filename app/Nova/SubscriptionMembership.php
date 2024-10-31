@@ -2,14 +2,19 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\BelongsTo;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\SubscriptionMembership\ClientFilter;
+use App\Nova\Filters\SubscriptionMembership\StatusFilter;
+use App\Nova\Filters\SubscriptionMembership\CreatedAtEndFilter;
+use App\Nova\Filters\SubscriptionMembership\CreatedAtEndtFilter;
+use App\Nova\Filters\SubscriptionMembership\CreatedAtStartFilter;
 
 class SubscriptionMembership extends Resource
 {
@@ -79,6 +84,8 @@ class SubscriptionMembership extends Resource
                 }
             })->sortable(),
             Boolean::make('Is Lifetime','is_lifetime')->sortable(),
+            DateTime::make('created_at')->readonly()->sortable(),
+            DateTime::make('updated_at')->readonly()->sortable(),
         ];
     }
 
@@ -101,7 +108,12 @@ class SubscriptionMembership extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new ClientFilter,
+            new CreatedAtStartFilter,
+            new CreatedAtEndFilter,
+            new StatusFilter,   
+        ];
     }
 
     /**

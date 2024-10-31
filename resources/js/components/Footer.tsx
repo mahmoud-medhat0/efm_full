@@ -12,9 +12,9 @@ import threads from "../assets/media/threads.svg";
 
 const Footer = () => {
   return (
-    <footer className="border-t-[1px] border-[#323C52] container-light">
-      <div className="container">
-        <div className="flex flex-row items-center mb-16 pt-16 max-sm:flex-col max-sm:gap-2">
+    <footer className="border-t-[1px] border-[#323C52] container-light w-full">
+      <div className="container mx-auto">
+        <div className="flex flex-col sm:flex-row items-center mb-16 pt-16 gap-2">
           <Link
             to={"/"}
             className="flex flex-row items-center text-black text-lg gap-1"
@@ -26,7 +26,7 @@ const Footer = () => {
           </Link>
 
           <div className="h-[2px] mx-5 bg-[#323C52] flex-1"></div>
-          <div className="grid grid-cols-8 max-sm:grid-cols-4 gap-5">
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-5">
             <Link
               to={"/"}
               disabled={true}
@@ -80,7 +80,7 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-        {/* <div className="w-full grid grid-cols-4 max-sm:grid-cols-2 gap-5 text-black text-lg mb-20">
+        {/* <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-5 text-black text-lg mb-20">
           <div className="flex flex-col gap-y-4">
             <Link
               to={"/"}
@@ -202,12 +202,12 @@ const Footer = () => {
           </div>
         </div> */}
         <div className="border-t-[1px] border-[#323C52]" />
-        <div className="flex flex-row justify-between pt-2 text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row justify-between pt-2 text-sm text-gray-500">
           <h5>
             Copyright © 2024 <span className="text-primary">EFM</span>hub.com. All rights
             reserved.
           </h5>
-          <p>
+          <p className="flex flex-col sm:flex-row gap-2">
             <Link className="hover:text-primary" to={"/"}>
               Privacy Notice
             </Link>{" "}

@@ -16,6 +16,8 @@ class Order extends Model
     protected $guarded = [];
     protected $casts = [
         'last_action_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'created_at' => 'datetime',
     ];
     protected $appends = ['service_name'];
     public function getActivitylogOptions(): LogOptions
@@ -59,7 +61,7 @@ class Order extends Model
     {
         return $this->belongsToMany(InterestCategory::class, 'order_categories');
     }
-    public function getCreatedAtAttribute($value)
+    public function getCreatedAtHumanAttribute($value)
     {
         return Carbon::parse($value)->format('Y-m-d H:i:s A');
     }

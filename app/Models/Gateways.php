@@ -39,5 +39,13 @@ class Gateways extends Model
     {
         return $this->hasMany(Transaction::class,'gateway_id','id');
     }
+    public function clientFields()
+    {
+        return $this->hasMany(ClientGatewayField::class,'gateway_id','id');
+    }
+    // public function agentFields()
+    // {
+    //     return $this->hasMany(ManualField::class,'gateway_id','id');
+    // }
 }
 

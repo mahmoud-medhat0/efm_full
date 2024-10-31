@@ -6,17 +6,25 @@ use Carbon\Carbon;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use App\Nova\Actions\SetStatusSuccess;
+use Illuminate\Support\Facades\Storage;
 use App\Nova\Actions\SetStatusCancelled;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\Transaction\TypeFilter;
+use App\Nova\Filters\Transaction\ClientFilter;
+use App\Nova\Filters\Transaction\StatusFilter;
+use App\Nova\Filters\Transaction\GatewayFilter;
+use App\Nova\Filters\Transaction\TxnTypeFilter;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use Laravel\Nova\Fields\Image;
-use Illuminate\Support\Facades\Storage;
+use App\Nova\Filters\Transaction\CreatedAtEndFilter;
+use App\Nova\Filters\Transaction\CreatedAtStartFilter;
+
 class Transaction extends Resource
 {
     /**
@@ -90,6 +98,10 @@ class Transaction extends Resource
             })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
             Text::make('Tnx')->readonly()->sortable(),
             Text::make('Note')->sortable(),
+            Text::make('Invoice ID')->sortable(),
+            Text::make('Invoice Key')->sortable(),
+            Text::make('Payment Method')->sortable(),
+            Text::make('Reference Number')->sortable(),
             Text::make('Description')->sortable(),
             Currency::make('Amount')->displayUsing(function ($amount) {
                 return $amount . ' ' . 'EGP';
@@ -139,7 +151,15 @@ class Transaction extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new StatusFilter,
+            new ClientFilter,
+            new TypeFilter,
+            new TxnTypeFilter,
+            new CreatedAtStartFilter,
+            new CreatedAtEndFilter,
+            new GatewayFilter,
+        ];
     }
 
     /**

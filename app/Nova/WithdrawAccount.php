@@ -4,13 +4,15 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Code;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\MorphMany;
 use App\Models\Gateways as GatewayModel;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\WithdrawAccount\ClientFilter;
+use App\Nova\Filters\WithdrawAccount\GatewayFilter;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 
 class WithdrawAccount extends Resource
@@ -108,7 +110,10 @@ class WithdrawAccount extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new GatewayFilter,
+            new ClientFilter,
+        ];
     }
 
     /**

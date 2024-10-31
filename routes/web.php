@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TelegramController;
-use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\FileController;
+use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Http\Controllers\TelegramController;
+use App\Http\Controllers\FawaterakController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +25,7 @@ Route::get('/set-webhook', function () {
     return $response ? 'Webhook set successfully' : 'Failed to set webhook';
 });
 Route::post('/webhook/telegram/{token}', [TelegramController::class, 'handleWebhook'])->withoutMiddleware('verifyCsrfToken');
-
+Route::post('/webhook/fawaterk/success',[FawaterakController::class,'successhook'])->withoutMiddleware('verifyCsrfToken');
 Route::get('/storage/attachments/private/{filename}', [FileController::class, 'showPrivateFile'])->name('private.files');
 require __DIR__ . '/client.php';
 require __DIR__ . '/auth.php';

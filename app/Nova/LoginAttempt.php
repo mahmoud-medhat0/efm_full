@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\MorphTo;
 use App\Nova\Filters\AuthenticableFilter;
 use App\Nova\Filters\AuthenticableUsers;
 use Laravel\Nova\Fields\DateTime;
+use App\Nova\Filters\LoginAttemp\SuccessFullFilter;
 class LoginAttempt extends Resource
 {
     /**
@@ -33,7 +34,7 @@ class LoginAttempt extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','authenticatable.name','email'
     ];
 
     /**
@@ -87,6 +88,7 @@ class LoginAttempt extends Resource
     {
         return [
             new AuthenticableFilter,
+            new SuccessFullFilter,
             // new AuthenticableUsers,
         ];
     }

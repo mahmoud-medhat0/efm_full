@@ -90,7 +90,7 @@ class DashboardContrtoller extends Controller
     public function deposit(Request $request)
     {
         $secretKey = "bd07a49cd84f877bcb4861c567e8bcb12e206c860aa963ba92";
-        $queryParam = "Domain=15b7-196-133-116-223.ngrok-free.app&ProviderKey=FAWATERAK.1154";
+        $queryParam = "Domain=https://56c7-196-133-114-138.ngrok-free.app&ProviderKey=FAWATERAK.1154";
         $hash = hash_hmac( 'sha256' , $queryParam , $secretKey ,false);
         return Inertia::render('settings/pages/AddFunds.tsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) use ($hash) {
@@ -274,7 +274,7 @@ class DashboardContrtoller extends Controller
     }
     public function LogTransaction()
     {
-        $transactions = Transaction::where('client_id', auth()->user()->id)->get();
+        $transactions = Transaction::where('client_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
         return Inertia::render('settings/pages/Userlogs/TransactionLogs.tsx', [
             'transactions' => $transactions
         ]);
@@ -295,7 +295,7 @@ class DashboardContrtoller extends Controller
     }
     public function LogDeposit()
     {
-        $deposits = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->get();
+        $deposits = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->orderBy('created_at', 'desc')->get();
         return Inertia::render('settings/pages/Userlogs/DepositLogs.tsx', [
             'deposits' => $deposits
         ]);

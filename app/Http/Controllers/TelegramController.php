@@ -166,6 +166,7 @@ class TelegramController extends Controller
                     $this->sendPhoto($chatId, $image, $text,null,'HTML');
                     break;
                 case '/count':
+                    $this->deleteMessage($chatId,$message_id);
                     $registeredUsers = ClientUser::count();
                     $activeUsers = ClientUser::whereNotNull('activator_count')->count();
                     $this->sendMessage($chatId, "Number of Users: " . $registeredUsers . "\nNumber of Active Users: " . $activeUsers);

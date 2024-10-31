@@ -185,6 +185,8 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->sortable(),
+            // HasMany::make('Client Fields', 'clientFields', ManualField::class)->sortable(),
+            // HasMany::make('Agent Fields', 'agentFields', ManualField::class)->sortable(),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
             HasMany::make('Transactions', 'transactions', Transaction::class)->sortable(),
             MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),

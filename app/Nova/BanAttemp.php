@@ -7,7 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
-
+use App\Nova\Filters\BanAttemp\ClientFilter;
+use App\Nova\Filters\BanAttemp\TaskFilter;
+use App\Nova\Filters\BanAttemp\CausrFilter;
 class BanAttemp extends Resource
 {
     /**
@@ -69,7 +71,11 @@ class BanAttemp extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new ClientFilter,
+            new TaskFilter, 
+            new CausrFilter,
+        ];
     }
 
     /**

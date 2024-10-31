@@ -2,22 +2,28 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\BelongsTo;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\URL;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
-use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use Illuminate\Database\Eloquent\Model;
-use App\Jobs\GenerateOrderTasks;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
+use App\Jobs\GenerateOrderTasks;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
+use Illuminate\Database\Eloquent\Model;
+use App\Nova\Filters\Order\StatusFilter;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\Order\ApprovedByFilter;
+use App\Nova\Filters\Order\ServiceFilter;   
+use App\Nova\Filters\Order\ProvidorClientFilter;
+use App\Nova\Filters\Order\RejectionCauseFilter;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+
 class Order extends Resource
 {
     /**
@@ -183,7 +189,13 @@ class Order extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new ApprovedByFilter,
+            new StatusFilter,
+            new ProvidorClientFilter,       
+            new ServiceFilter,
+            new RejectionCauseFilter,
+        ];
     }
 
     /**

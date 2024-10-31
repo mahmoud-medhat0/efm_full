@@ -101,14 +101,42 @@ const AddFundsPage = () => {
             if (selectedMethod.auto) {
                 const script = document.createElement("script");
                 script.src =
-                    "https://app.fawaterk.com/fawaterkPlugin/fawaterkPlugin.min.js";
-                script.async = true;
+                    "https://staging.fawaterk.com/fawaterkPlugin/fawaterkPlugin.min.js";
                 document.body.appendChild(script);
 
                 script.onload = () => {
+                    // Create a modal container
+                    const modal = document.createElement("div");
+                    modal.id = "fawaterkModal";
+                    modal.style.position = "fixed";
+                    modal.style.top = "0";
+                    modal.style.left = "0";
+                    modal.style.width = "100%";
+                    modal.style.height = "100%";
+                    modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                    modal.style.display = "flex";
+                    modal.style.alignItems = "center";
+                    modal.style.justifyContent = "center";
+                    modal.style.zIndex = "1000";
+
+                    // Create a content container for the iframe
+                    const content = document.createElement("div");
+                    content.style.backgroundColor = "white";
+                    content.style.padding = "20px";
+                    content.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.5)";
+                    content.style.width = "80%";
+                    content.style.height = "80%";
+                    content.style.overflow = "auto";
+
+                    // Append the content container to the modal
+                    modal.appendChild(content);
+                    document.body.appendChild(modal);
+
+                    // Set the fawaterkDivId to the content container
                     const fawaterkDiv = document.createElement("div");
                     fawaterkDiv.id = "fawaterkDivId";
-                    document.body.appendChild(fawaterkDiv);
+                    content.appendChild(fawaterkDiv);
+
                     setIsLoading(false);
 
                     const pluginConfig = {
@@ -128,20 +156,24 @@ const AddFundsPage = () => {
                                 phone: customer.phone,
                             },
                             redirectionUrls: {
-                                successUrl: "https://dev.fawaterk.com/success",
-                                failUrl: "https://dev.fawaterk.com/fail",
-                                pendingUrl: "https://dev.fawaterk.com/pending",
+                                successUrl: "https://56c7-196-133-114-138.ngrok-free.app/dashboard/logs/deposit",
+                                // failUrl: "https://56c7-196-133-114-138.ngrok-free.app/dashboard/logs/deposit",
+                                pendingUrl: "https://56c7-196-133-114-138.ngrok-free.app/dashboard/logs/deposit",
+                                // cancelUrl: "https://56c7-196-133-114-138.ngrok-free.app/dashboard/logs/deposit",
                             },
                             cartItems: [
                                 {
-                                    name: "Deposit",
+                                    name: "Deposit - " + customer.name,
                                     price: total.toFixed(2),
                                     quantity: "1",
                                 },
                             ],
                             payLoad: {
-                                custom_field1: "xyz",
-                                custom_field2: "xyz2",
+                                client_id: customer.id,
+                                amount: amount.toFixed(2),
+                                total: total.toFixed(2),
+                                payment_method: selectedMethod.id,
+                                fee: charge.toFixed(2) + vat.toFixed(2),
                             },
                         },
                     };

@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // RolesAndPermissionsSeeder::class,
             // TransactionsApprovePermissions::class,
-            AddPermissionviewAnyActivitylog::class,
+            // AddPermissionviewAnyActivitylog::class,
+            ManualFieldPermission::class,
         ]);
     }
 }

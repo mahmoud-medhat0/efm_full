@@ -23,6 +23,7 @@ use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Filters\Client\ParentFilter;
 class Client extends Resource
 {
     /**
@@ -131,7 +132,9 @@ class Client extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new ParentFilter,
+        ];
     }
 
     /**
