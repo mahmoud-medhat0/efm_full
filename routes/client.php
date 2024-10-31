@@ -7,7 +7,7 @@ use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\AuthClientController;
 use App\Http\Controllers\client\DashboardContrtoller;
 use App\Http\Middleware\RedirectRoRegsiter;
-Route::get('/', [HomeController::class, 'index'])->middleware(RedirectRoRegsiter::class);
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
 Route::get('email/verify', [HomeController::class, 'verifyEmail'])->name('verification.notice');
 
