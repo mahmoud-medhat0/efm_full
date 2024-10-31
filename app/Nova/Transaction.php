@@ -162,6 +162,13 @@ class Transaction extends Resource
         ];
     }
 
+    public static function afterCreateValidation(NovaRequest $request, $validator)
+    {
+        dd($request->all());
+        $validator->after(function ($validator) {
+            $validator->errors()->add('status', 'The status field is required.');
+        });
+    }
     /**
      * Get the lenses available for the resource.
      *

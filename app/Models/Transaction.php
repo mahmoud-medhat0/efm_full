@@ -41,4 +41,20 @@ class Transaction extends Model
     {
         return $this->where('type', 'withdrawal')->get();
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($transaction) {
+            if (empty($transaction->tnx)) {
+                $transaction->tnx = self::generateTransactionNumber();
+            }
+        });
+    }
+
+    protected static function generateTransactionNumber()
+    {
+        return 'TNX-' . strtoupper(uniqid());
+    }
 }
