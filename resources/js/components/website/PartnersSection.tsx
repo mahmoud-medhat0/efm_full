@@ -13,7 +13,7 @@ const PartnersSection = () => {
   return (
     <section style={{   boxShadow: ' 0px 5px 10px #be9e88'  }} className='w-full container-dark pt-5'>
       <div className="text-center mb-16">
-        <h2 className="text-5xl text-gold mb-8 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag">Our Partners in Success!</span></h2>
+        <h2 className="text-5xl text-gold mb-8 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag">{translate('partners.our-partners-in-success')}</span></h2>
       </div>
       <div className="flex flex-col justify-between items-center gap-3 max-sm:gap-0">
         <div className="grid grid-cols-6 max-sm:grid-cols-4 gap-5 mb-8">

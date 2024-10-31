@@ -13,7 +13,7 @@ export default function About() {
           <img src={`${app_url}/storage/${aboutSections.image}`} alt="Owner" style={{width: '100%', height: 'auto'}} className='pb-5'/>
         </div>
         <div className='text-container'>
-          <p className='text-black pb-3 ' dir={locale === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{__html: aboutSections.description[locale]}}></p>
+          <p className={`text-black pb-3 ${locale==='ar'?'pr-5':''}`} dir={locale === 'ar' ? 'rtl' : 'ltr'} dangerouslySetInnerHTML={{__html: aboutSections.description[locale]}}></p>
         </div>
       </div>
       <style>

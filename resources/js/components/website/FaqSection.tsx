@@ -19,7 +19,7 @@ const FaqSection = () => {
     >
       <div className="text-center">
       <h3 className="text-gold max-sm:text-center" style={{ fontSize: '4em'}}>
-        Frequently Asked <span className="mark-zigzag">Questions</span>!
+        {translate('faq.frequently-asked')} <span className="mark-zigzag">{translate('faq.questions')}</span>!
         </h3>
       </div>
       <div className="text-center text-gold">
@@ -31,7 +31,7 @@ const FaqSection = () => {
           />
         ))}
         <p className="text-gold px-5 mt-5 text-center">
-          Have more questions?{" "}
+          {translate('faq.have-more-questions')}
           {/* <Link className="text-primary underline" to={"/contact"}>
             Contact Us
           </Link> */}

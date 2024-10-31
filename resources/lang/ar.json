@@ -64,5 +64,17 @@
         "logo":"logo",
         "about-us": "من نحن",
         "membership": "العضوية"
+    },
+    "faq": {
+        "frequently-asked": "الأسئلة الأكثر",
+        "questions": "شيوعا",
+        "have-more-questions": "لديك أسئلة أخرى؟"
+    },
+    "feedback": {
+        "our-feedbacks": "آراءنا",
+        "some-of-our-feedbacks": "بعض آراءنا من مختلف العملاء والشركات!"
+    },
+    "partners": {
+        "our-partners-in-success": "شركاؤنا في النجاح"
     }
 }

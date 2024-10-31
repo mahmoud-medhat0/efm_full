@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import { usePage } from "@inertiajs/inertia-react";
+import { translate } from "../../utils/functions";
 
 const FeedbackSection = () => {
   const { props } = usePage();
@@ -34,9 +35,9 @@ const FeedbackSection = () => {
   return (
     <section id="feedbacks" className="h-auto pt-5 container-light"   style={{ boxShadow: ' 0px 5px 10px #be9e88'}} >
       <div className="text-center mb-16">
-        <h2 className="text-5xl text-black mb-6 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag-black">Our Feedbacks!</span></h2>
+        <h2 className="text-5xl text-black mb-6 text-center" style={{ fontSize: '4em'}}><span className="mark-zigzag-black">{translate('feedback.our-feedbacks')}</span></h2>
         <p className="text-xl text-black ">
-          Some of our feedbacks from different clients and companies!
+          {translate('feedback.some-of-our-feedbacks')}
         </p>
       </div>
       <Slider

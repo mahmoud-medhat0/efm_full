@@ -64,5 +64,17 @@
         "logo":"logo",
         "about-us": "About Us",
         "membership": "Membership"
+    },
+    "faq": {
+        "frequently-asked": "Frequently Asked",
+        "questions": "Questions",
+        "have-more-questions": "Have more questions?"
+    },
+    "feedback": {
+        "our-feedbacks": "Our Feedbacks",
+        "some-of-our-feedbacks": "Some of our feedbacks from different clients and companies!"
+    },
+    "partners": {
+        "our-partners-in-success": "Our Partners in Success!"
     }
 }
