@@ -153,7 +153,9 @@ class HomeController extends Controller
             ->orderBy('referrals_count', 'desc')
             ->take(100)
             ->get();
-        $clients = Client::count();
+        $clients = Client::whereHas('subscriptionMemberships', function ($query) {
+            $query->where('status', 'active');
+        })->count();
         return Inertia::render('pages/ReferralContest.tsx', [
             'referralsLast24Hours' => $referralsLast24Hours,
             'referralsLast24HoursTop100' => $referralsLast24HoursTop100->toArray(),
