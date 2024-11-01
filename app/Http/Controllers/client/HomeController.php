@@ -67,47 +67,89 @@ class HomeController extends Controller
 
     public function referralContest()
     {
-        $referralsLast24Hours = Client::select('name')
+        $referralsLast24Hours = Client::select('name')->whereHas('subscriptionMemberships', function ($query) {
+            $query->where('status', 'active');
+        })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDay());
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->get();
         $referralsLast24HoursTop100 = Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDay());
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->take(100)
             ->get();
         $referralsLast7Days= Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDays(7));
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->get();
         $referralsLast7DaysTop100 = Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDays(7));
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->take(100)
             ->get();
         $referralsLast30Days = Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDays(30));
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->get();
         $referralsLast30DaysTop100 = Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
             ->withCount(['referrals' => function ($query) {
                 $query->where('created_at', '>=', now()->subDays(30));
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
             }])
             ->orderBy('referrals_count', 'desc')
             ->take(100)
             ->get();
         $referralsTop100 = Client::select('name')
-            ->withCount(['referrals'])
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
+            ->withCount(['referrals' => function ($query) {
+                $query->whereHas('subscriptionMemberships', function ($query) {
+                    $query->where('status', 'active');
+                });
+            }])
             ->orderBy('referrals_count', 'desc')
             ->take(100)
             ->get();
