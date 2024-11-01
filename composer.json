@@ -22,7 +22,7 @@
         "laravel/tinker": "^2.8",
         "murdercode/nova4-tinymce-editor": "^1.2",
         "naif/toggle-switch-field": "^1.2",
-        "outl1ne/nova-multiselect-field": "^4.5",
+        "outl1ne/nova-multiselect-field": "^4.6",
         "pragmarx/google2fa-laravel": "^2.2",
         "resham/nova-dependent-filter": "^1.0",
         "sereny/nova-permissions": "^1.6",

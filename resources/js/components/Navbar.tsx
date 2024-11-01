@@ -46,7 +46,7 @@ const Navbar = () => {
                         <ProfileBtn />
                     </div>
                 )}
-                <button
+                {/* <button
                     title={"navbar.lang"}
                     className={`language-button duration-100 ${page.props.lang === "en" ? "english" : "arabic"
                         }`}
@@ -59,7 +59,7 @@ const Navbar = () => {
                     ) : (
                 <img className="w-6" src={UAE} alt="arabic" />
               )}
-            </button>
+            </button> */}
 
             </div>
             <ul className="flex items-center justify-between max-sm:hidden">
@@ -79,14 +79,14 @@ const Navbar = () => {
                         {translate("home.about-us")}
                     </Link>
                 </li>
-                {/* <li className="text-lg duration-200">
+                <li className="text-lg duration-200">
                     <Link
                         className="text-gold px-3 py-2"
                         href={route('client.referral-contest')}
                     >
                         {translate("home.referral-contest")}
                     </Link>
-                </li> */}
+                </li>
                 <li className="text-lg duration-200">
                     <Link href={route('client.home') + '#membership'} className="text-gold px-3 py-2">
                         {translate("home.membership")}

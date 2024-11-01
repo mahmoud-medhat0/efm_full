@@ -1,95 +1,47 @@
 import { useState } from "react";
 import { Tab } from "@headlessui/react";
+import { translate } from "../../utils/functions";
+import { usePage } from "@inertiajs/inertia-react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tabs() {
+export default function Tabs({referralsLast24Hours, referralsLast7Days, referralsLast30Days, referralsLast24HoursTop100, referralsLast7DaysTop100, referralsLast30DaysTop100, referralsTop100}: {referralsLast24Hours: any, referralsLast7Days: any, referralsLast30Days: any, referralsLast24HoursTop100: any, referralsLast7DaysTop100: any, referralsLast30DaysTop100: any, referralsTop100: any}) {
+  const { lang: locale } = usePage().props;
   const [categories] = useState({
-    "The Top 100": [
-      {
-        id: 1,
-        username: "Modatrade3",
-        referrals24: 473.0,
-        referrals7: 1817.0,
-        referrals30: 11215.0,
-      },
-      {
-        id: 2,
-        username: "Engmorad",
-        referrals24: 88.0,
-        referrals7: 1017.0,
-        referrals30: 5215.0,
-      },
-      {
-        id: 3,
-        username: "helalnet",
-        referrals24: 84.0,
-        referrals7: 817.0,
-        referrals30: 3215.0,
-      },
-      {
-        id: 4,
-        username: "coinpayu",
-        referrals24: 60.0,
-        referrals7: 117.0,
-        referrals30: 1215.0,
-      },
-      {
-        id: 5,
-        username: "Abduyq",
-        referrals24: 54.0,
-        referrals7: 1782.0,
-        referrals30: 11215.0,
-      },
-      {
-        id: 6,
-        username: "abdomohamed",
-        referrals24: 48.0,
-        referrals7: 1114.0,
-        referrals30: 11215.0,
-      },
-    ],
-    "Current Contests": [
-      {
-        id: 1,
-        username: "Modatrade3",
-        referrals24: 473.0,
-        referrals7: 3412.0,
-        referrals30: 7211.0,
-      },
-      {
-        id: 2,
-        username: "Modatrade3",
-        referrals24: 473.0,
-        referrals7: 417.0,
-        referrals30: 4115.0,
-      },
-    ],
-    "Our Winners": [
-      {
-        id: 1,
-        username: "Modatrade3",
-        referrals24: 473.0,
-        referrals7: 1817.0,
-        referrals30: 11215.0,
-      },
-      {
-        id: 2,
-        username: "Modatrade3",
-        referrals24: 473.0,
-        referrals7: 1817.0,
-        referrals30: 11215.0,
-      },
-    ],
+    "Last 24 Hours": referralsLast24Hours.map((referral, index) => {
+      return {
+        id: index + 1,
+        username: referral.name,
+      };
+    }),
+    "Last 7 Days": referralsLast7Days.map((referral, index) => {
+      return {
+        id: index + 1,
+        username: referral.name,
+      };
+    }),
+    "Last 30 Days": referralsLast30Days.map((referral, index) => {
+      return {
+        id: index + 1,
+        username: referral.name,
+      };
+    }),
+    "The Top 100": referralsTop100.map((referral, index) => {
+      return {
+        id: index + 1,
+        username: referral.name,
+      };
+    }),
   });
 
   return (
-    <div className="w-full px-2 py-20 sm:px-0">
+    <div className="w-full px-2 py-12 sm:px-0 text-center">
       <Tab.Group>
-        <Tab.List className="max-w-xl mb-6 flex space-x-1 rounded-xl bg-background/5 p-1 max-sm:flex-col">
-          {Object.keys(categories).map((category) => (
+        <div className="flex items-center justify-center">
+          <Tab.List className="mb-6 flex space-x-1 rounded-xl bg-background/5 p-1 max-sm:flex-col text-center" style={{width: "100%"}}>
+            {Object.keys(categories).map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
@@ -97,53 +49,43 @@ export default function Tabs() {
                   "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
                   "ring-white/60 ring-offset-2 focus:outline-none focus:ring-2 duration-150",
                   selected
-                    ? "bg-white text-black font-medium shadow"
+                    ? "bg-white/100 text-black font-medium shadow"
                     : "text-primary hover:bg-white/[0.12] hover:text-primary/90"
                 )
               }
             >
-              {category}
+              {translate("home."+category)}
             </Tab>
-          ))}
-        </Tab.List>
-        <Tab.Panels className="mt-2">
+            ))}
+          </Tab.List>
+        </div>
+        <Tab.Panels className="mt-2 text-center">
           {Object.values(categories).map((winners, idx) => (
             <Tab.Panel
               key={idx}
               className={classNames(
-                "rounded-md bg-white p-3",
-                "focus:outline-none"
+                "rounded-md bg-white p-3 text-center",
+                "focus:outline-none text-center"
               )}
             >
-              <table className="w-full">
-                <thead className="border-b border-black font-normal">
+              <table className="w-full border-collapse text-center" dir={locale === "ar" ? "rtl" : "ltr"}>
+                <thead className="border-b-2 border-gray-300">
                   <tr>
-                    <th className="text-left py-3 max-sm:text-xs">Position</th>
-                    <th className="text-left py-3 max-sm:text-xs">Username</th>
-                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
-                      Referrals in 24 hours
-                    </th>
-                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
-                      Referrals in 7 days
-                    </th>
-                    <th className="text-left py-3 text-primary cursor-pointer max-sm:text-xs">
-                      Referrals in 30 days
-                    </th>
+                    <th className={`text-center py-3 px-2 max-sm:text-xs font-semibold text-gray-700`}>{translate("home.position")}</th>
+                    <th className={`text-center py-3 px-2 max-sm:text-xs font-semibold text-gray-700`}>{translate("home.username")}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-blue-100">
-                  {winners.map((winner, idx) => (
-                    <tr
-                      key={winner.id}
-                      className={idx % 2 === 1 ? "bg-white" : "bg-blue-100"}
-                    >
-                      <td className="py-3 px-2 max-sm:text-xs">{winner.id}</td>
-                      <td className="py-3 px-2 max-sm:text-xs">{winner.username}</td>
-                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals24}</td>
-                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals7}</td>
-                      <td className="py-3 px-2 max-sm:text-xs">{winner.referrals30}</td>
-                    </tr>
-                  ))}
+                <tbody className="divide-y divide-gray-200">
+                  {winners.map((winner, idx) => {
+                    return (
+                      <tr key={winner.id}
+                        className={idx % 2 === 1 ? "bg-gray-50" : "bg-white"}
+                      >
+                        <td className="py-3 px-2 max-sm:text-xs text-gray-600">{winner.id ? winner.id : idx + 1}</td>
+                        <td className="py-3 px-2 max-sm:text-xs text-gray-600">{winner.username ? winner.username : "-"}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </Tab.Panel>

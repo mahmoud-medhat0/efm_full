@@ -16,7 +16,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Murdercode\TinymceEditor\TinymceEditor;
 use Naif\ToggleSwitchField\ToggleSwitchField;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-
+use Outl1ne\MultiselectField\Multiselect;
+use App\Models\ManualField as ManualFieldModel;
 class Gateways extends Resource
 {
     /**
@@ -185,8 +186,8 @@ class Gateways extends Resource
                     $field->hide();
                 }
             })->sortable(),
-            // HasMany::make('Client Fields', 'clientFields', ManualField::class)->sortable(),
-            // HasMany::make('Agent Fields', 'agentFields', ManualField::class)->sortable(),
+            Multiselect::make('Client Fields', 'client_fields')->options(ManualFieldModel::all()->pluck('name', 'id'))->sortable(),
+            Multiselect::make('Agent Fields', 'agend_fields')->options(ManualFieldModel::all()->pluck('name', 'id'))->sortable(),
             HasMany::make('Withdraw Accounts', 'withdrawAccounts', WithdrawAccount::class)->sortable(),
             HasMany::make('Transactions', 'transactions', Transaction::class)->sortable(),
             MorphMany::make('Activity Log', 'activityLogs', ActivityLog::class)->sortable(),

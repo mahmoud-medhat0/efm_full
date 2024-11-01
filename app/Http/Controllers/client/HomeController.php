@@ -24,6 +24,7 @@ use App\Models\Aboutsection;
 use App\Models\MembershipSection;
 use App\Models\AdvertiseSection;
 use App\Models\ReferralSection;
+
 class HomeController extends Controller
 {
     public function setLang($lang)
@@ -66,7 +67,61 @@ class HomeController extends Controller
 
     public function referralContest()
     {
-        return Inertia::render('pages/ReferralContest.tsx');
+        $referralsLast24Hours = Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDay());
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->get();
+        $referralsLast24HoursTop100 = Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDay());
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->take(100)
+            ->get();
+        $referralsLast7Days= Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDays(7));
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->get();
+        $referralsLast7DaysTop100 = Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDays(7));
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->take(100)
+            ->get();
+        $referralsLast30Days = Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDays(30));
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->get();
+        $referralsLast30DaysTop100 = Client::select('name')
+            ->withCount(['referrals' => function ($query) {
+                $query->where('created_at', '>=', now()->subDays(30));
+            }])
+            ->orderBy('referrals_count', 'desc')
+            ->take(100)
+            ->get();
+        $referralsTop100 = Client::select('name')
+            ->withCount(['referrals'])
+            ->orderBy('referrals_count', 'desc')
+            ->take(100)
+            ->get();
+        $clients = Client::count();
+        return Inertia::render('pages/ReferralContest.tsx', [
+            'referralsLast24Hours' => $referralsLast24Hours,
+            'referralsLast24HoursTop100' => $referralsLast24HoursTop100->toArray(),
+            'referralsLast7Days' => $referralsLast7Days,
+            'referralsLast7DaysTop100' => $referralsLast7DaysTop100->toArray(),
+            'referralsLast30Days' => $referralsLast30Days,
+            'referralsLast30DaysTop100' => $referralsLast30DaysTop100->toArray(),
+            'referralsTop100' => $referralsTop100->toArray(),
+            'clients' => $clients,
+        ]);
     }
 
     public function viewAds()
@@ -123,7 +178,7 @@ class HomeController extends Controller
         }
         $user = Client::find(auth()->id());
         $user->update(['telegram_verified' => 1]);
-        $userName = '<b>'.$user->name.'</b>';
+        $userName = '<b>' . $user->name . '</b>';
         $messageText = "🎉 مبروك {$userName} ! 🎉\n\nلقد تم تفعيل عضويتك بنجاح في أقوى شركة تسويق،EFM ! 🚀\nنتمنى لك النجاح والتفوق والوصول إلى الثراء معنا 💪💰\nكن على أتم الاستعداد لتنفيذ بعض المهام الجديدة المثيرة 🌟 التي ستساعدك في تحقيق أهدافك المالية 💸✨";
         $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
         $telegram->sendMessage([
@@ -192,7 +247,7 @@ class HomeController extends Controller
     }
     public function terms()
     {
-        return Inertia::render('pages/help/Terms.tsx',[
+        return Inertia::render('pages/help/Terms.tsx', [
             'terms' => Term::first()->getTranslation('terms', app()->getLocale()),
         ]);
     }

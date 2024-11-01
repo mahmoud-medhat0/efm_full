@@ -45,7 +45,6 @@
     "home": {
         "title": "الرئيسية",
         "advertise": "التسويق",
-        "referral-contest": "مسابقة الإحالة",
         "earn-money": "كسب المال",
         "view-advertisements": "عرض الإعلانات",
         "view-videos": "عرض الفيديوهات",
@@ -55,7 +54,6 @@
         "support": "الدعم",
         "terms": "الشروط والأحكام",
         "referral": "الإحالة",
-        "contest": "مسابقة",
         "dashboard": "لوحة التحكم",
         "advertiser-panel": "لوحة الإعلانات",
         "personal-settings": "إعدادات الملف الشخصي",
@@ -63,7 +61,17 @@
         "logout":"تسجيل الخروج",
         "logo":"logo",
         "about-us": "من نحن",
-        "membership": "العضوية"
+        "membership": "العضوية",
+        "contest": "الإحالات",
+        "referral-contest": "مسابقة",
+        "referral-contest-description": "احصل على أجور مالية عندما تحث أصدقائك على الإنضمام إلى EFMhub عبر رابط الإحالة الخاص بك.",
+        "total-users": "اجمالي المشتركين",
+        "Last 24 Hours": "أخر 24 ساعة",
+        "Last 7 Days": "أخر 7 أيام",
+        "Last 30 Days": "أخر 30 يوم",
+        "The Top 100": "أعلى 100",
+        "position": "المركز",
+        "username": "اسم المستخدم"
     },
     "faq": {
         "frequently-asked": "الأسئلة الأكثر",
@@ -76,5 +84,31 @@
     },
     "partners": {
         "our-partners-in-success": "شركاؤنا في النجاح"
-    }
+    },
+    "Method": "الطريقة",
+    "Amount": "المبلغ",
+    "Description": "الوصف",
+    "Add funds": "إضافة الأموال",
+    "Upload File": "رفع الملف",
+    "Charge": "الرسوم",
+    "VAT": "الضريبة",
+    "Total": "المجموع",
+    "Username :": "اسم المستخدم :",
+    "Password :": "كلمة المرور :",
+    "FirstName :": "الاسم الأول :",
+    "LastName :": "الاسم الأخير :",
+    "Email :": "البريد الإلكتروني :",
+    "Phone :": "الهاتف :",
+    "Referral Code :": "رمز الإحالة :",
+    "Password Confirmation :": "تأكيد كلمة المرور :",
+    "Telegram username :": "اسم المستخدم في تليجرام :",
+    "Type your FirstName":"أكتب الأسم الأول",
+    "Type your LastName":"أكتب الأسم الأخير",
+    "Type your Email":"أكتب البريد الإلكتروني",
+    "Type your Phone":"أكتب الهاتف",
+    "Type your Username":"أكتب اسم المستخدم",
+    "Type your Telegram username":"أكتب اسم المستخدم في تليجرام",
+    "Type your Password":"أكتب كلمة المرور",
+    "Type your password Confirmation":"أكتب تأكيد كلمة المرور",
+    "Type your Referral Code":"أكتب رمز الإحالة"
 }

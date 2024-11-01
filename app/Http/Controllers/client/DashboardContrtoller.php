@@ -3,29 +3,31 @@
 namespace App\Http\Controllers\client;
 
 use DateInterval;
+use App\Models\Task;
 use Inertia\Inertia;
+use App\Models\Order;
+use App\Models\Client;
 use App\Models\Service;
 use App\Models\Gateways;
+use App\Models\BanAttemp;
+use App\Models\Membershib;
+use Endroid\QrCode\QrCode;
+use App\Models\ManualField;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Models\ReferralSetting;
+use App\Models\InterestCategory;
+use App\Models\RegistrationOffer;
+use Illuminate\Support\Facades\DB;
 use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Alaouy\Youtube\Rules\ValidYoutubeVideo;
-use App\Models\Order;
-use App\Models\InterestCategory;
-use App\Models\BanAttemp;
-use App\Models\Client;
-use App\Models\Membershib;
-use App\Models\SubscriptionMembership;
-use App\Models\Task;
-use Stevebauman\Location\Facades\Location;
-use PragmaRX\Google2FALaravel\Google2FA;
-use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-use Illuminate\Support\Facades\DB;
-use App\Models\RegistrationOffer;
-use App\Models\ReferralSetting;
+use App\Models\SubscriptionMembership;
+use PragmaRX\Google2FALaravel\Google2FA;
+use Illuminate\Support\Facades\Validator;
+use Stevebauman\Location\Facades\Location;
+use Alaouy\Youtube\Rules\ValidYoutubeVideo;
+
 class DashboardContrtoller extends Controller
 {
     public function index()
@@ -41,6 +43,9 @@ class DashboardContrtoller extends Controller
                     'completed' => $service->completed_tasks(auth()->user())->count(),
                 ];
             }),
+            'pending_withdrawls' => auth()->user()->transactions()->where('type', 'withdraw')->where('status', 'pending')->sum('amount'),
+            'direct_referrals' => auth()->user()->referrals()->count(),
+            'referrals_earn' => auth()->user()->transactions()->where('type', 'referral')->sum('total'),
         ]);
     }
     public function PersonalSettings()
@@ -73,7 +78,7 @@ class DashboardContrtoller extends Controller
     }
     public function updateProfileImage(Request $request)
     {
-        try{    
+        try {
             $user = auth()->user();
             $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
             $user->save();
@@ -91,9 +96,9 @@ class DashboardContrtoller extends Controller
     {
         $secretKey = "bd07a49cd84f877bcb4861c567e8bcb12e206c860aa963ba92";
         $queryParam = "Domain=https://56c7-196-133-114-138.ngrok-free.app&ProviderKey=FAWATERAK.1154";
-        $hash = hash_hmac( 'sha256' , $queryParam , $secretKey ,false);
+        $hash = hash_hmac('sha256', $queryParam, $secretKey, false);
         return Inertia::render('settings/pages/AddFunds.tsx', [
-            'methods' => Gateways::depositGateways()->map(function ($gateway) use ($hash) {
+            'methods' => Gateways::depositGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
                     'id' => $gateway->id,
@@ -106,6 +111,7 @@ class DashboardContrtoller extends Controller
                     'auto' => $gateway->auto,
                     'vat_deposit_type' => $gateway->vat_deposit_type,
                     'vat_deposit' => $gateway->vat_deposit,
+                    'client_fields' => $gateway->clientFields(),
                 ];
             }),
             'plan' => $request->plan ?? null,
@@ -116,54 +122,89 @@ class DashboardContrtoller extends Controller
     }
     public function depositPost(Request $request)
     {
-        $rules = [
-            'selectedMethod' => ['required', 'exists:gateways,id'],
-
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
-        }
-        $pending_deposit = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->where('status', 'pending')->count();
-        if ($pending_deposit > 2) {
-            return response()->json(['success' => false, 'message' => 'You have a pending deposit Please wait for approval'], 200);
-        }
-        $gateway = Gateways::find($request->selectedMethod);
-        if ($gateway->attachment == true) {
-            if ($request->attachment == null) {
-                return response()->json(['success' => false, 'message' => 'Attachment is required'], 200);
+        try {
+            $rules = [
+                'selectedMethod' => ['required', 'exists:gateways,id'],
+            ];
+            $method = Gateways::find($request->selectedMethod);
+            if ($method->client_fields && json_decode($method->client_fields, true) && count(json_decode($method->client_fields, true)) > 0) {
+                $clientFields = json_decode($method->client_fields, true);
+                if (is_array($clientFields)) {
+                    foreach ($clientFields as $field) {
+                        $manualField = ManualField::find($field);
+                        $rules[str_replace(' ', '_', $manualField->name_en)] = ($manualField->required == 1 ? 'required' : 'nullable');
+                    }
+                } else {
+                    return response()->json(['success' => false, 'message' => 'Client fields are not valid'], 200);
+                }
             }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            }
+            $pending_deposit = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->where('status', 'pending')->count();
+            if ($pending_deposit > 2) {
+                return response()->json(['success' => false, 'message' => 'You have a pending deposit. Please wait for approval.'], 200);
+            }
+            $gateway = Gateways::find($request->selectedMethod);
+            if ($gateway->attachment == true) {
+                if ($request->attachment == null) {
+                    return response()->json(['success' => false, 'message' => 'Attachment is required'], 200);
+                }
+            }
+            $rules = [
+                'amount' => ['required', 'numeric', 'min:' . $gateway->min_deposit, 'max:' . $gateway->max_deposit],
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
+            }
+            if ($request->hasFile('attachment')) {
+                $attachment = $request->file('attachment');
+                $filename = 'deposit-' . time() . '-' . pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $attachment->getClientOriginalExtension();
+                $attachmentPath = $attachment->storeAs('attachments/private', $filename, 'public');
+            } else {
+                $attachmentPath = null;
+            }
+            $methodData = [];
+            if ($method->client_fields && json_decode($method->client_fields, true) && count(json_decode($method->client_fields, true)) > 0) {
+                foreach (json_decode($method->client_fields, true) as $field) {
+                    $field = ManualField::find($field);
+                    $fieldName = str_replace(' ', '_', $field->name);
+                    $methodData[$fieldName] = [
+                        'type' => $field->type,
+                        'value' => null
+                    ];
+                    if ($field->type == 'image') {
+                        $uploadedFile = $request->file($fieldName);
+                        $filename = 'deposit-manual-attachment-' . time() . '-' . pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $uploadedFile->getClientOriginalExtension();
+                        $methodData[$fieldName]['value'] = $uploadedFile->storeAs('attachments/private/manual_attachments', $filename, 'public');
+                    } else {
+                        $methodData[$fieldName]['value'] = $request->input($fieldName);
+                    }
+                }
+            }
+            $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
+            $total = $request->amount + $fees;
+            $methodData = json_encode($methodData);
+            $tnx = 'DEP' . time();
+            Transaction::create([
+                'amount' => $request->amount,
+                'fee' => $fees,
+                'total' => $total,
+                'tnx_type' => 'add',
+                'tnx' => $tnx,
+                'type' => 'deposit',
+                'description' => 'Deposit from ' . $gateway->name,
+                'gateway_id' => $request->selectedMethod,
+                'client_id' => auth()->user()->id,
+                'attachment' => $attachmentPath,
+                'manual_fields' => $methodData,
+            ]);
+            return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
         }
-        $rules = [
-            'amount' => ['required', 'numeric', 'min:' . $gateway->min_deposit, 'max:' . $gateway->max_deposit],
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
-        }
-        if ($request->hasFile('attachment')) {
-            $attachment = $request->file('attachment');
-            $filename = 'deposit-' . time() . '-' . pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $attachment->getClientOriginalExtension();
-            $attachmentPath = $attachment->storeAs('attachments/private', $filename, 'public');
-        } else {
-            $attachmentPath = null;
-        }
-        $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
-        $total = $request->amount + $fees;
-        $tnx = 'DEP' . time();
-        Transaction::create([
-            'amount' => $request->amount,
-            'fee' => $fees,
-            'total' => $total,
-            'tnx_type' => 'add',
-            'tnx' => $tnx,
-            'type' => 'deposit',
-            'description' => 'Deposit from ' . $gateway->name,
-            'gateway_id' => $request->selectedMethod,
-            'client_id' => auth()->user()->id,
-            'attachment' => $attachmentPath,
-        ]);
-        return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
     }
     //withdraw methods
     public function withdraw()
@@ -244,7 +285,7 @@ class DashboardContrtoller extends Controller
         $attachmentPath = null;
         if ($request->hasFile('attachment')) {
             $attachment = $request->file('attachment');
-            $attachmentPath = $attachment->storeAs('attachments', $attachment->getClientOriginalName().'-'.time(), 'private');
+            $attachmentPath = $attachment->storeAs('attachments', $attachment->getClientOriginalName() . '-' . time(), 'private');
         }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
         $total = $request->amount - $fees;
@@ -391,7 +432,7 @@ class DashboardContrtoller extends Controller
                 'description' => 'Order from ' . $service->name,
                 'client_id' => auth()->user()->id,
             ]);
-            foreach(json_decode($service->fields,true) as $field => $value){
+            foreach (json_decode($service->fields, true) as $field => $value) {
                 $orderdata[$field] = isset(${$field}) ? ${$field} : null;
             }
             auth()->user()->update(['balance' => auth()->user()->balance - $price]);
@@ -411,7 +452,7 @@ class DashboardContrtoller extends Controller
             if ($service->is_category_required) {
                 $order->categories()->sync($request->categories);
             }
-        } else {    
+        } else {
             $price = $request->amount * $service->minute_cost;
         }
 
@@ -421,7 +462,7 @@ class DashboardContrtoller extends Controller
     public function tasks()
     {
         return Inertia::render('settings/pages/settings/Tasks.tsx', [
-            'tasks' => auth()->user()->tasks()->where('status','!=','completed')->where('removed', false)->whereHas('order', function ($query) {
+            'tasks' => auth()->user()->tasks()->where('status', '!=', 'completed')->where('removed', false)->whereHas('order', function ($query) {
                 $query->where('status', 'approved');
             })->get()->map(function ($task) {
                 return [
@@ -436,7 +477,7 @@ class DashboardContrtoller extends Controller
                     'order' => $task->order,
                 ];
             }),
-            'categories' => auth()->user()->tasks()->where('status','!=','completed')->where('removed', false)->whereHas('order', function ($query) {
+            'categories' => auth()->user()->tasks()->where('status', '!=', 'completed')->where('removed', false)->whereHas('order', function ($query) {
                 $query->where('status', 'approved');
             })->with('service:id,name')->select('service_id')->distinct()->get()->map(function ($task) {
                 return [
@@ -452,9 +493,9 @@ class DashboardContrtoller extends Controller
         $ip = Location::get($request->ip());
 
         $user_agent = $request->userAgent();
-        $country = $ip? $ip->countryName : null;
-        $task->update(['status' => $request->status,'ip' => $ip,'country' => $country,'user_agent' => $user_agent]);
-        if($request->status == 'completed'){
+        $country = $ip ? $ip->countryName : null;
+        $task->update(['status' => $request->status, 'ip' => $ip, 'country' => $country, 'user_agent' => $user_agent]);
+        if ($request->status == 'completed') {
             Transaction::create([
                 'status' => 'success',
                 'amount' => $task->reward(),
@@ -463,10 +504,10 @@ class DashboardContrtoller extends Controller
                 'tnx_type' => 'add',
                 'tnx' => 'PTS' . time(),
                 'type' => 'points',
-                'description' => 'Points reward for task of Order ID: '.$task->order->order_id,
+                'description' => 'Points reward for task of Order ID: ' . $task->order->order_id,
                 'client_id' => auth()->user()->id,
             ]);
-            $task->update(['paid' => true,'points_reward' => $task->reward()]);
+            $task->update(['paid' => true, 'points_reward' => $task->reward()]);
             auth()->user()->update(['points' => auth()->user()->points + $task->reward()]);
             $task->order->update(['current_amount' => $task->order->current_amount + 1]);
         }
@@ -540,7 +581,7 @@ class DashboardContrtoller extends Controller
     }
     public function membership()
     {
-        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
         $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
         return Inertia::render('settings/pages/Membership.tsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
@@ -579,66 +620,66 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
         $plan = Membershib::find($request->plan);
-        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
+        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
         $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
         $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
 
-        if(auth()->user()->balance < $planPrice){
+        if (auth()->user()->balance < $planPrice) {
             return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
         }
-        if(auth()->user()->hasActiveSubscription){
+        if (auth()->user()->hasActiveSubscription) {
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
-        try{
+        try {
             DB::transaction(function () use ($request) {
                 $plan = Membershib::find($request->plan);
-            $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count+1;
-            $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
-            $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
-            Transaction::create([
-            'amount' => $planPrice,
-            'fee' => 0,
-            'total' => $planPrice,
-            'tnx_type' => 'sub',
-            'tnx' => 'SUB' . time(),
-            'type' => 'membership',
-            'description' => 'Upgrade to ' . $plan->name,
-            'client_id' => auth()->user()->id,
-            'status' => 'success',
-        ]);
-        $LastActiveNumber = Client::whereNotNull('activator_count')->count();
-        $user = Client::find(auth()->user()->id);
-        $user->update([
-            'balance' => $user->balance - $planPrice,
-            'activator_count' => $LastActiveNumber + 1
-        ]);
-        if(auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()){
-            $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type  ;
-            $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
-            $rewardvalue = $activatorReward == 'percentage' ? ($planPrice * $activatorRewardValue / 100) : $activatorRewardValue;
-            if($rewardvalue > 0){
+                $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
+                $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+                $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
                 Transaction::create([
-                    'amount' => $rewardvalue,
+                    'amount' => $planPrice,
                     'fee' => 0,
-                    'total' => $rewardvalue,
-                    'tnx_type' => 'add',
-                    'tnx' => 'ADD' . time(),
-                    'type' => 'referral',
-                    'description' => 'Referral reward for ' . auth()->user()->name,
-                    'client_id' => auth()->user()->parent->id,
+                    'total' => $planPrice,
+                    'tnx_type' => 'sub',
+                    'tnx' => 'SUB' . time(),
+                    'type' => 'membership',
+                    'description' => 'Upgrade to ' . $plan->name,
+                    'client_id' => auth()->user()->id,
                     'status' => 'success',
                 ]);
-                auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
-            }
-        }
-        SubscriptionMembership::create([
-            'client_id' => auth()->user()->id,
+                $LastActiveNumber = Client::whereNotNull('activator_count')->count();
+                $user = Client::find(auth()->user()->id);
+                $user->update([
+                    'balance' => $user->balance - $planPrice,
+                    'activator_count' => $LastActiveNumber + 1
+                ]);
+                if (auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()) {
+                    $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type;
+                    $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
+                    $rewardvalue = $activatorReward == 'percentage' ? ($planPrice * $activatorRewardValue / 100) : $activatorRewardValue;
+                    if ($rewardvalue > 0) {
+                        Transaction::create([
+                            'amount' => $rewardvalue,
+                            'fee' => 0,
+                            'total' => $rewardvalue,
+                            'tnx_type' => 'add',
+                            'tnx' => 'ADD' . time(),
+                            'type' => 'referral',
+                            'description' => 'Referral reward for ' . auth()->user()->name,
+                            'client_id' => auth()->user()->parent->id,
+                            'status' => 'success',
+                        ]);
+                        auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
+                    }
+                }
+                SubscriptionMembership::create([
+                    'client_id' => auth()->user()->id,
                     'membership_id' => $request->plan,
                     'status' => 'active',
                     'start_date' => now(),
                     'end_date' => $plan->is_lifetime == true
-                ? null 
-                    : now()->addDays($plan->duration),
+                        ? null
+                        : now()->addDays($plan->duration),
                 ]);
             });
             return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
@@ -656,7 +697,7 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
-        return response()->json(['success' => true, 'message' => 'You Will Be Redirected To Payment Page','route' => route('client.dashboard.deposit', ['method' => $request->method,'amount' => Membershib::find($request->plan)->price])]);
+        return response()->json(['success' => true, 'message' => 'You Will Be Redirected To Payment Page', 'route' => route('client.dashboard.deposit', ['method' => $request->method, 'amount' => Membershib::find($request->plan)->price])]);
     }
     public function referrals()
     {

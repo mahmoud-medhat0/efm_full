@@ -81,42 +81,48 @@ const RegisterPage = () => {
 
   // Renders
   const renderRegisterForm = REGISTER_FORM.map(
-    ({ name, placeholder, type, forl, placel, validation }, idx) => (
-      <div key={idx}>
-        <div className="space-y-2 pb-1">
-          <label htmlFor={forl} className="text-black text-xl">
-            {placel}
-          </label>
-          {name === "phone" ? (
-            <div className="space-y-2">
-              <PhoneInput
-                value={phone}
-                defaultCountry="eg"
-                onChange={(phone) => setPhone(phone)}
+    ({ name, placeholder, type, forl, placel, validation }, idx) => {
+      console.log(placeholder);
+      const translatedPlacel = translate(placel);
+      const translatedPlaceholder = translate(placeholder.replace("..", "").trim());
+      console.log(translatedPlaceholder);
+      return (
+        <div key={idx}>
+          <div className="space-y-2 pb-1">
+            <label htmlFor={forl} className="text-black text-xl">
+              {translatedPlacel}
+            </label>
+            {name === "phone" ? (
+              <div className="space-y-2">
+                <PhoneInput
+                  value={phone}
+                  defaultCountry="eg"
+                  onChange={(phone) => setPhone(phone)}
+                />
+                {(phone.trim() === "" || phone.trim().length <= 2) && (
+                  <InputErrorMessage msg={"Phone is Required!"} />
+                )}
+              </div>
+            ) : name === "referral_code" ? (
+              <Input
+                value={referral_code}
+                type={type}
+                placeholder={translatedPlaceholder}
+                {...register(name, validation)}
               />
-              {(phone.trim() === "" || phone.trim().length <= 2) && (
-                <InputErrorMessage msg={"Phone is Required!"} />
-              )}
-            </div>
-          ) : name === "referral_code" ? (
-            <Input
-            value={referral_code}
-            type={type}
-              placeholder={placeholder}
-              {...register(name, validation)}
-            />
-          ) : (
-            <Input
-              id={forl}
-              type={type}
-              placeholder={placeholder}
-              {...register(name, validation)}
-            />
-          )}
-          {errors[name] && <InputErrorMessage msg={errors[name]?.message} />}
+            ) : (
+              <Input
+                id={forl}
+                type={type}
+                placeholder={translatedPlaceholder}
+                {...register(name, validation)}
+              />
+            )}
+            {errors[name] && <InputErrorMessage msg={errors[name]?.message} />}
+          </div>
         </div>
-      </div>
-    )
+      );
+    }
   );
 
   return (

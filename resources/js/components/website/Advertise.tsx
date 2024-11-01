@@ -18,7 +18,6 @@ const Advertise = () => {
                         flex: 1;
                         padding: 20px;
                         direction: ltr;
-                        overflow: auto;
                         height: 285px;
                     }
 

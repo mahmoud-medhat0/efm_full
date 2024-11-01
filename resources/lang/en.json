@@ -45,7 +45,6 @@
     "home": {
         "title": "Home",
         "advertise": "Advertise",
-        "referral-contest": "Referral Contest",
         "earn-money": "Earn Money",
         "view-advertisements": "View Advertisements",
         "view-videos": "View Videos",
@@ -55,7 +54,6 @@
         "support": "Support",
         "terms": "Terms of Service",
         "referral": "Referral",
-        "contest": "Contest",
         "dashboard": "Dashboard",
         "advertiser-panel": "Advertiser Panel",
         "personal-settings": "Personal Settings",
@@ -63,7 +61,10 @@
         "logout":"Logout",
         "logo":"logo",
         "about-us": "About Us",
-        "membership": "Membership"
+        "membership": "Membership",
+        "contest": "Contest",
+        "referral-contest": "Referral Contest",
+        "referral-contest-description": "Get financial prizes when you invite your friends to Join EFMhub through your referral link."
     },
     "faq": {
         "frequently-asked": "Frequently Asked",
@@ -76,5 +77,13 @@
     },
     "partners": {
         "our-partners-in-success": "Our Partners in Success!"
-    }
+    },
+    "Method": "Method",
+    "Amount": "Amount",
+    "Description": "Description",
+    "Add funds": "Add funds",
+    "Upload File": "Upload File",
+    "Charge": "Charge",
+    "VAT": "VAT",
+    "Total": "Total"
 }

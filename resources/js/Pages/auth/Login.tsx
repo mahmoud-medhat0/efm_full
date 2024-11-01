@@ -80,11 +80,12 @@ const LoginPage = () => {
     ({ name, placeholder, type, forl, placel, validation }, idx) => {
       const translatedName = translate(name);
       const translatedPlaceholder = translate(placeholder);
+      const translatedPlacel = translate(placel);
       return (
         <div key={idx}>
           <div className="space-y-2 pb-1">
             <label htmlFor={forl} className="text-black text-xl">
-              {placel}
+              {translatedPlacel}
             </label>
             <Input
               id={forl}

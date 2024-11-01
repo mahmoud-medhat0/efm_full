@@ -8,6 +8,7 @@ import Help from "../../schema/selecters/Help";
 import ProfileBtn from "../../ProfileBtn";
 import { usePage, Link } from "@inertiajs/inertia-react";
 import { route } from "ziggy-js";
+import { translate } from "../../../utils/functions";
 
 const DashboardNavbar = () => {
   const { auth } = usePage().props;
@@ -23,14 +24,14 @@ const DashboardNavbar = () => {
                 className="bg-primary dark:text-white rom:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
                 href={route('client.login')}
               >
-                Login
+                {translate("Login")}
                 <ArrowLeftStartOnRectangleIcon className="h-6 w-6 text-white" />
               </Link>
               <Link
                 className="bg-primary dark:text-white dark:hover:bg-primary/90 text-white py-1.5 px-4 rounded-md flex flex-row justify-center gap-2 duration-300"
                 to="/register"
               >
-                Register
+                {translate("Register")}
                 <FingerPrintIcon className="h-6 w-6 text-white" />
               </Link>
             </div>
@@ -44,7 +45,7 @@ const DashboardNavbar = () => {
       <ul className="flex items-center justify-between max-sm:hidden">
         <li className="text-lg duration-200">
           <Link className="text-gold hover:text-rom px-2 py-1" href={route('client.dashboard')}>
-            Home
+            {translate("home.title")}
           </Link>
         </li>
         {/* <li className="text-lg duration-200">
@@ -59,7 +60,7 @@ const DashboardNavbar = () => {
         </li> */}
         <li className="text-lg duration-200">
           <Link className="text-gold hover:text-rom px-2 py-2" href={route('client.referral-contest')}>
-            Referral Contest
+            {translate("home.referral-contest")}
           </Link>
         </li>
         <EarnMoney />

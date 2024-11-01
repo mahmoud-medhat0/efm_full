@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6211584a0e78612354ef35bd73cdb324",
+    "content-hash": "23ee3808d88f60dedd3bec4a6473779f",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -4049,26 +4049,28 @@
         },
         {
             "name": "outl1ne/nova-multiselect-field",
-            "version": "4.5.6",
+            "version": "4.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/outl1ne/nova-multiselect-field.git",
-                "reference": "1855f77ceb106e700224c7e4f0e2e3e79e44d9f4"
+                "reference": "e2062f904154c68ef92738630534febc4e3be8d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/outl1ne/nova-multiselect-field/zipball/1855f77ceb106e700224c7e4f0e2e3e79e44d9f4",
-                "reference": "1855f77ceb106e700224c7e4f0e2e3e79e44d9f4",
+                "url": "https://api.github.com/repos/outl1ne/nova-multiselect-field/zipball/e2062f904154c68ef92738630534febc4e3be8d4",
+                "reference": "e2062f904154c68ef92738630534febc4e3be8d4",
                 "shasum": ""
             },
             "require": {
-                "laravel/nova": "^4.27",
+                "laravel/nova": "^4.32",
                 "nova-kit/nova-packages-tool": "^1.12",
                 "outl1ne/nova-translations-loader": "^5.0",
                 "php": ">=8.0"
             },
             "require-dev": {
-                "nova-kit/nova-devtool": "^1.2.1"
+                "nova-kit/nova-devtool": "^1.2.1",
+                "nunomaduro/collision": "^7.8",
+                "orchestra/testbench": "^8.19"
             },
             "type": "library",
             "extra": {
@@ -4108,7 +4110,7 @@
             ],
             "support": {
                 "issues": "https://github.com/outl1ne/nova-multiselect-field/issues",
-                "source": "https://github.com/outl1ne/nova-multiselect-field/tree/4.5.6"
+                "source": "https://github.com/outl1ne/nova-multiselect-field/tree/4.6.1"
             },
             "funding": [
                 {
@@ -4116,7 +4118,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-29T14:28:32+00:00"
+            "time": "2024-10-30T13:16:32+00:00"
         },
         {
             "name": "outl1ne/nova-translations-loader",

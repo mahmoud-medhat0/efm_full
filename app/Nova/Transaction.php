@@ -47,7 +47,7 @@ class Transaction extends Resource
      * @var array
      */
     public static $search = [
-        'id','type','status','tnx_type','tnx','note','description','amount','fee','total','created_at','gateway.name','client.name','admin.name'
+        'id','type','status','tnx_type','tnx','note','description','amount','fee','total','created_at','gateway.name','client.name','client.email','admin.name'
     ];
 
     /**
@@ -115,6 +115,21 @@ class Transaction extends Resource
             Image::make('Attachment')->disk('public')->path('attachments')->displayUsing(function ($attachment) {
                 return $attachment ? Storage::disk('public')->url('attachments/' . $attachment) : 'No Attachment';
             })->sortable(),
+            Text::make('Manual Fields', 'manual_fields')
+                ->displayUsing(function ($value) {
+                    $fields = json_decode($value, true);
+                    $output = '';
+                    foreach ($fields as $key => $field) {
+                        if ($field['type'] === 'image') {
+                            $output .= "<div><strong>{$key}:</strong> <img src='" . Storage::disk('public')->url($field['value']) . "' alt='{$key}' style='max-width: 100px;'></div>";
+                        } else {
+                            $output .= "<div><strong>{$key}:</strong> {$field['value']}</div>";
+                        }
+                    }
+                    return $output;
+                })
+                ->asHtml()
+                ->onlyOnDetail(),
             DateTime::make('Created At')->sortable(),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();

@@ -9,4 +9,8 @@ class ManualField extends Model
 {
     use HasFactory,HasTranslations;
     protected $translatable = ['name'];
+    public function getNameEnAttribute()
+    {
+        return $this->getTranslation('name', 'en');
+    }
 }

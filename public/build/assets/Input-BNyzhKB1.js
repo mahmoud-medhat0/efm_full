@@ -1,1 +1,0 @@
-import{r as e,j as s}from"./app-CGpkhpDz.js";const n=e.forwardRef(({type:r="text",...t},o)=>s.jsx("input",{ref:o,className:"border-[1px] border-gray-300 shadow-lg focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary rounded-lg px-3 py-3 text-md w-full bg-transparent duration-200",type:r??"text",...t}));export{n as I};

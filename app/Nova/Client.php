@@ -63,9 +63,9 @@ class Client extends Resource
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
             Email::make('Email', 'email')->sortable(),
-            Currency::make('Balance', 'balance')->onlyOnDetail()->displayUsing(function ($value, $resource, $attribute) {
+            Currency::make('Balance', 'balance')->displayUsing(function ($value, $resource, $attribute) {
                 return number_format($resource->balance, 2);
-            }),
+            })->readonly(),
             Number::make('Points', 'points')->onlyOnDetail()->sortable(),
             DateTime::make('Email Verified At', 'email_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview(),
             Password::make('Password', 'password')

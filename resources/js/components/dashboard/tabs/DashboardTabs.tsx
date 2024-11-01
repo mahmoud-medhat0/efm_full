@@ -140,7 +140,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px]">
                   <div className="w-full flex flex-row justify-between">
                     <p>Balance</p>
-                    <span className="text-font">EGP{client.balance}</span>
+                    <span className="text-font">{client.balance} EGP</span>
                   </div>
                   {/* <Link to={"/dashboard/withdraw"} className="text-primary mb-3">
                     Withdraw
@@ -149,7 +149,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Purchase balance</p>
-                    <span className="text-font">EGP0</span>
+                    <span className="text-font">0 EGP</span>
                   </div>
                   {/* <Link to={"/dashboard/withdraw"} className="text-primary">
                     Add funds
@@ -158,13 +158,13 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Pending Withdrawls</p>
-                    <span className="text-font">EGP0</span>
+                    <span className="text-font">{props.pending_withdrawls} EGP</span>
                   </div>
                 </div>
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Payments Received</p>
-                    <span className="text-font">EGP0</span>
+                    <span className="text-font">0 EGP</span>
                   </div>
                 </div>
                 {/* <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
@@ -203,7 +203,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Direct Referrals</p>
-                    <span className="text-font">0</span>
+                    <span className="text-font">{props.direct_referrals}</span>
                   </div>
                   {/* <Link to={"/dashboard/withdraw"} className="text-primary">
                     Buy Referrals
@@ -212,7 +212,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Earned so far</p>
-                    <span className="text-font">{client.points}</span>
+                    <span className="text-font">{props.referrals_earn} EGP</span>
                   </div>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function DashboardTabs() {
                 <div className="flex flex-row justify-between border-b-[1px] mt-2 pb-3">
                   <div className="w-full flex flex-row justify-between">
                     <p>Earned</p>
-                    <span className="text-font">EGP0</span>
+                    <span className="text-font">0 EGP</span>
                   </div>
                 </div>
               </div>

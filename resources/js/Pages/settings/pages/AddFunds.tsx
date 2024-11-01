@@ -11,15 +11,17 @@ import { route } from "ziggy-js"; // Added import for route
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Inertia } from "@inertiajs/inertia";
+import { translate } from "../../../utils/functions";
 
 const AddFundsPage = () => {
     const page = usePage();
     const methods = page.props.methods;
+    const { lang: locale, app_url } = usePage().props;
     const customer = page.props.auth.client;
     const [selectedMethod, setSelectedMethod] = useState(methods[0]);
     const [amount, setAmount] = useState("");
     const [total, setTotal] = useState(0);
-    const [attachment, setAttachment] = useState(null);
+    const [attachment, setAttachment] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [vat, setVat] = useState(0);
     const [charge, setCharge] = useState(0);
@@ -70,11 +72,20 @@ const AddFundsPage = () => {
         setAmount(value);
     };
 
-    const handleAttachmentChange = (file) => {
-        setAttachment(file); // Update the attachment state
+    const handleAttachmentChange = (file, fieldName) => {
+        setAttachment((prevAttachments) => ({
+            ...prevAttachments,
+            [fieldName]: file,
+        }));
     };
     const handleMethodChange = (method) => {
         setSelectedMethod(method);
+        if (method.client_fields && method.client_fields.length > 0) {
+            method.client_fields.forEach((field) => {
+                if (field.type === 'image') {
+                }
+            });
+        }
     };
     useEffect(() => {
         if (page.props.amount) {
@@ -89,7 +100,6 @@ const AddFundsPage = () => {
     useEffect(() => {
         calcTotal();
     }, [amount, selectedMethod]); // Recalculate total when amount or selectedMethod changes
-
     const {
         register,
         handleSubmit,
@@ -197,16 +207,32 @@ const AddFundsPage = () => {
                     toast.error("Please enter an amount");
                     return;
                 }
-                if (selectedMethod.attachment && !attachment) {
+                console.log(attachment);
+                if (selectedMethod.attachment && attachment["attachment"]=== undefined) {
                     setIsLoading(false);
-                    toast.error("Please upload a image");
+                    toast.error("Please upload an image");
                     return;
                 }
+
                 const formData = new FormData();
                 formData.append("selectedMethod", selectedMethod.id);
                 formData.append("amount", amount);
-                if (attachment) {
-                    formData.append("attachment", attachment);
+                formData.append("attachment", attachment["attachment"]);
+                if (selectedMethod.client_fields && selectedMethod.client_fields.length > 0) {
+                  selectedMethod.client_fields.forEach((field) => {
+                      if (field.type === 'image') {
+                        if (attachment[field.name['en']] !== undefined) {
+                            formData.append(field.name['en'], attachment[field.name['en']]);
+                        } else {
+                            setIsLoading(false);
+                            toast.error(`Please upload an image for ${field.name[locale] || field.name['en']}`);
+                            return;
+                        }
+                      } else {
+                        const fieldValue = document.getElementById(field.name['en'])?.value;
+                        formData.append(field.name['en'], fieldValue);
+                      }
+                  });
                 }
 
                 const config = {
@@ -223,6 +249,7 @@ const AddFundsPage = () => {
                     formData,
                     config
                 );
+                console.log(response);
                 if (response.data.success) {
                     toast.success(
                         response.data.message +
@@ -233,6 +260,7 @@ const AddFundsPage = () => {
                         Inertia.visit(route("client.dashboard"));
                     }, 1000);
                 } else {
+                  if (response.data.errors) {
                     Object.keys(response.data.errors).forEach((key) => {
                         response.data.errors[key].forEach(
                             (errorMsg: string) => {
@@ -243,6 +271,12 @@ const AddFundsPage = () => {
                             }
                         );
                     });
+                  } else {
+                    toast.error(response.data.message, {
+                      position: "top-center",
+                      duration: 2000,
+                    });
+                  }
                 }
             }
         } catch (error) {
@@ -256,8 +290,8 @@ const AddFundsPage = () => {
         <RootLayout>
             <div>
                 <WelcomeTab />
-                <div className="w-full px-2 py-12 sm:px-0">
-                    <h3 className="text-lg mb-5">Add funds</h3>
+                <div className="w-full px-2 py-12 sm:px-0" style={{direction: locale === 'ar' ? 'rtl' : 'ltr'}}>
+                    <h3 className="text-lg mb-5">{translate('Add funds')}</h3>
                     {selectedMethod &&
                         selectedMethod.description_deposit != null &&
                         selectedMethod.description_deposit != "" && (
@@ -266,7 +300,7 @@ const AddFundsPage = () => {
                                     htmlFor="description"
                                     className="text-black text-base flex items-center"
                                 >
-                                    Description
+                                    {translate('Description')}
                                     <button
                                         onClick={copyToClipboard}
                                         className="ml-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center justify-center"
@@ -316,7 +350,7 @@ const AddFundsPage = () => {
                                     htmlFor="plan"
                                     className="text-black text-base"
                                 >
-                                    Method
+                                    {translate('Method')}
                                 </label>
                                 {methods.length > 0 && (
                                     <MethodSelector
@@ -330,7 +364,7 @@ const AddFundsPage = () => {
                                     htmlFor="amount"
                                     className="text-black text-base"
                                 >
-                                    Amount
+                                    {translate('Amount')}
                                 </label>
                                 <Input
                                     id="amount"
@@ -349,27 +383,47 @@ const AddFundsPage = () => {
                                 />
                             </div>
                             {selectedMethod &&
-                                selectedMethod.attachment != false && (
+                                selectedMethod.attachment !== false && (
                                     <div className="space-y-2 pb-1">
                                         <FileUpload
                                             inputName="attachment"
-                                            allowedExtensions={[
-                                                "jpg",
-                                                "png",
-                                                "jpeg",
-                                            ]}
-                                            onFileSelect={
-                                                handleAttachmentChange
-                                            }
+                                            allowedExtensions={["jpg", "png", "jpeg"]}
+                                            onFileSelect={(file) => handleAttachmentChange(file, "attachment")}
                                         />
                                     </div>
-                                )}
+                            )}
+                            {selectedMethod && selectedMethod.client_fields && selectedMethod.client_fields.length > 0 && (
+                              selectedMethod.client_fields.map((field) => (
+                                <div className="space-y-2 pb-1" key={field.id}>
+                                  <label
+                                    htmlFor={field.name[locale]}
+                                    className="text-black text-base"
+                                  >
+                                    {field.name[locale] || field.name['en']}
+                                  </label>
+                                  {field.type === 'text' && (
+                                    <Input id={field.name['en']} type="text" required={field.required} />
+                                  )}
+                                  {field.type === 'number' && (
+                                    <Input id={field.name['en']} type="number" required={field.required} />
+                                  )}
+                                  {field.type === 'image' && (
+                                    <FileUpload
+                                      inputName={field.name['en']}
+                                      allowedExtensions={['jpg', 'png', 'jpeg']}
+                                      required={field.required}
+                                      onFileSelect={(file) => handleAttachmentChange(file, field.name['en'])}
+                                    />
+                                  )}
+                                </div>
+                              ))
+                            )}
                               <div className="space-y-2 pb-1">
                                 <label
                                     htmlFor="charge"
                                     className="text-black text-base"
                                 >
-                                    Charge
+                                    {translate('Charge')}
                                 </label>
                                 <Input id="charge" value={charge.toFixed(2)} readOnly />
                               </div>
@@ -378,7 +432,7 @@ const AddFundsPage = () => {
                                     htmlFor="vat"
                                     className="text-black text-base"
                                 >
-                                    VAT
+                                    {translate('VAT')}
                                 </label>
                                 <Input id="vat" value={vat.toFixed(2)} readOnly />
                               </div>
@@ -387,7 +441,7 @@ const AddFundsPage = () => {
                                     htmlFor="total"
                                     className="text-black text-base"
                                 >
-                                    Total
+                                    {translate('Total')}
                                 </label>
                                 <Input
                                     id="total"
@@ -397,7 +451,7 @@ const AddFundsPage = () => {
                             </div>
                             <div className="flex flex-row gap-3">
                                 <Button fullWidth isLoading={isLoading}>
-                                    Submit
+                                    {translate('Submit')}
                                 </Button>
                             </div>
                         </form>

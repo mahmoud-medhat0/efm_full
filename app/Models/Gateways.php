@@ -41,11 +41,10 @@ class Gateways extends Model
     }
     public function clientFields()
     {
-        return $this->hasMany(ClientGatewayField::class,'gateway_id','id');
+        if($this->client_fields){
+            return ManualField::whereIn('id',json_decode($this->client_fields))->get();
+        }
+        return null;
     }
-    // public function agentFields()
-    // {
-    //     return $this->hasMany(ManualField::class,'gateway_id','id');
-    // }
 }
 

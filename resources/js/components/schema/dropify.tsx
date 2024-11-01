@@ -58,7 +58,7 @@ const FileUpload = ({ inputName, allowedExtensions, onFileSelect }) => {
 
   return (
     <div className="form-group font-weight-b">
-      <label htmlFor="fileInput">Upload File</label>
+      <label htmlFor="fileInput">{translate('Upload File')}</label>
       <input
         type="file"
         id="fileInput"
