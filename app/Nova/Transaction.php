@@ -117,13 +117,15 @@ class Transaction extends Resource
             })->sortable(),
             Text::make('Manual Fields', 'manual_fields')
                 ->displayUsing(function ($value) {
-                    $fields = json_decode($value, true);
                     $output = '';
-                    foreach ($fields as $key => $field) {
-                        if ($field['type'] === 'image') {
-                            $output .= "<div><strong>{$key}:</strong> <img src='" . Storage::disk('public')->url($field['value']) . "' alt='{$key}' style='max-width: 100px;'></div>";
-                        } else {
-                            $output .= "<div><strong>{$key}:</strong> {$field['value']}</div>";
+                    if ($value) {
+                        $fields = json_decode($value, true);
+                        foreach ($fields as $key => $field) {
+                            if ($field['type'] === 'image') {
+                                $output .= "<div><strong>{$key}:</strong> <img src='" . Storage::disk('public')->url($field['value']) . "' alt='{$key}' style='max-width: 100px;'></div>";
+                            } else {
+                                $output .= "<div><strong>{$key}:</strong> {$field['value']}</div>";
+                            }
                         }
                     }
                     return $output;
