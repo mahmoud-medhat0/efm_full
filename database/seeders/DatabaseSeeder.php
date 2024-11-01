@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             // TransactionsApprovePermissions::class,
             // AddPermissionviewAnyActivitylog::class,
             // ManualFieldPermission::class,
-            CanImpersonateClient::class,
+            // CanImpersonateClient::class,
+            AgentRequestPermission::class,
         ]);
     }
 }

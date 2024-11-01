@@ -14,6 +14,7 @@ use App\Models\Membershib;
 use Endroid\QrCode\QrCode;
 use App\Models\ManualField;
 use App\Models\Transaction;
+use App\Models\AgentRequest;
 use Illuminate\Http\Request;
 use App\Models\ReferralSetting;
 use App\Models\InterestCategory;
@@ -173,7 +174,7 @@ class DashboardContrtoller extends Controller
                     $fieldName = str_replace(' ', '_', $field->name);
                     $methodData[$fieldName] = [
                         'type' => $field->type,
-                        'value' => null
+                        'value' => $request->input($fieldName)
                     ];
                     if ($field->type == 'image') {
                         $uploadedFile = $request->file($fieldName);
@@ -188,7 +189,7 @@ class DashboardContrtoller extends Controller
             $total = $request->amount + $fees;
             $methodData = json_encode($methodData);
             $tnx = 'DEP' . time();
-            Transaction::create([
+            $transaction = Transaction::create([
                 'amount' => $request->amount,
                 'fee' => $fees,
                 'total' => $total,
@@ -200,6 +201,12 @@ class DashboardContrtoller extends Controller
                 'client_id' => auth()->user()->id,
                 'attachment' => $attachmentPath,
                 'manual_fields' => $methodData,
+            ]);
+            AgentRequest::create([
+                'transaction_id' => $transaction->id,
+                'gateway_id' => $request->selectedMethod,
+                'client_id' => auth()->user()->id,
+                'status' => 'pending',
             ]);
             return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
         } catch (\Exception $e) {
