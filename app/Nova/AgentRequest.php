@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Nova;
+use App\Models\AgentField;
 use App\Models\ManualField;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -10,11 +12,14 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphMany;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Models\AgentField;
 use App\Models\Gateways as GatewaysModel;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\AgentRequest\ClientFilter;
 use App\Models\AgentRequest as AgentRequestModel;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+
 class AgentRequest extends Resource
 {
     /**
@@ -46,38 +51,51 @@ class AgentRequest extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function fields(NovaRequest $request)
+     public static function indexQuery(NovaRequest $request, $query)
+     {
+        return $query->whereIn('gateway_id', json_decode(auth()->user()->gateways, true));
+     }
+     public function fields(NovaRequest $request)
     {
         $model = $this->resource; // Access the model instance
-        $this->resource = self::find($model->id);
         $gateway = GatewaysModel::find($model->gateway_id);
         if ($gateway && $gateway->agend_fields) {
             $agentFields = json_decode($gateway->agend_fields, true);
         } else {
             $agentFields = [];
         }
-
-        $layouts = collect($agentFields)->map(function ($field) {
+        
+        $fieldsdata = [];
+        $data = json_decode($this->resource->agent_fields, true);
+        if ($data && $data != null) {
+            foreach ($data as $key => $field) {
+                $fieldsdata[$key] = $field['value'];
+            }
+        }
+        
+        $layouts = collect($agentFields)->map(function ($field) use ($fieldsdata) {
             $field = ManualField::find($field);
             $rules = $field->required ? 'required' : 'nullable'; // Define rules
 
+            $fieldName = str_replace(' ', '_', $field->NameEn);
+            $defaultValue = $fieldsdata[$fieldName] ?? '';
+
             return match ($field->type) {
-                'text' => Text::make($field->NameEn, str_replace(' ', '_', $field->NameEn))
+                'text' => Text::make($field->NameEn, $fieldName)
                               ->rules($rules) // Apply rules
-                              ->onlyOnForms(),
-                'number' => Number::make($field->NameEn, str_replace(' ', '_', $field->NameEn))
+                              ->onlyOnForms()
+                              ->resolveUsing(fn() => $defaultValue), // Use resolveUsing for edit
+                'number' => Number::make($field->NameEn, $fieldName)
                                 ->rules($rules) // Apply rules
-                                ->onlyOnForms(),
-                'image' => Image::make($field->NameEn, str_replace(' ', '_', $field->NameEn))
+                                ->onlyOnForms()
+                                ->resolveUsing(fn() => $defaultValue), // Use resolveUsing for edit
+                'image' => Image::make($field->NameEn, $fieldName)
                                 ->disk('public')
                                 ->rules($rules) // Apply rules
-                                ->onlyOnForms(),
+                                ->onlyOnForms()
+                                ->default($defaultValue), // Set default value
             };
         });
-        $rules = [];
-        foreach ($agentFields as $field) {
-            $rules[$field] = 'required';
-        }
 
         return array_merge([
             ID::make()->sortable(),
@@ -94,7 +112,18 @@ class AgentRequest extends Resource
                 'pending' => 'Pending',
                 'approved' => 'Approved',
                 'rejected' => 'Rejected',
-            ]),
+            ])->onlyOnForms(),
+            Text::make('Status', function () {
+                $colors = [
+                    'pending' => 'orange',
+                    'approved' => 'green',
+                    'rejected' => 'red',
+                ];
+                $color = $colors[$this->status] ?? 'black';
+                return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$this->status}</span>";
+            })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
+            MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
+
             Text::make('Agent Fields', 'agent_fields')
                 ->displayUsing(function ($value) {
                     $output = '';
@@ -118,12 +147,22 @@ class AgentRequest extends Resource
     public static function fillForUpdate (NovaRequest $request, $model)
     {
         $modelNew = AgentRequestModel::find($model->id);
+        if (!$modelNew) {
+            throw new \Exception("Model not found");
+        }
         $data = $request->all();
         $gateway = GatewaysModel::find($data['gateway']);
-        if ($gateway && $gateway->agend_fields) {
+        if (!$gateway) {
+            throw new \Exception("Gateway not found");
+        }
+
+        if ($gateway->agend_fields) {
             $agentFields = json_decode($gateway->agend_fields, true);
             $agentFields = array_map(function($field) {
                 $manualField = ManualField::find($field);
+                if (!$manualField) {
+                    throw new \Exception("Manual field not found");
+                }
                 return [
                     'name' => str_replace(' ', '_', $manualField->nameEn),
                     'type' => $manualField->type
@@ -153,9 +192,14 @@ class AgentRequest extends Resource
                 unset($request[$fieldName]);
             }
         }
+        if($request->status=='approved'){
+            $model->transaction->update(['status' => 'success']);
+            $model->client->update(['balance' => $model->client->balance + $model->transaction->amount]);
+        }
+        $modelNew->status = $request->status;
         $modelNew->agent_fields = json_encode($agentFieldsData);
         $modelNew->save();
-        return $model;
+        return [$modelNew, []];
     }
     /**
      * Get the cards available for the request.
@@ -176,7 +220,9 @@ class AgentRequest extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new ClientFilter
+        ];
     }
 
     /**

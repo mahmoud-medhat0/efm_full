@@ -24,6 +24,7 @@ use App\Nova\Filters\Transaction\TxnTypeFilter;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use App\Nova\Filters\Transaction\CreatedAtEndFilter;
 use App\Nova\Filters\Transaction\CreatedAtStartFilter;
+use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Resource
 {
@@ -66,6 +67,7 @@ class Transaction extends Resource
                 'transfer' => 'Transfer',
                 'refund' => 'Refund',
                 'fee' => 'Fee',
+                'subtract' => 'Subtract',
             ])->sortable(),
             Select::make('Status')->options([
                 'pending' => 'Pending',
@@ -179,12 +181,15 @@ class Transaction extends Resource
         ];
     }
 
-    public static function afterCreateValidation(NovaRequest $request, $validator)
+    public static function afterCreate(NovaRequest $request, Model $model)
     {
-        dd($request->all());
-        $validator->after(function ($validator) {
-            $validator->errors()->add('status', 'The status field is required.');
-        });
+        if($model->status=='success'){
+            if($model->tnx_type=='add'){
+                $model->client->update(['balance' => $model->client->balance + $model->amount]);
+            }else{
+                $model->client->update(['balance' => $model->client->balance - $model->amount]);
+            }
+        }
     }
     /**
      * Get the lenses available for the resource.

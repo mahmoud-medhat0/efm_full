@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AgentRequest extends Model
 {
@@ -13,7 +14,12 @@ class AgentRequest extends Model
     protected $guarded = [];
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logAll()->logOnlyDirty();
+        return LogOptions::defaults()
+            ->logAll()->logOnlyDirty();
+    }
+    public function activityLogs()
+    {
+        return $this->morphMany(Activity::class,'subject');
     }
     public function transaction()
     {
@@ -26,5 +32,22 @@ class AgentRequest extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    
+    public static function boot()
+    {
+        parent::boot();
+        static::updating(function ($model) {
+            
+            $attributes = $model->getAttributes();
+            $incomingAttributes = request()->all();
+            $filteredAttributes = [];
+            foreach($incomingAttributes as $key => $value){
+                if(array_key_exists($key, $attributes)){
+                    $filteredAttributes[$key] = $value;
+                }
+            }
+            $model->fill($filteredAttributes);
+        });
     }
 }

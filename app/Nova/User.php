@@ -11,9 +11,10 @@ use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
+use Outl1ne\MultiselectField\Multiselect;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Bolechen\NovaActivitylog\Resources\ActivityLog; // Import the Activity model
-
+use App\Models\Gateways as GatewaysModel;
 class User extends Resource
 {
     /**
@@ -66,6 +67,7 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+            MultiSelect::make('Gateways', 'gateways')->options(GatewaysModel::all()->pluck('name', 'id')),
             MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
             MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
             MorphMany::make('LoginAttempts', 'loginAttempts', LoginAttempt::class),
