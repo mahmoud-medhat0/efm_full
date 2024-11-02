@@ -17,6 +17,8 @@ class PushMembershipNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
+    public $user;
+    public $membershipId;
     public function __construct($user,$membershipId)
     {
         $this->user = $user;

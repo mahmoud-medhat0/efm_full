@@ -17,6 +17,8 @@ class PushDepositNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
+    public $user;
+    public $transaction;
     public function __construct($user,$transaction)
     {
         $this->user = $user;
