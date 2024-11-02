@@ -311,7 +311,7 @@ class DashboardContrtoller extends Controller
     //logs methods
     public function LogOrders()
     {
-        $orders = auth()->user()->orders()->get();
+        $orders = auth()->user()->orders()->orderBy('created_at', 'desc')->get();
         return Inertia::render('settings/pages/Userlogs/OrderLogs.tsx', [
             'orders' => $orders
         ]);
@@ -325,14 +325,14 @@ class DashboardContrtoller extends Controller
     }
     public function LogLoginAttempts()
     {
-        $loginAttempts = auth()->user()->loginAttempts()->get();
+        $loginAttempts = auth()->user()->loginAttempts()->orderBy('created_at', 'desc')->get();
         return Inertia::render('settings/pages/Userlogs/LoginLogs.tsx', [
             'loginAttempts' => $loginAttempts
         ]);
     }
     public function LogWithdraw()
     {
-        $withdraws = Transaction::where('client_id', auth()->user()->id)->where('type', 'withdraw')->get();
+        $withdraws = Transaction::where('client_id', auth()->user()->id)->where('type', 'withdraw')->orderBy('created_at', 'desc')->get();
         return Inertia::render('settings/pages/Userlogs/WithdrawLogs.tsx', [
             'withdraws' => $withdraws
         ]);
