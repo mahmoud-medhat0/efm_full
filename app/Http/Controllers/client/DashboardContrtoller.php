@@ -721,7 +721,7 @@ class DashboardContrtoller extends Controller
             'referrals' => auth()->user()->referrals->map(function ($referral) {
                 return [
                     'id' => mb_strtoupper(mb_substr(explode(' ', $referral->name)[0], 0, 1) . mb_substr(explode(' ', $referral->name)[1], 0, 1)),
-                    'name' => $referral->name . ($referral->membership ? ' - ' . $referral->membership->name : 'Free'),
+                    'name' => $referral->name . ($referral->membership ? ' - ' . $referral->membership->name : ' - Free'),
                     'profile_image' => $referral->profile_image ? '/storage/' . $referral->profile_image : null,
                 ];
             }),
