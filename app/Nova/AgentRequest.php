@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use Illuminate\Support\Facades\Storage;
@@ -123,7 +124,7 @@ class AgentRequest extends Resource
                 return "<span style='background-color: {$color}; color: white; padding: 2px 5px; border-radius: 3px;'>{$this->status}</span>";
             })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
             MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
-
+            HasOne::make('Transaction', 'transaction', Transaction::class)->onlyOnDetail(),
             Text::make('Agent Fields', 'agent_fields')
                 ->displayUsing(function ($value) {
                     $output = '';
