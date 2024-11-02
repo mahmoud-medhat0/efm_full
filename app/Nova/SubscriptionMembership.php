@@ -38,7 +38,7 @@ class SubscriptionMembership extends Resource
      * @var array
      */
     public static $search = [
-        'id','client.name','membership.name','status','start_date','end_date','remaining_days'
+        'id','client.name','membership.name','status','start_date','end_date'
     ];
 
     /**
