@@ -24,9 +24,13 @@ class SetStatusSuccess extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            if($model->status == 'pending' && $model->type == 'deposit'){    
+            if($model->status == 'pending'){    
                 $model->update(['status' => 'success']);
-                $model->client->update(['balance' => $model->client->balance + $model->amount]);
+                if($model->tnx_type == 'add'){
+                    $model->client->update(['balance' => $model->client->balance + $model->amount]);
+                }elseif($model->tnx_type == 'sub'){
+                    $model->client->update(['balance' => $model->client->balance - $model->amount]);
+                }
             }
         }
         return Action::message('Status Updated to Success.');
