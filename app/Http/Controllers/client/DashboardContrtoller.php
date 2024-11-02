@@ -171,7 +171,7 @@ class DashboardContrtoller extends Controller
             if ($method->client_fields && json_decode($method->client_fields, true) && count(json_decode($method->client_fields, true)) > 0) {
                 foreach (json_decode($method->client_fields, true) as $field) {
                     $field = ManualField::find($field);
-                    $fieldName = str_replace(' ', '_', $field->name);
+                    $fieldName = str_replace(' ', '_', $field->NameEn);
                     $methodData[$fieldName] = [
                         'type' => $field->type,
                         'value' => $request->input($fieldName)
