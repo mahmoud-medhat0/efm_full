@@ -2,8 +2,37 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Nova\News;
+use App\Nova\Task;
+use App\Nova\Term;
+use App\Nova\User;
+use App\Nova\Order;
+use App\Nova\Client;
+use App\Nova\Service;
+use App\Nova\Feedback;
+use App\Nova\Gateways;
 use Laravel\Nova\Nova;
+use App\Nova\BanAttemp;
+use App\Nova\Membershib;
+use App\Nova\FaqQuestion;
+use App\Nova\ManualField;
+use App\Nova\Transaction;
+use App\Nova\Aboutsection;
+use App\Nova\AgentRequest;
+use App\Nova\LoginAttempt;
+use App\Nova\RejectionCause;
+use App\Nova\ReferralSection;
+use App\Nova\ReferralSetting;
+use App\Nova\WithdrawAccount;
+use App\Nova\AdvertiseSection;
+use App\Nova\InterestCategory;
+use App\Nova\MembershipSection;
+use App\Nova\RegistrationOffer;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuList;
+use Laravel\Nova\Menu\MenuSection;
+use App\Nova\SubscriptionMembership;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -17,6 +46,46 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
         Nova::showUnreadCountInNotificationCenter();
+        Nova::mainMenu(function () {
+            return [
+                MenuSection::make('Website Resources Sections', [
+                        MenuItem::resource(Aboutsection::class),
+                        MenuItem::resource(AdvertiseSection::class),
+                        MenuItem::resource(MembershipSection::class),
+                        MenuItem::resource(ReferralSection::class),
+                ])->icon('document-text')->collapsible(),
+                MenuSection::make('Website Other Resources', [
+                    MenuItem::resource(FaqQuestion::class),
+                    MenuItem::resource(Feedback::class),
+                    MenuItem::resource(News::class),
+                    MenuItem::resource(Term::class),
+                ])->icon('collection')->collapsible(),
+                MenuSection::make('Users Resources', [
+                    MenuItem::resource(User::class)->name('Admin Users'),
+                    MenuItem::resource(Client::class),
+                    MenuItem::resource(BanAttemp::class),
+                    MenuItem::resource(InterestCategory::class),
+                    MenuItem::resource(LoginAttempt::class),
+                    MenuItem::resource(WithdrawAccount::class),
+                ])->icon('users')->collapsible(),
+                MenuSection::make('Financial Resources', [
+                    MenuItem::resource(ManualField::class),
+                    MenuItem::resource(Gateways::class),
+                    MenuItem::resource(Transaction::class),
+                    MenuItem::resource(AgentRequest::class),
+                    MenuItem::resource(Membershib::class),
+                    MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
+                    MenuItem::resource(ReferralSetting::class),
+                    MenuItem::resource(RegistrationOffer::class),
+                ])->icon('currency-dollar')->collapsible(),
+                MenuSection::make('Orders Resources', [
+                    MenuItem::resource(Service::class),
+                    MenuItem::resource(Order::class),
+                    MenuItem::resource(Task::class),
+                    MenuItem::resource(RejectionCause::class),
+                ])->icon('shopping-cart')->collapsible(),
+            ];
+        });
     }
 
     /**
