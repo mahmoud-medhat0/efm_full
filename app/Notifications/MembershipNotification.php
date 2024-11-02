@@ -42,7 +42,7 @@ class MembershipNotification extends Notification
         $membership = SubscriptionMembership::find($this->membershipId)->membership->name;
         return NovaNotification::make()
                     ->message('New Membership Subscription from ' . $this->user->name . ' for ' . $membership .' Plan')
-                    ->action('View Membership', URL::make('nova/resources/subscription-memberships' . $this->membershipId));
+                    ->action('View Membership', URL::make('/resources/subscription-memberships/' . $this->membershipId));
     }
 
     /**

@@ -39,7 +39,7 @@ class WithdrawlRequestNotification extends Notification
     {
         return NovaNotification::make()
                     ->message('New Withdrawal Request from ' . $this->user->name . ' for ' . $this->transaction->amount . ' EGP')
-                    ->action('View Withdrawal', URL::make('/nova/resources/transactions/' . $this->transaction->id));
+                    ->action('View Withdrawal', URL::make('/resources/transactions/' . $this->transaction->id));
     }
 
     /**

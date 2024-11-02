@@ -39,7 +39,7 @@ class DepositRequestNotification extends Notification
     {
         return NovaNotification::make()
                     ->message('New Deposit Request from ' . $this->user->name . ' for ' . $this->transaction->amount . ' EGP')
-                    ->action('View Deposit', URL::make('/nova/resources/transactions/' . $this->transaction->id));
+                    ->action('View Deposit', URL::make('/resources/transactions/' . $this->transaction->id));
     }
 
     /**
