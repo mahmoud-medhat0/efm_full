@@ -18,6 +18,9 @@ class Client extends Authenticatable implements MustVerifyEmail
     protected $appends = ['has_active_subscription','referral_count','activator_count','membership'];
     protected $casts = [
         'password' => 'hashed',
+        'email_verified_at' => 'datetime',
+        'kyc_verified_at' => 'datetime',
+        'telegram_verified_at' => 'datetime',
     ];
     public function getActivitylogOptions(): LogOptions
     {

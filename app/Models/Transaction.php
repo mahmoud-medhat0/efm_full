@@ -12,6 +12,9 @@ class Transaction extends Model
 {
     use HasFactory, LogsActivity;
     protected $guarded = [];
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
