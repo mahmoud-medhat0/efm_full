@@ -670,7 +670,7 @@ class DashboardContrtoller extends Controller
                             'fee' => 0,
                             'total' => $rewardvalue,
                             'tnx_type' => 'add',
-                            'tnx' => 'ADD' . time(),
+                            'tnx' => 'REF' . time(),
                             'type' => 'referral',
                             'description' => 'Referral reward for ' . auth()->user()->name,
                             'client_id' => auth()->user()->parent->id,
