@@ -4,6 +4,7 @@ namespace App\Http\Controllers\client;
 
 use DateInterval;
 use App\Models\Task;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Client;
@@ -23,11 +24,15 @@ use Illuminate\Support\Facades\DB;
 use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
 use Endroid\QrCode\Writer\PngWriter;
+use App\Jobs\PushDepositNotification;
 use App\Models\SubscriptionMembership;
+use App\Jobs\PushWithdrawlNotification;
+use App\Jobs\PushMembershipNotification;
 use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Support\Facades\Validator;
 use Stevebauman\Location\Facades\Location;
 use Alaouy\Youtube\Rules\ValidYoutubeVideo;
+use Laravel\Nova\Notifications\NovaNotification;
 
 class DashboardContrtoller extends Controller
 {
@@ -208,6 +213,7 @@ class DashboardContrtoller extends Controller
                 'client_id' => auth()->user()->id,
                 'status' => 'pending',
             ]);
+            PushDepositNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
             return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
@@ -297,7 +303,7 @@ class DashboardContrtoller extends Controller
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
         $total = $request->amount - $fees;
         $tnx = "WITH" . time();
-        Transaction::create([
+        $transaction = Transaction::create([
             'amount' => $request->amount,
             'fee' => $fees,
             'total' => $total,
@@ -310,6 +316,7 @@ class DashboardContrtoller extends Controller
             'attachment' => $attachmentPath,
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $total]);
+        PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
     //logs methods
@@ -679,15 +686,17 @@ class DashboardContrtoller extends Controller
                         auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
                     }
                 }
-                SubscriptionMembership::create([
+                $subscription = SubscriptionMembership::create([
                     'client_id' => auth()->user()->id,
                     'membership_id' => $request->plan,
                     'status' => 'active',
-                    'start_date' => now(),
+                    'start_date' => Carbon::now(),
                     'end_date' => $plan->is_lifetime == true
                         ? null
                         : now()->addDays($plan->duration),
+                    'is_lifetime' => $plan->is_lifetime,
                 ]);
+                PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
             });
             return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
         } catch (\Exception $e) {
