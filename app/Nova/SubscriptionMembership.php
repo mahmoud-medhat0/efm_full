@@ -53,7 +53,7 @@ class SubscriptionMembership extends Resource
             ID::make()->sortable(),
             BelongsTo::make('Client')->display(function($client){
                 return $client->name;
-            })->sortable(),
+            })->sortable()->searchable(),
             BelongsTo::make('Membership','membership',Membershib::class)->display(function($membership){
                 return $membership->name;
             })->sortable(),

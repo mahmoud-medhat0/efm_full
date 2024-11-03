@@ -69,6 +69,7 @@ class Transaction extends Resource
                 'fee' => 'Fee',
                 'subtract' => 'Subtract',
                 'referral' => 'Referral',
+                'membership' => 'Membership',
             ])->sortable(),
             Select::make('Status')->options([
                 'pending' => 'Pending',
@@ -141,10 +142,10 @@ class Transaction extends Resource
             })->sortable(),
             BelongsTo::make('Gateway', 'gateway', Gateways::class)->displayUsing(function ($gateway) {
                 return $gateway->name;
-            })->sortable()->rules('nullable'),
+            })->sortable()->searchable(),
             BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
                 return $client->name;
-            })->sortable(),
+            })->sortable()->searchable(),
             BelongsTo::make('Admin', 'admin', User::class)->displayUsing(function ($admin) {
                 return $admin->name;
             })->sortable()->rules('nullable'),
