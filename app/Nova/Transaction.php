@@ -68,6 +68,7 @@ class Transaction extends Resource
                 'refund' => 'Refund',
                 'fee' => 'Fee',
                 'subtract' => 'Subtract',
+                'referral' => 'Referral',
             ])->sortable(),
             Select::make('Status')->options([
                 'pending' => 'Pending',
