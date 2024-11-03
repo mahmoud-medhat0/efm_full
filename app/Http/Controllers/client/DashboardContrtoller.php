@@ -24,6 +24,7 @@ use App\Models\RegistrationOffer;
 use Illuminate\Support\Facades\DB;
 use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
+use App\Models\WithdrawAccountField;
 use Endroid\QrCode\Writer\PngWriter;
 use App\Jobs\PushDepositNotification;
 use App\Models\SubscriptionMembership;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Validator;
 use Stevebauman\Location\Facades\Location;
 use Alaouy\Youtube\Rules\ValidYoutubeVideo;
 use Laravel\Nova\Notifications\NovaNotification;
+use App\Rules\WithdrawAccountBelongsToAuthClient;
 
 class DashboardContrtoller extends Controller
 {
@@ -233,7 +235,7 @@ class DashboardContrtoller extends Controller
                     'description_withdraw' => $gateway->description_withdraw,
                     'charge_type_withdraw' => $gateway->charge_type_withdraw,
                     'charge_withdraw' => $gateway->charge_withdraw,
-                    'withdrawAccounts' => auth()->user()->withdrawAccounts()->where('gateway_id', $gateway->id)->first(),
+                    'withdrawAccounts' => auth()->user()->withdrawAccounts()->where('gateway_id', $gateway->id)->get()->toArray(),
                     'withdrawFields' => $gateway->withdrawFields(),
                 ];
             }),
@@ -255,17 +257,19 @@ class DashboardContrtoller extends Controller
         }
 
         $gateway = Gateways::find($request->selectedMethod);
-        $fields = json_decode($gateway->fields, true);
-        $rules[$fields['name']] = ($fields['validation']['required'] ? 'required' : 'nullable') .
-            (isset($fields['validation']['regex']) ? '|regex:' . $fields['validation']['regex'] : '') .
-            (isset($fields['validation']['unique']) && $fields['validation']['unique'] ? '|unique:withdraw_accounts,data->' . $fields['name'] : '');
+        $fields = $gateway->withdrawFields();
+        foreach ($fields as $field) {
+            $rules[$field->name_en] = ($field->is_required == 1 ? 'required' : 'nullable') .
+                (isset($field->is_unique) && $field->is_unique ? '|unique:withdraw_accounts,data->' . $field->name_en : '');
+        }
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
-
-        $data[$fields['name']] = $request->input($fields['name']);
-
+        $data = [];
+        foreach ($fields as $field) {
+            $data[$field->name_en] = $request->input($field->name_en);
+        }
         $data = json_encode($data);
         auth()->user()->withdrawAccounts()->create([
             'client_id' => auth()->user()->id,
@@ -278,6 +282,8 @@ class DashboardContrtoller extends Controller
     {
         $rules = [
             'selectedMethod' => ['required', 'exists:gateways,id'],
+            'account_id' => ['required', 'exists:withdraw_accounts,id', new WithdrawAccountBelongsToAuthClient],
+            'amount' => ['required', 'numeric', 'min:' . Gateways::find($request->selectedMethod)->min_withdraw, 'max:' . Gateways::find($request->selectedMethod)->max_withdraw],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -298,12 +304,13 @@ class DashboardContrtoller extends Controller
             'amount' => $request->amount,
             'fee' => $fees,
             'total' => $total,
-            'tnx_type' => 'add',
+            'tnx_type' => 'sub',
             'tnx' => $tnx,
             'type' => 'withdraw',
             'description' => 'Withdraw to ' . $gateway->name,
             'gateway_id' => $request->selectedMethod,
             'client_id' => auth()->user()->id,
+            'withdraw_account_id' => $request->account_id,
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $total]);
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');

@@ -32,6 +32,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuList;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\SubscriptionMembership;
+use App\Nova\WithdrawAccountField;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -68,6 +69,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(LoginAttempt::class),
                     MenuItem::resource(WithdrawAccount::class),
                 ])->icon('users')->collapsible(),
+                MenuSection::make('Roles & Permissions', [
+                    MenuItem::make('Roles')
+                    ->path('resources/roles'),
+                    MenuItem::make('Permissions')
+                    ->path('resources/permissions'),
+                ])->icon('shield-check')->collapsible(),
                 MenuSection::make('Financial Resources', [
                     MenuItem::resource(ManualField::class),
                     MenuItem::resource(Gateways::class),
@@ -77,6 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
                     MenuItem::resource(ReferralSetting::class),
                     MenuItem::resource(RegistrationOffer::class),
+                    MenuItem::resource(WithdrawAccountField::class),
                 ])->icon('currency-dollar')->collapsible(),
                 MenuSection::make('Orders Resources', [
                     MenuItem::resource(Service::class),

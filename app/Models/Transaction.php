@@ -48,6 +48,10 @@ class Transaction extends Model
     {
         return $this->hasOne(AgentRequest::class);
     }
+    public function withdrawAccount()
+    {
+        return $this->hasOne(WithdrawAccount::class, 'id', 'withdraw_account_id');
+    }
     protected static function boot()
     {
         parent::boot();

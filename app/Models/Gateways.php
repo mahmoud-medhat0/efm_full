@@ -46,5 +46,12 @@ class Gateways extends Model
         }
         return null;
     }
+    public function withdrawFields()
+    {
+        if($this->withdraw_fields){
+            return WithdrawAccountField::whereIn('id',json_decode($this->withdraw_fields))->get();
+        }
+        return null;
+    }
 }
 

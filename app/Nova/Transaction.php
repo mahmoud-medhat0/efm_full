@@ -7,12 +7,14 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use App\Nova\Actions\SetStatusSuccess;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Nova\Actions\SetStatusCancelled;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -24,7 +26,6 @@ use App\Nova\Filters\Transaction\TxnTypeFilter;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use App\Nova\Filters\Transaction\CreatedAtEndFilter;
 use App\Nova\Filters\Transaction\CreatedAtStartFilter;
-use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Resource
 {
@@ -63,7 +64,7 @@ class Transaction extends Resource
             ID::make()->sortable(),
             Select::make('Type')->options([
                 'deposit' => 'Deposit',
-                'withdrawal' => 'Withdrawal',
+                'withdraw' => 'Withdraw',
                 'transfer' => 'Transfer',
                 'refund' => 'Refund',
                 'fee' => 'Fee',
@@ -89,7 +90,7 @@ class Transaction extends Resource
             })->asHtml()->hideWhenCreating()->hideWhenUpdating()->sortable(),
             Select::make('tnx_type')->options([
                 'add' => 'Add',
-                'subtract' => 'Subtract',
+                'sub' => 'Subtract',
             ])->onlyOnForms(),
             Text::make('Tnx Type', function () {
                 $colors = [
@@ -142,13 +143,14 @@ class Transaction extends Resource
             })->sortable(),
             BelongsTo::make('Gateway', 'gateway', Gateways::class)->displayUsing(function ($gateway) {
                 return $gateway->name;
-            })->sortable()->searchable(),
+            })->sortable()->searchable()->nullable(),
             BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
                 return $client->name;
             })->sortable()->searchable(),
             BelongsTo::make('Admin', 'admin', User::class)->displayUsing(function ($admin) {
                 return $admin->name;
-            })->sortable()->rules('nullable'),
+            })->sortable()->nullable(),
+            HasOne::make('Withdraw Account', 'withdrawAccount'),
             MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }

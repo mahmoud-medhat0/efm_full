@@ -249,7 +249,6 @@ const AddFundsPage = () => {
                     formData,
                     config
                 );
-                console.log(response);
                 if (response.data.success) {
                     toast.success(
                         response.data.message +

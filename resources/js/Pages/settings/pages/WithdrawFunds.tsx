@@ -3,17 +3,16 @@ import WelcomeTab from "../../../components/dashboard/welcome/WelcomeTab";
 import Button from "../../../components/schema/Button";
 import Input from "../../../components/schema/Input";
 import RootLayout from "../Layout";
-import { usePage, Inertia } from "@inertiajs/inertia-react";
+import { usePage } from "@inertiajs/inertia-react";
+import { Inertia } from '@inertiajs/inertia';
 import { useState, useEffect } from "react";
 import Modal from "../../../components/schema/Modal";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useForm } from "react-hook-form";
-import InputErrorMessage from "../../../components/InputErrorMessage";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { modalSchema, telegramSchema } from "../../../validation";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import axios from 'axios'; // Added import for axios
+import axios, { AxiosError } from 'axios'; // Added import for axios
 import { route } from 'ziggy-js'; // Added import for route
+import { IErrorResponse } from "../../../interfaces";
 const WithdrawFundsPage = () => {
   const page = usePage();
   const methods = page.props.methods;
@@ -44,7 +43,6 @@ const WithdrawFundsPage = () => {
     const value = parseFloat(e.target.value);
     setAmount(value);
   };
-  
   useEffect(() => {
     calcTotal();
   }, [amount, selectedMethod]);
@@ -52,6 +50,7 @@ const WithdrawFundsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  const { lang: locale, app_url } = usePage().props;
     // ** React Hook Form for Modal
     const {
         register: registerModal,
@@ -59,7 +58,7 @@ const WithdrawFundsPage = () => {
         setError,
         formState: { errors: modalErrors },
     } = useForm();
-    const onSubmitModal: SubmitHandler<IModalInput> = async (data) => { // Fixed syntax error
+    const onSubmitModal: SubmitHandler<any> = async (data) => { // Fixed syntax error
       try {
         data.selectedMethod = selectedMethod.id;
           const response = await axios.post(route("client.dashboard.withdraw-account"), data);
@@ -70,9 +69,7 @@ const WithdrawFundsPage = () => {
               });
               closeModal();
               setIsLoading(false);
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
+              Inertia.visit(route('client.dashboard.withdraw'));
           } else if (response.data.success === false) {
               if (response.data.errors) {
                   Object.keys(response.data.errors).forEach((key) => {
@@ -109,15 +106,23 @@ const WithdrawFundsPage = () => {
       }
   };
   useEffect(() => {
-    if (!Array.isArray(page.props.withdrawAccounts) || page.props.withdrawAccounts.length === 0) {
+    if (selectedMethod.withdrawAccounts.length == 0) {
       toast.error("You don't have any withdraw accounts. Please add one to proceed.", {
         position: "bottom-center",
         duration: 3000,
       });
+      openModal();
     }
   }, []);
   const handleMethodChange = (method) => {
     setSelectedMethod(method);
+    if (selectedMethod.withdrawAccounts.length === 0) {
+      toast.error("You don't have any withdraw accounts. Please add one to proceed.", {
+        position: "bottom-center",
+        duration: 3000,
+      });
+      openModal();
+    }
   };
   const {
     register,
@@ -141,6 +146,7 @@ const WithdrawFundsPage = () => {
       const formData = new FormData();
       formData.append('selectedMethod', selectedMethod.id);
       formData.append('amount', amount);
+      formData.append('account_id', selectedMethod.withdrawAccounts[0].id);
       const config = {
         headers: {
           'X-CSRF-TOKEN': csrfToken,
@@ -190,14 +196,18 @@ const WithdrawFundsPage = () => {
         <div id="description" style={{ border: "3px solid black", backgroundColor: "white" }} dangerouslySetInnerHTML={{ __html: selectedMethod.description_withdraw   }} />
           </div>
         )}
+        {selectedMethod.withdrawAccounts && selectedMethod.withdrawAccounts.length > 0 && (
+          selectedMethod.withdrawAccounts.map((account) => (
+            <div className="space-y-2 pb-1">
+              <label htmlFor="" className="text-black text-base">
+              {Object.keys(JSON.parse(account.data))[0]}
+            </label>
+            <div id="" style={{ border: "1.5px solid black", backgroundColor: "white" }} dangerouslySetInnerHTML={{ __html: Object.values(JSON.parse(account.data))[0]   }} />
+          </div>
+          ))
+        )}
         <div className="pb-3">
           <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-          {selectedMethod.withdrawAccounts && <div className="space-y-2 pb-1">
-              <label htmlFor="total" className="text-black text-base">
-                {selectedMethod.fields.name}
-              </label>
-              <Input id="total" value={JSON.parse(selectedMethod.withdrawAccounts.data)[selectedMethod.fields.name]} readOnly />
-            </div>}
             <div className="space-y-2 pb-1">
               <label htmlFor="plan" className="text-black text-base">
                 Method
@@ -231,7 +241,7 @@ const WithdrawFundsPage = () => {
               <Button fullWidth isLoading={isLoading}>Withdraw</Button>
             </div>
           </form>
-          {selectedMethod.fields && <Modal isOpen={isOpen} closeModal={closeModal}>
+          {selectedMethod.withdrawFields && selectedMethod.withdrawFields.length > 0 && <Modal isOpen={isOpen} closeModal={closeModal}>
                 <div className='absolute top-[-20px] right-0'>
                     <div className='bg-[#E8F0F7] rounded-full p-1'>
                         <XMarkIcon className='w-6 h-6 cursor-pointer text-red-600' onClick={closeModal} />
@@ -246,11 +256,17 @@ const WithdrawFundsPage = () => {
                     </p>
 
                     <div className='w-full flex-row items-center gap-2 p-2 rounded-lg'>
+                    {selectedMethod.withdrawFields.map((field) => (
+                      <div key={field.id}>
+                        <label htmlFor={field.name['en']} className="text-black text-base">{field.name['en']}</label>
                             <Input
-                                  {...registerModal(selectedMethod.fields.name)} // Registering with react-hook-form
-                                placeholder={selectedMethod.fields.name}
-                                type={selectedMethod.fields.type}
+                                  {...registerModal(field.name['en'])} // Registering with react-hook-form
+                                placeholder={field.name['en']}
+                                type={field.type}
+                                required={field.required}
                             />
+                      </div>
+                    ))}
                     </div>
                     <div className="w-full">
                         <Button fullWidth onClick={handleSubmitModal(onSubmitModal)}>
