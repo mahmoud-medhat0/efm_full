@@ -141,13 +141,13 @@ class Transaction extends Resource
             })->sortable(),
             BelongsTo::make('Gateway', 'gateway', Gateways::class)->displayUsing(function ($gateway) {
                 return $gateway->name;
-            })->sortable(),
+            })->sortable()->rules('nullable'),
             BelongsTo::make('Client', 'client', Client::class)->displayUsing(function ($client) {
                 return $client->name;
             })->sortable(),
             BelongsTo::make('Admin', 'admin', User::class)->displayUsing(function ($admin) {
                 return $admin->name;
-            })->sortable(),
+            })->sortable()->rules('nullable'),
             MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
