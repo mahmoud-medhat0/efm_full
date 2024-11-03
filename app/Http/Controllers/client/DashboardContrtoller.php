@@ -680,8 +680,8 @@ class DashboardContrtoller extends Controller
                     'client_id' => auth()->user()->id,
                     'membership_id' => $request->plan,
                     'status' => 'active',
-                    'start_date' => Carbon::now(),
-                    'end_date' => $plan->is_lifetime == true
+                    'start_date' => now(),
+                    'end_date' => $plan->is_lifetime
                         ? null
                         : now()->addDays($plan->duration),
                     'is_lifetime' => $plan->is_lifetime,
