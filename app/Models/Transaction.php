@@ -44,7 +44,10 @@ class Transaction extends Model
     {
         return $this->where('type', 'withdrawal')->get();
     }
-
+    public function agentRequest()
+    {
+        return $this->hasOne(AgentRequest::class);
+    }
     protected static function boot()
     {
         parent::boot();

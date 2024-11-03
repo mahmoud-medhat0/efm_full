@@ -191,6 +191,20 @@ class Transaction extends Resource
             }
         }
     }
+    public static function afterUpdate(NovaRequest $request, Model $model)
+    {
+        if($model->status=='success'){
+            if($model->tnx_type=='add'){
+                $model->client->update(['balance' => $model->client->balance + $model->amount]);
+            }else{
+                $model->client->update(['balance' => $model->client->balance - $model->amount]);
+            }
+        }elseif($model->status=='failed' || $model->status=='cancelled'){
+            if($model->agentRequest!=null){
+                $model->agentRequest->update(['status' => 'rejected']);
+            }
+        }
+    }
     /**
      * Get the lenses available for the resource.
      *

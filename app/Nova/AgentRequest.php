@@ -196,6 +196,8 @@ class AgentRequest extends Resource
         if($request->status=='approved'){
             $model->transaction->update(['status' => 'success']);
             $model->client->update(['balance' => $model->client->balance + $model->transaction->amount]);
+        }elseif($request->status=='rejected'){
+            $model->transaction->update(['status' => 'failed']);
         }
         $modelNew->status = $request->status;
         $modelNew->agent_fields = json_encode($agentFieldsData);
