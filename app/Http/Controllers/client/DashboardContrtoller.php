@@ -233,8 +233,8 @@ class DashboardContrtoller extends Controller
                     'description_withdraw' => $gateway->description_withdraw,
                     'charge_type_withdraw' => $gateway->charge_type_withdraw,
                     'charge_withdraw' => $gateway->charge_withdraw,
-                    'fields' => json_decode($gateway->fields, true),
                     'withdrawAccounts' => auth()->user()->withdrawAccounts()->where('gateway_id', $gateway->id)->first(),
+                    'withdrawFields' => $gateway->withdrawFields(),
                 ];
             }),
         ]);
@@ -636,6 +636,7 @@ class DashboardContrtoller extends Controller
         }
         try {
             DB::transaction(function () use ($request) {
+                try{
                 $plan = Membershib::find($request->plan);
                 $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
                 $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
@@ -676,17 +677,22 @@ class DashboardContrtoller extends Controller
                         auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
                     }
                 }
+
                 $subscription = SubscriptionMembership::create([
                     'client_id' => auth()->user()->id,
                     'membership_id' => $request->plan,
                     'status' => 'active',
                     'start_date' => now(),
-                    'end_date' => $plan->is_lifetime
+                    'end_date' => $plan->subscriptionMemberships
                         ? null
                         : now()->addDays($plan->duration),
-                    'is_lifetime' => $plan->is_lifetime,
+                    'is_lifetime' => $plan->subscriptionMemberships,
                 ]);
-                PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
+                    PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
+                }catch(\Exception $e){
+                    DB::rollBack();
+                    \Log::error($e->getMessage());
+                }
             });
             return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
         } catch (\Exception $e) {

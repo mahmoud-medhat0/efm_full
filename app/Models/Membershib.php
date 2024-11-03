@@ -13,6 +13,10 @@ class Membershib extends Model
     {
         return $this->hasMany(SubscriptionMembership::class);
     }
+    public function getsubscriptionMembershipsAttribute()
+    {
+        return $this->is_lifetime ? true : false;
+    }
     public function getIsLifetimeAttribute($value)
     {
         return $value ? 'Yes' : 'No';
