@@ -18,6 +18,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::get('register', 'register')->name('register');
         Route::post('register', 'registerPost')->name('register.post');
         Route::get('reset-password', 'resetPassword')->name('reset-password');
+        Route::post('reset-password', 'resetPasswordPost')->name('reset-password.post');
         Route::post('logout', 'logout')->name('logout');
     });
     Route::controller(AuthClientController::class)->middleware('auth')->group(function () {
@@ -55,6 +56,11 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
     Route::controller(DashboardContrtoller::class)->middleware(['auth', 'verified', '2fa'])->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::name('dashboard.')->group(function () {
+            Route::get('create-ticket', 'createTicket')->name('create-ticket');
+            Route::post('create-ticket', 'createTicketPost')->name('create-ticket.post');
+            Route::get('tickets', 'tickets')->name('tickets');
+            Route::get('ticket/{id}', 'showTicket')->name('show-ticket');
+            Route::get('currencies', 'currencies')->name('currencies');
             Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');
             Route::post('update-profile-image', 'updateProfileImage')->name('update-profile-image');
             Route::post('change-password', 'ChangePassword')->name('change-password');

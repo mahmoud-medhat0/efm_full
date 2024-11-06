@@ -70,6 +70,17 @@ export interface IResetInput {
     minLength?: number;
   };
 }
+export interface IResetNewPasswordInput {
+  name: "password" | "password_confirmation";
+  placeholder: string;
+  type: string;
+  forl: string;
+  placel: string;
+  validation: {
+    required?: boolean;
+    minLength?: number;
+  };
+}
 export interface IUsernameInput {
   name: "username";
   placeholder: string;

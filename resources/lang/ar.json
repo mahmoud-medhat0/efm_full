@@ -110,5 +110,11 @@
     "Type your Telegram username":"أكتب اسم المستخدم في تليجرام",
     "Type your Password":"أكتب كلمة المرور",
     "Type your password Confirmation":"أكتب تأكيد كلمة المرور",
-    "Type your Referral Code":"أكتب رمز الإحالة"
+    "Type your Referral Code":"أكتب رمز الإحالة",
+    "Reset New Password":"إعادة تعيين كلمة المرور",
+    "New Password :":"كلمة المرور الجديدة :",
+    "New Password Confirmation :":"تأكيد كلمة المرور :",
+    "Type your New Password":"أكتب كلمة المرور الجديدة",
+    "Type your New Password Confirmation":"أكتب تأكيد كلمة المرور",
+    "Reset Password":"إعادة تعيين كلمة المرور"
 }

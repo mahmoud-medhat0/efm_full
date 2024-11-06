@@ -24,6 +24,7 @@ import {
   TvIcon,
   UserGroupIcon,
   ChatBubbleBottomCenterTextIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/20/solid";
 import Img from "../../../assets/character.jpg";
 import Logo from "../../../assets/logo.png";
@@ -70,6 +71,11 @@ const Sidebar = () => {
       icon: <ArrowUpTrayIcon />,
       label: "Withdraw",
     },
+    {
+      href: route('client.dashboard.currencies'),
+      icon: <CurrencyDollarIcon />,
+      label: "Currencies",
+    },
   ];
 
   const settingsLinks = [
@@ -77,6 +83,9 @@ const Sidebar = () => {
     { href: route('client.dashboard.orders'), icon: <SquaresPlusIcon />, label: "Orders" },
     // { href: route('client.dashboard.convert-points'), icon: <WrenchIcon />, label: "Convert Points" },
     { href: route('client.dashboard.personal-settings'), icon: <Cog6ToothIcon />, label: "Personal Settings" },
+    { href: route('client.dashboard.create-ticket'), icon: <ChatBubbleBottomCenterTextIcon />, label: "Create Ticket" },
+    { href: route('client.dashboard.tickets'), icon: <ChatBubbleBottomCenterTextIcon />, label: "Tickets" },  
+
     {
       href: route('client.dashboard.2fa'),
       icon: <ShieldCheckIcon />,

@@ -22,7 +22,10 @@ class DatabaseSeeder extends Seeder
             // CanImpersonateClient::class,
             // AgentRequestPermission::class,
             // NotificationPermissionSeeder::class,
-            WithdrawAccountFieldPermission::class,
+            // WithdrawAccountFieldPermission::class,
+            TicketPermission::class,
+            PermissionTicketMessage::class,
+            CurrencySeederPermission::class,
         ]);
     }
 }

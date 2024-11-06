@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\TicketMessage;
 use Illuminate\Support\Facades\Route;
 
 /*

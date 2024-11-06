@@ -8,6 +8,7 @@ use App\Nova\Term;
 use App\Nova\User;
 use App\Nova\Order;
 use App\Nova\Client;
+use App\Nova\Ticket;
 use App\Nova\Service;
 use App\Nova\Feedback;
 use App\Nova\Gateways;
@@ -20,9 +21,12 @@ use App\Nova\Transaction;
 use App\Nova\Aboutsection;
 use App\Nova\AgentRequest;
 use App\Nova\LoginAttempt;
+use App\Nova\TicketMessage;
 use App\Nova\RejectionCause;
+use App\Nova\TicketCategory;
 use App\Nova\ReferralSection;
 use App\Nova\ReferralSetting;
+use App\Nova\TicketCategrory;
 use App\Nova\WithdrawAccount;
 use App\Nova\AdvertiseSection;
 use App\Nova\InterestCategory;
@@ -30,12 +34,12 @@ use App\Nova\MembershipSection;
 use App\Nova\RegistrationOffer;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuList;
+use App\Nova\WithdrawAccountField;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\SubscriptionMembership;
-use App\Nova\WithdrawAccountField;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
-
+use App\Nova\Currency;
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -69,12 +73,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(LoginAttempt::class),
                     MenuItem::resource(WithdrawAccount::class),
                 ])->icon('users')->collapsible(),
-                MenuSection::make('Roles & Permissions', [
-                    MenuItem::make('Roles')
-                    ->path('resources/roles'),
-                    MenuItem::make('Permissions')
-                    ->path('resources/permissions'),
-                ])->icon('shield-check')->collapsible(),
+                MenuSection::make('Ticket Resources', [
+                    MenuItem::resource(TicketCategory::class),
+                    MenuItem::resource(Ticket::class),
+                    MenuItem::resource(TicketMessage::class),
+                ])->icon('ticket')->collapsible(),
                 MenuSection::make('Financial Resources', [
                     MenuItem::resource(ManualField::class),
                     MenuItem::resource(Gateways::class),
@@ -85,6 +88,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(ReferralSetting::class),
                     MenuItem::resource(RegistrationOffer::class),
                     MenuItem::resource(WithdrawAccountField::class),
+                    MenuItem::resource(Currency::class),
                 ])->icon('currency-dollar')->collapsible(),
                 MenuSection::make('Orders Resources', [
                     MenuItem::resource(Service::class),
@@ -92,6 +96,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(Task::class),
                     MenuItem::resource(RejectionCause::class),
                 ])->icon('shopping-cart')->collapsible(),
+                MenuSection::make('Roles & Permissions', [
+                    MenuItem::make('Roles')
+                    ->path('resources/roles'),
+                    MenuItem::make('Permissions')
+                    ->path('resources/permissions'),
+                ])->icon('shield-check')->collapsible(),
             ];
         });
     }

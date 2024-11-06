@@ -8,6 +8,8 @@
     @viteReactRefresh
     @vite('resources/css/app.css')
     @vite('resources/js/app.jsx')
+    <script src="https://support.eng-money.com/supportboard/js/min/jquery.min.js"></script>
+    <script id="sbinit" src="https://support.eng-money.com/supportboard/js/main.js"></script>
     @inertiaHead
     @routes('client')
   </head>

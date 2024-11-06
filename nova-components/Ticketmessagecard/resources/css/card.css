@@ -1,0 +1,211 @@
+/* Nova Card CSS */
+.admin-message {
+    background-color: #f0f0f0;
+    text-align: left;
+    align-self: flex-start;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+}
+
+.user-message {
+    background-color: #e0e0ff;
+    text-align: right;
+    align-self: flex-end;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+}
+
+.Card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow-y: auto;
+    height: 400px;
+}
+
+.client-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 1em;
+    border-bottom: 1px solid #ccc;
+}
+
+.admin-name {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1em;
+}
+
+.message-content {
+    background-color: #f4f6f8;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.client-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.time {
+    font-size: 0.8em;
+    color: #888;
+}
+.link {
+    color: #007bff;
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.message-input {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-input textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 1em;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.send-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+.status-label {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.status-select {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.status-select:hover {
+    background-color: #0056b3;
+}
+.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark .admin-message {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.dark .user-message {
+    background-color: #292d3e;
+    color: #ffffff;
+}
+
+.dark .Card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444444;
+}
+
+.dark .message-content {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.dark .header {
+    color: #ffffff;
+}
+
+.dark .time {
+    color: #888888;
+}
+
+.dark .link {
+    color: #4b8bf4;
+}
+
+.dark .link:hover {
+    color: #376dc6;
+}
+
+.dark .message-input {
+    background-color: #222222;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.dark .message-input textarea {
+    background-color: #333333;
+    color: #e0e0e0;
+    border: 1px solid #555555;
+}
+
+.dark .send-button {
+    background-color: #4b8bf4;
+    color: #ffffff;
+}
+
+.dark .send-button:hover {
+    background-color: #376dc6;
+}
+
+.dark .status-label {
+    color: #cccccc;
+}
+
+.dark .status-select {
+    background-color: #4b8bf4;
+    color: #ffffff;
+}
+
+.dark .status-select:hover {
+    background-color: #376dc6;
+}

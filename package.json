@@ -7,7 +7,10 @@
         "watch": "vite build --watch",
         "prod": "vite build --mode production",
         "build-FilterCard": "cd nova-components/FilterCard && npm run dev",
-        "build-FilterCard-prod": "cd nova-components/FilterCard && npm run prod"
+        "build-FilterCard-prod": "cd nova-components/FilterCard && npm run prod",
+        "build-ticketmessagecard": "cd nova-components/Ticketmessagecard && npm run dev",
+        "build-ticketmessagecard-prod": "cd nova-components/Ticketmessagecard && npm run prod"
+
     },
     "devDependencies": {
         "@types/react": "^18.3.3",

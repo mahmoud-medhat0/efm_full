@@ -30,7 +30,8 @@
         "spatie/nova-translatable": "^4.0",
         "stevebauman/location": "^7.3",
         "tightenco/ziggy": "^2.3",
-        "zero-bounce/sdk": "^1.1"
+        "zero-bounce/sdk": "^1.1",
+        "efm/ticketmessagecard": "@dev"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -91,6 +92,10 @@
         {
             "type": "composer",
             "url": "https://nova.laravel.com"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Ticketmessagecard"
         }
     ]
 }

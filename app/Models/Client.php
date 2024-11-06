@@ -10,14 +10,13 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Carbon\Carbon;
+use Laravel\Sanctum\HasApiTokens;
 class Client extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, LogsActivity;
+    use HasFactory, Notifiable, LogsActivity,HasApiTokens;
     protected $guarded = [];
-    protected $appends = ['has_active_subscription','referral_count','activator_count','membership'];
+    protected $appends = ['has_active_subscription','referral_count','activator_count','membership','profile_image_url'];
     protected $casts = [
-        'password' => 'hashed',
         'email_verified_at' => 'datetime',
         'kyc_verified_at' => 'datetime',
         'telegram_verified_at' => 'datetime',
@@ -109,5 +108,9 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function hasVerifiedEmail()
     {
         return $this->email_verified == 1;
+    }
+    public function getProfileImageUrlAttribute()
+    {
+        return asset('storage/'.$this->profile_image);
     }
 }

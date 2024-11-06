@@ -16,7 +16,7 @@ use App\Rules\checkactiveReferralUserCode;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\ValidMail;
 use Laravel\Ui\Presets\React;
-
+use Illuminate\Support\Facades\Password;
 class AuthClientController extends Controller
 {
     public function login()
@@ -136,5 +136,21 @@ class AuthClientController extends Controller
     public function resetPassword()
     {
         return Inertia::render('auth/ResetPassword.tsx');
+    }
+    public function resetPasswordPost(Request $request)
+    {
+        $rules = [
+            'email' => ['required', 'email','exists:clients,email'],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+        $status = Password::broker('clients')->sendResetLink(
+            $request->only('email'),
+        );
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['success' => true, 'message' => 'Password reset link sent'], 200)
+            : response()->json(['success' => false, 'message' => 'Password reset link not sent'], 400);
     }
 }

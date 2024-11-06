@@ -2,6 +2,6 @@
 
 return [
     'groups' => [
-        'client' => ['client.*'],
+        'client' => ['client.*','password.reset.post'],
     ],
 ];

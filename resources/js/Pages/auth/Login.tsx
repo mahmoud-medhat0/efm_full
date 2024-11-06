@@ -115,10 +115,10 @@ const LoginPage = () => {
           {window.translate("login.login")}
         </Button>
         <div className="flex flex-col space-y-1">
-          {/* <Link href={route('client.reset-password')} className="text-black">
+          <Link href={route('client.reset-password')} className="text-black">
             {window.translate("login.forgot")}
             <span className="underline ml-1 text-primary">{window.translate("login.reset")}</span>
-          </Link> */}
+          </Link>
           <Link href={route('client.register')} className="text-black">
             {translate("login.dontHave")}
             <span className="underline ml-1 text-primary">{translate("login.register")}</span>

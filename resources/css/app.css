@@ -158,6 +158,7 @@ table thead th {
   .container-light {
     padding-right: 2rem;
     padding-left: 2rem;
+    padding-top: 20px;
   }
 }
 
@@ -166,6 +167,8 @@ table thead th {
   .container-light {
     padding-right: 1rem;
     padding-left: 1rem;
+    padding-top: 20px;
+    
   }
 }
 

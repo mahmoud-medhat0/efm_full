@@ -3,6 +3,7 @@ import {
   ILoginInput,
   IRegisterInput,
   IResetInput,
+  IResetNewPasswordInput,
   ITelegramInput,
 } from "../interfaces";
 
@@ -135,6 +136,30 @@ export const RESET_FORM: IResetInput[] = [
     validation: {
       required: true,
       pattern: /^[^@]+@[^@]+\.[^@ .]{2,}$/,
+    },
+  },
+];
+export const RESET_NEW_PASSWORD_FORM: IResetNewPasswordInput[] = [
+  {
+    name: "password",
+    placeholder: "Type your New Password ..",
+    type: "password",
+    forl: "password",
+    placel: "New Password :",
+    validation: {
+      required: true,
+      minLength: 6,
+    },
+  },
+  {
+    name: "password_confirmation",
+    placeholder: "Type your New Password Confirmation ..",
+    type: "password",
+    forl: "password_confirmation",
+    placel: "New Password Confirmation :",
+    validation: {
+      required: true,
+      minLength: 6,
     },
   },
 ];
