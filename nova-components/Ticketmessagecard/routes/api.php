@@ -20,11 +20,16 @@ Route::get('/get-messages/{id}', function ($id) {
     return response()->json($messages);
 });
 Route::post('/send-message', function (Request $request) {
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('ticket_images', 'public');
+    }
     $message = TicketMessage::create([
         'user_id' => auth('admin')->user()->id,
         'message' => $request->message,
         'ticket_id' => $request->ticket_id,
         'message_from' => $request->message_from,
+        'image' => $imagePath,
     ])->load(['user','client','ticket']);
     return response()->json($message);
 });

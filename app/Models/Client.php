@@ -113,4 +113,8 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return asset('storage/'.$this->profile_image);
     }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

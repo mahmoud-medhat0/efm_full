@@ -752,6 +752,13 @@ class DashboardContrtoller extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
+        if(auth()->user()->tickets()->where('status','=','pending')->count() >= 1){
+            return response()->json(['success' => false, 'message' => 'You have reached the maximum number of tickets'], 200);
+        }
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('ticket_images', 'public');
+        }
         $ticket = Ticket::create([
             'ticket_id' => 'SUPT#'.rand(100000, 999999),
             'title' => $request->title,
@@ -762,6 +769,7 @@ class DashboardContrtoller extends Controller
             'message' => $request->description,
             'message_from' => 'user',
             'client_id' => auth()->user()->id,
+            'image' => $imagePath,
         ]);
         return response()->json(['success' => true, 'message' => 'Ticket created successfully with id: ' . $ticket->ticket_id]);
     }

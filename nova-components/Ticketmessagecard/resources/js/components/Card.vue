@@ -83,6 +83,7 @@ const client_resource_url = "/resources/clients";
 const props = defineProps(["card", "resource", "resourceId", "resourceName"]);
 const messages = ref([]);
 const selectedStatus = ref("");
+const file = ref(null);
 const data = reactive({
     ticket_id: props.resourceId,
     ticket_title: "",
@@ -147,6 +148,9 @@ function updateStatus(status){
         }
         });
 }
+function handleFileUpload(event) {
+    file.value = event.target.files[0];
+}
 onMounted(() => {
     fetchMessages();
 });
@@ -166,14 +170,20 @@ function sendMessage() {
     const messageData = {
         message: newMessage.value,
         ticket_id: data.ticket_id,
+        image: file.value,
         message_from: 'admin', // Assuming the message is from the user
     };
 
     Nova.request()
-        .post('/nova-vendor/ticketmessagecard/send-message', messageData)
+        .post('/nova-vendor/ticketmessagecard/send-message', messageData,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
         .then((response) => {
             fetchMessages();
             newMessage.value = ""; // Clear the input field
+            file.value = null;
         })
         .catch((error) => {
             console.error("Error sending message:", error);
