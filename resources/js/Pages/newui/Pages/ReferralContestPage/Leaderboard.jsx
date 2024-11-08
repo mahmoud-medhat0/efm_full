@@ -4,8 +4,8 @@ import './Leaderboard.css';
 const Leaderboard = ({ data }) => {
   const [expandedRow, setExpandedRow] = useState(null);
 
-  const toggleExpand = (index) => {
-    setExpandedRow((prevExpandedRow) => (prevExpandedRow === index ? null : index));
+  const toggleExpand = (id) => {
+    setExpandedRow((prevExpandedRow) => (prevExpandedRow === id ? null : id));
   };
 
   return (
@@ -14,23 +14,23 @@ const Leaderboard = ({ data }) => {
         <thead>
           <tr>
             <th>Rank</th>
-            <th style={{width: '50%'}}>Name</th>
+            <th style={{ width: '50%' }}>Name</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <React.Fragment key={index}>
+          {data.map((item) => (
+            <React.Fragment key={item.id}>
               <tr
-                className={`rank-row ${index === 0 ? 'highlight' : ''}`}
-                onClick={() => toggleExpand(index)}
+                className={`rank-row ${item.id === 1 ? 'highlight' : ''}`}
+                onClick={() => toggleExpand(item.id)}
                 style={{ cursor: 'pointer' }}
               >
                 <td>
-                  <div className="trophy-icon">{index < 5 ? `🏆 ${index + 1}` : index + 1}</div>
+                  <div className="trophy-icon">{item.id <= 5 ? `🏆 ${item.id}` : item.id}</div>
                 </td>
                 <td>{item.username}</td>
               </tr>
-              {expandedRow === index && (
+              {expandedRow === item.id && (
                 <tr className="details-row">
                   <td colSpan="2">
                     <div className="extra-info">
