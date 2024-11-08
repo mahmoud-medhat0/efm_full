@@ -15,28 +15,28 @@ function ReferralContestPage() {
       joiningDate: referral.joining_date,
       daysCount: referral.days_count,
       referrals: referral.referral_count,
-    })),
+    })).sort((a, b) => a.id - b.id),
     'Last 7 Days': referralsLast7Days.map((referral, index) => ({
       id: index + 1,
       username: referral.name,
       joiningDate: referral.joining_date,
       daysCount: referral.days_count,
       referrals: referral.referral_count,
-    })),
+    })).sort((a, b) => a.id - b.id),
     'Last 30 Days': referralsLast30Days.map((referral, index) => ({
       id: index + 1,
       username: referral.name,
       joiningDate: referral.joining_date,
       daysCount: referral.days_count,
       referrals: referral.referral_count,
-    })),
+    })).sort((a, b) => a.id - b.id),
     'Top 100': referralsTop100.map((referral, index) => ({
       id: index + 1,
       username: referral.name,
       joiningDate: referral.joining_date,
       daysCount: referral.days_count,
       referrals: referral.referral_count,
-    })),
+    })).sort((a, b) => a.id - b.id),
   };
 
   const [activeTab, setActiveTab] = useState('Last 24 hours');

@@ -12,7 +12,6 @@
     right: 0;
     z-index: 1000;
   }
-  
   /* تعويض المساحة التي يشغلها الـ Navbar */
   .navbar-spacer {
     height: 50px;
@@ -54,10 +53,16 @@
   .nav ul li a {
     text-decoration: none;
     color: #333;
-    font-size: 0.9em;
+    font-size: 1.1em;
     font-weight: bold;
+    border-bottom: 2px solid #BD9E88;
+    padding-bottom: 5px;
   }
-  
+  .nav ul li a:hover {
+    width: 100%;
+    border-radius: 20px;
+    border: 2px solid #BD9E88;
+  }
   /* تنسيق أزرار التسجيل وتسجيل الدخول */
   .auth-buttons {
     display: flex;
