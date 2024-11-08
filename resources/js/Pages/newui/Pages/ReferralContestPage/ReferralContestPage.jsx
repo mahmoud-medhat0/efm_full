@@ -7,7 +7,6 @@ import { usePage } from '@inertiajs/inertia-react';
 import Leaderboard from './Leaderboard';
 function ReferralContestPage() {
   const { clients, referralsLast24Hours, referralsLast7Days, referralsLast30Days, referralsTop100 } = usePage().props;
-  console.log(referralsLast24Hours);
   const data = {
     'Last 24 hours': referralsLast24Hours.map((referral, index) => ({
       id: index + 1,
@@ -15,7 +14,7 @@ function ReferralContestPage() {
       joiningDate: referral.joining_date,
       daysCount: referral.days_count,
       referrals: referral.referral_count,
-    })).sort((a, b) => a.id - b.id),
+    })).sort((a, b) => a.referrals - b.referrals), // Sort by referral count to ensure consistent order
     'Last 7 Days': referralsLast7Days.map((referral, index) => ({
       id: index + 1,
       username: referral.name,
