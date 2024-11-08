@@ -4,8 +4,8 @@ import './Leaderboard.css';
 const Leaderboard = ({ data }) => {
   const [expandedRow, setExpandedRow] = useState(null);
 
-  const toggleExpand = (id) => {
-    setExpandedRow(expandedRow === id ? null : id);
+  const toggleExpand = (index) => {
+    setExpandedRow(expandedRow === index ? null : index);
   };
 
   return (
@@ -21,16 +21,16 @@ const Leaderboard = ({ data }) => {
           {data.map((item, index) => (
             <React.Fragment key={index}>
               <tr
-                className={`rank-row ${item.id === 1 ? 'highlight' : ''}`}
-                onClick={() => toggleExpand(item.id)}
+                className={`rank-row ${index === 0 ? 'highlight' : ''}`}
+                onClick={() => toggleExpand(index)}
                 style={{ cursor: 'pointer' }}
               >
                 <td>
-                  {item.id <= 5 && <div className="trophy-icon">🏆 {item.id}</div>}
+                  <div className="trophy-icon">{index < 5 ? `🏆 ${index + 1}` : index + 1}</div>
                 </td>
                 <td>{item.username}</td>
               </tr>
-              {expandedRow === item.id && (
+              {expandedRow === index && (
                 <tr className="details-row">
                   <td colSpan="2">
                     <div className="extra-info">
