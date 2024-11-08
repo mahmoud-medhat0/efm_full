@@ -67,16 +67,20 @@ class HomeController extends Controller
 
     public function referralContest()
     {
-        $referralsLast24Hours = Client::select('name')->whereHas('subscriptionMemberships', function ($query) {
-            $query->where('status', 'active');
-        })
+        $referralsLast24Hours = Client::select('name')
+            ->whereHas('subscriptionMemberships', function ($query) {
+                $query->where('status', 'active');
+            })
+            ->whereHas('referrals', function ($query) {
+                $query->where('referrals.created_at', '>=', now()->startOfDay());
+            })
             ->withCount(['referrals' => function ($query) {
-                $query->where('created_at', '>=', now()->subDay());
+                $query->where('referrals.created_at', '>=', now()->startOfDay());
                 $query->whereHas('subscriptionMemberships', function ($query) {
                     $query->where('status', 'active');
                 });
             }])
-            ->orderBy('referrals_count', 'desc')
+            ->orderByDesc('referrals_count')
             ->get();
         $referralsLast24HoursTop100 = Client::select('name')
             ->whereHas('subscriptionMemberships', function ($query) {
