@@ -5,7 +5,7 @@ const Leaderboard = ({ data }) => {
   const [expandedRow, setExpandedRow] = useState(null);
 
   const toggleExpand = (index) => {
-    setExpandedRow(expandedRow === index ? null : index);
+    setExpandedRow((prevExpandedRow) => (prevExpandedRow === index ? null : index));
   };
 
   return (
