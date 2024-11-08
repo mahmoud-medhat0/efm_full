@@ -30,7 +30,7 @@ const Leaderboard = ({ data }) => {
                 </td>
                 <td>{item.username}</td>
               </tr>
-              {expandedRow === item.id && (
+              {/* {expandedRow === item.id && (
                 <tr className="details-row">
                   <td colSpan="2">
                     <div className="extra-info">
@@ -40,7 +40,7 @@ const Leaderboard = ({ data }) => {
                     </div>
                   </td>
                 </tr>
-              )}
+              )} */}
             </React.Fragment>
           ))}
         </tbody>
