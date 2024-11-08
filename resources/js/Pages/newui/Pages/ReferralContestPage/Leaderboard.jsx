@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './Leaderboard.css';
-const Leaderboard = ({ data }) => {
-  const [expanded, setExpanded] = useState(false);
 
-  const toggleExpand = () => {
-    setExpanded(!expanded);
+const Leaderboard = ({ data }) => {
+  const [expandedRow, setExpandedRow] = useState(null);
+
+  const toggleExpand = (id) => {
+    setExpandedRow(expandedRow === id ? null : id);
   };
 
   return (
@@ -21,15 +22,15 @@ const Leaderboard = ({ data }) => {
             <React.Fragment key={index}>
               <tr
                 className={`rank-row ${item.id === 1 ? 'highlight' : ''}`}
-                onClick={toggleExpand}
+                onClick={() => toggleExpand(item.id)}
                 style={{ cursor: 'pointer' }}
               >
                 <td>
-                  <div className="trophy-icon">🏆 {item.id}</div>
+                  {item.id <= 5 && <div className="trophy-icon">🏆 {item.id}</div>}
                 </td>
                 <td>{item.username}</td>
               </tr>
-              {item.id === 1 && expanded && (
+              {expandedRow === item.id && (
                 <tr className="details-row">
                   <td colSpan="2">
                     <div className="extra-info">
