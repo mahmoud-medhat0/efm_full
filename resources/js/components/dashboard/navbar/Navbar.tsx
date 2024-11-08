@@ -2,7 +2,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
   FingerPrintIcon,
 } from "@heroicons/react/20/solid";
-import LogoImg from "../../../assets/logo.png";
+import LogoImg from "../../../Pages/newui/photo/logo.svg";
 import EarnMoney from "../../schema/selecters/EarnMoney";
 import Help from "../../schema/selecters/Help";
 import ProfileBtn from "../../ProfileBtn";
@@ -68,7 +68,7 @@ const DashboardNavbar = () => {
       </ul>
       <div className="flex flex-row items-center gap-2">
         <Link href={route('client.dashboard')}>
-          <img className="w-24 h-24 hoving ml-16" src={LogoImg} alt="logo" />
+          <img className="w-20 h-20 hoving ml-16" src={LogoImg} alt="logo" />
         </Link>
       </div>
     </nav>

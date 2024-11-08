@@ -27,7 +27,8 @@ import {
   CurrencyDollarIcon,
 } from "@heroicons/react/20/solid";
 import Img from "../../../assets/character.jpg";
-import Logo from "../../../assets/logo.png";
+import Logo from "../../../Pages/newui/photo/logo.svg";
+
 import { Link } from "@inertiajs/inertia-react";
 import { route } from "ziggy-js";
 import { usePage } from "@inertiajs/inertia-react";
