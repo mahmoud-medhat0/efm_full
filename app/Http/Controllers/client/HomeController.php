@@ -72,10 +72,10 @@ class HomeController extends Controller
                 $query->where('status', 'active');
             })
             ->whereHas('referrals', function ($query) {
-                $query->where('referrals.created_at', '>=', now()->startOfDay());
+                $query->where('created_at', '>=', now()->startOfDay());
             })
             ->withCount(['referrals' => function ($query) {
-                $query->where('referrals.created_at', '>=', now()->startOfDay());
+                $query->where('created_at', '>=', now()->startOfDay());
                 $query->whereHas('subscriptionMemberships', function ($query) {
                     $query->where('status', 'active');
                 });
