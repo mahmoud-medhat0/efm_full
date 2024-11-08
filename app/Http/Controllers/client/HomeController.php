@@ -35,20 +35,20 @@ class HomeController extends Controller
     }
     public function index()
     {
-        return Inertia::render('home.jsx', [
+        return Inertia::render('newui/Pages/Homepage/Homepage.jsx', [
             'user' => Auth::user(),
-            'feedbacks' => Feedback::all(),
-            'faqQuestions' => FaqQuestion::where('is_active', 1)->get()->map(function ($faq) {
-                return [
-                    'question' => $faq->getTranslation('question', app()->getLocale()),
-                    'answer' => $faq->getTranslation('answer', app()->getLocale()),
-                ];
-            }),
-            'gateways' => Gateways::where('is_active', 1)->get()->toArray(),
-            'aboutSections' => Aboutsection::first(),
-            'membershipSections' => MembershipSection::first(),
-            'advertiseSections' => AdvertiseSection::first(),
-            'referralSections' => ReferralSection::first(),
+            // 'feedbacks' => Feedback::all(),
+            // 'faqQuestions' => FaqQuestion::where('is_active', 1)->get()->map(function ($faq) {
+            //     return [
+            //         'question' => $faq->getTranslation('question', app()->getLocale()),
+            //         'answer' => $faq->getTranslation('answer', app()->getLocale()),
+            //     ];
+            // }),
+            // 'gateways' => Gateways::where('is_active', 1)->get()->toArray(),
+            // 'aboutSections' => Aboutsection::first(),
+            // 'membershipSections' => MembershipSection::first(),
+            // 'advertiseSections' => AdvertiseSection::first(),
+            // 'referralSections' => ReferralSection::first(),
         ]);
     }
     public function aboutUs()
@@ -156,7 +156,7 @@ class HomeController extends Controller
         $clients = Client::whereHas('subscriptionMemberships', function ($query) {
             $query->where('status', 'active');
         })->count();
-        return Inertia::render('pages/ReferralContest.tsx', [
+        return Inertia::render('newui/Pages/ReferralContestPage/ReferralContestPage.jsx', [
             'referralsLast24Hours' => $referralsLast24Hours,
             'referralsLast24HoursTop100' => $referralsLast24HoursTop100->toArray(),
             'referralsLast7Days' => $referralsLast7Days,

@@ -17,7 +17,6 @@ import axios from 'axios'
 import { route } from "ziggy-js";
 import { usePage } from "@inertiajs/inertia-react";
 import { translate } from "../../utils/functions";
-
 interface IFormInput {
   first_name: string;
   last_name: string;

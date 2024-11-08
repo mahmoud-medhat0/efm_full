@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class Client extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, LogsActivity,HasApiTokens;
     protected $guarded = [];
-    protected $appends = ['has_active_subscription','referral_count','activator_count','membership','profile_image_url'];
+    protected $appends = ['has_active_subscription','referral_count','activator_count','membership','profile_image_url','days_count','joining_date'];
     protected $casts = [
         'email_verified_at' => 'datetime',
         'kyc_verified_at' => 'datetime',
@@ -116,5 +118,13 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+    public function getDaysCountAttribute()
+    {
+        return Carbon::parse($this->created_at)->diffInDays(now());
+    }
+    public function getJoiningDateAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d-m-Y');
     }
 }

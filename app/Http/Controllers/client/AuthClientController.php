@@ -21,7 +21,7 @@ class AuthClientController extends Controller
 {
     public function login()
     {
-        return Inertia::render('auth/Login.tsx');
+        return Inertia::render('newui/Pages/Login/Login.jsx');
     }
 
     public function loginPost(Request $request)
@@ -99,7 +99,7 @@ class AuthClientController extends Controller
     }
     public function register(Request $request)
     {
-        return Inertia::render('auth/Register.tsx', [
+        return Inertia::render('newui/Pages/SingUp/SingUp.tsx', [
             'referral_code' => $request->ref,
         ]);
     }
@@ -135,7 +135,7 @@ class AuthClientController extends Controller
     }
     public function resetPassword()
     {
-        return Inertia::render('auth/ResetPassword.tsx');
+        return Inertia::render('newui/Pages/ForgetPassword/ForgetPassword.tsx');
     }
     public function resetPasswordPost(Request $request)
     {
