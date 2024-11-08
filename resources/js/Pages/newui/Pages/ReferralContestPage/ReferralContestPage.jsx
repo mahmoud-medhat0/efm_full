@@ -9,42 +9,34 @@ function ReferralContestPage() {
   const { clients, referralsLast24Hours, referralsLast7Days, referralsLast30Days, referralsTop100 } = usePage().props;
   console.log(referralsLast24Hours);
   const data = {
-    'Last 24 hours': referralsLast24Hours.map((referral, index) => {
-        return {
-          id: index + 1,
-          username: referral.name,
-          joiningDate: referral.joining_date,
-          daysCount: referral.days_count,
-          referrals: referral.referral_count,
-        };
-      }),
-    'Last 7 Days': referralsLast7Days.map((referral, index) => {
-      return {
-        id: index + 1,
-        username: referral.name,
-        joiningDate: referral.joining_date,
-        daysCount: referral.days_count,
-        referrals: referral.referral_count,
-      };
-    }),
-    'Last 30 Days': referralsLast30Days.map((referral, index) => {
-      return {
-        id: index + 1,
-        username: referral.name,
-        joiningDate: referral.joining_date,
-        daysCount: referral.days_count,
-        referrals: referral.referral_count,
-      };
-    }),
-    'Top 100': referralsTop100.map((referral, index) => {
-      return {
-        id: index + 1,
-        username: referral.name,
-        joiningDate: referral.joining_date,
-        daysCount: referral.days_count,
-        referrals: referral.referral_count,
-      };
-    }),
+    'Last 24 hours': referralsLast24Hours.map((referral, index) => ({
+      id: index + 1,
+      username: referral.name,
+      joiningDate: referral.joining_date,
+      daysCount: referral.days_count,
+      referrals: referral.referral_count,
+    })),
+    'Last 7 Days': referralsLast7Days.map((referral, index) => ({
+      id: index + 1,
+      username: referral.name,
+      joiningDate: referral.joining_date,
+      daysCount: referral.days_count,
+      referrals: referral.referral_count,
+    })),
+    'Last 30 Days': referralsLast30Days.map((referral, index) => ({
+      id: index + 1,
+      username: referral.name,
+      joiningDate: referral.joining_date,
+      daysCount: referral.days_count,
+      referrals: referral.referral_count,
+    })),
+    'Top 100': referralsTop100.map((referral, index) => ({
+      id: index + 1,
+      username: referral.name,
+      joiningDate: referral.joining_date,
+      daysCount: referral.days_count,
+      referrals: referral.referral_count,
+    })),
   };
 
   const [activeTab, setActiveTab] = useState('Last 24 hours');
