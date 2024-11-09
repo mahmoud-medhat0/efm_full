@@ -25,7 +25,7 @@ const Hero = () => {
                 />
             </div>
 
-            <div className="statistics-section">
+            {/* <div className="statistics-section">
                 <div className="stat-item">
                     <h1 className="number">450</h1>
                     <p className="label">Total Clients</p>
@@ -38,7 +38,7 @@ const Hero = () => {
                     <h1 className="number">500</h1>
                     <p className="label">Clients Contracts</p>
                 </div>
-            </div>
+            </div> */}
         </section>
     );
 };
