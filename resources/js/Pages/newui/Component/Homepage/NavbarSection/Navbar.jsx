@@ -29,10 +29,10 @@ const Navbar = () => {
             <Link href={route("client.referral-contest")}>Referral Contest</Link>
           </li>
           <li>
-            <Link href="#membership">Membership</Link>
+            <Link href={route("client.home")+"#membership"}>Membership</Link>
           </li>
           <li>
-            <Link href="#pricing">Pricing</Link>
+            <Link href={route("client.home")+"#offers"}>Offers</Link>
           </li>
         </ul>
       </nav>

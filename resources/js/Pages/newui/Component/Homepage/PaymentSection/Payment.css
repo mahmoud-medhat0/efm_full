@@ -5,13 +5,15 @@
     padding: 20px;
   }
   
-  .offers-header h2 {
+.offers-header h2 {
     background-color: #DFBC8A;
     color: white;
-    padding: 10px 20px;
+    padding: 23px 20px;
     display: inline-block;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 21px;
+    width: 198px;
+    height: 72px
   }
   
   .offers-container {

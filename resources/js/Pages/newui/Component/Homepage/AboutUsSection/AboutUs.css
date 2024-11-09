@@ -29,18 +29,6 @@
     }
 }
 
-.about-section-icon-text {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1em;
-    border: 1px solid #DFBC8A;
-    padding: 10px;
-    border-radius: 10px;
-    color: #DFBC8A;
-    width: 365px;
-    margin-bottom: -40px;
-}
 
 .about-section-content {
     display: flex;
@@ -128,6 +116,8 @@
 .about-section-goal-card h3, .about-section-vision-card h3 {
     color: #DFBC8A;
     margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 17px;
 }
 
 /* تصميم الهاتف */

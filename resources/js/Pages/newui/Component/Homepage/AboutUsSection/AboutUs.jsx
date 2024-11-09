@@ -9,10 +9,6 @@ const Aboutus = () => {
     <div className="bg-[#f9f9f9]" id="about">
       <div className="about-section-container ">
         <div className="about-section-header ">
-          <div className="about-section-icon-text sm:m-auto lg:m-0">
-            <span className="about-section-icon">🚀</span>{" "}
-            <p>Designed to Lead and Built to Last</p>
-          </div>
         </div>
         <div className="about-section-content">
           <div className="about-section-left-column">
@@ -31,7 +27,7 @@ const Aboutus = () => {
               <span className="text-3xl lg:text-5xl font-bold ">
                 About <span className="about-section-highlight mr-2">US</span>{" "}
               </span>
-              <img src={logoo333} alt="ivooo" className="loggo33" />
+              <br/>
             </h1>
             <p>
               <strong>EFM</strong> is the strongest company for making money
@@ -43,7 +39,6 @@ const Aboutus = () => {
               We believe in the power of innovation and technology and always
               strive to provide advanced solutions that meet our clients' needs.
             </p>
-            <br />
             <br />
             <p>
               We offer you the opportunity to earn money through simple and
