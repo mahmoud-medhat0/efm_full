@@ -12,21 +12,7 @@ import Layout from "../../Layout/Layout";
 const Homepage = () => {
   const sectionRefs = useRef(new Array(6).fill(null));
   const animationControls = useRef(new Array(6).fill(null));
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Track the scroll progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercentage = Math.min(scrollTop / documentHeight, 1);
-      setScrollProgress(scrollPercentage * 360); // Scroll progress (circle rotation)
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  
   // Observe visibility of sections for animations
   useEffect(() => {
     const observerOptions = {
@@ -102,17 +88,6 @@ const Homepage = () => {
             </motion.div>
           );
         })}
-      </motion.div>
-
-      {/* Scroll progress circle */}
-      <motion.div
-        style={{
-          ...styles.progress,
-          transform: `rotate(${scrollProgress}deg)`,
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        <span style={styles.arrow}>↑</span>
       </motion.div>
     </Layout>
   );

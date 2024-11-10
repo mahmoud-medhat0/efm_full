@@ -89,6 +89,15 @@
     margin-left: -6px;
     font-weight: bold
 }
+.about-section-icon-text {
+    align-items: center;
+  }
+  @media (max-width: 640px) {
+    .about-section-icon-text {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
 .about-section-icon{
     margin-left: 15px;
 }
