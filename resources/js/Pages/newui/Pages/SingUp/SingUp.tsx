@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { IErrorResponse } from "../../../../interfaces";
 import { Link } from "@inertiajs/inertia-react";
-
+import { usePage } from "@inertiajs/inertia-react";
 const SingUp = () => {
     const { register, handleSubmit } = useForm();
     const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +27,7 @@ const SingUp = () => {
     const toggleConfirmPasswordVisibility = () =>
         setShowConfirmPassword(!showConfirmPassword);
     const [isLoading, setIsLoading] = useState(false);
+    const { referral_code } = usePage().props;
 
     const onSubmit = async (data, event) => {
         event.preventDefault();
@@ -143,6 +144,7 @@ const SingUp = () => {
                             type="text"
                             placeholder="Referral Code"
                             className="full-width-input"
+                            defaultValue={referral_code}
                             {...register("referral_code")}
                         />
                         <div className="button-group">
