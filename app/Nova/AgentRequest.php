@@ -54,7 +54,7 @@ class AgentRequest extends Resource
      */
      public static function indexQuery(NovaRequest $request, $query)
      {
-        return $query->whereIn('gateway_id', json_decode(auth()->user()->gateways, true));
+        return $query->whereIn('gateway_id', json_decode(auth('admin')->user()->gateways, true));
      }
      public function fields(NovaRequest $request)
     {

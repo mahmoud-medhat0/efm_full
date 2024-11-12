@@ -58,6 +58,13 @@ class Transaction extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if(auth('admin')->user()->hasRole('super-admin')){
+            return $query;
+        }
+        return $query->whereIn('gateway_id', json_decode(auth()->user()->gateways, true));
+    }
     public function fields(NovaRequest $request)
     {
         return [
