@@ -35,6 +35,21 @@ const Navbar = () => {
             <Link href={route("client.home")+"#offers"}>Offers</Link>
           </li>
         </ul>
+        <div className="mobile-auth-buttons">
+          {!client ? (
+            <>
+        <Link href={route("client.register")}>
+          <p className="flex align-items-center ">
+            Join us{" "}
+            <img className="text-white" src={arrowLogo} alt="" style={{ width: "24px", height: "24px", color:"white"}} />
+            </p>{" "}
+          </Link>
+          <Link href={route("client.login")}>Sign In</Link>
+          </>
+          ) : (
+            <Link href={route("client.dashboard.dashboard")}>Dashboard</Link>
+          )}
+        </div>
       </nav>
       <div className="auth-buttons">
         {!client ? (
@@ -49,7 +64,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-          <Link href={route("client.dashboard")}>Dashboard</Link>
+          <Link href={route("client.dashboard.dashboard")}>Dashboard</Link>
           </>
         )}
       </div>

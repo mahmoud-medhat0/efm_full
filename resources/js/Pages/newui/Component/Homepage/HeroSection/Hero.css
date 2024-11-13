@@ -78,15 +78,15 @@
     padding: 10px;
     border-radius: 10px;
     color: #DFBC8A;
-    width: 413px;
+    width: 100%;
     margin-bottom: -33px;
     margin-top: 13px
 }
 .hero-section-p{
-    font-size: 21px;
+    font-size: 15px;
     color: #d3a15a;
     text-align: center;
-    margin-left: -6px;
+    /* margin-left: 0px; */
     font-weight: bold
 }
 .about-section-icon-text {

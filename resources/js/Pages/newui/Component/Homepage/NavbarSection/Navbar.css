@@ -80,7 +80,9 @@
     border-radius: 15px;
     cursor: pointer;
   }
-  
+  .mobile-auth-buttons{
+    display: none;
+  }
   @media (max-width: 768px) {
     .headerss {
       padding: 10px 20px;
@@ -89,10 +91,10 @@
     .nav {
       display: none;
       position: absolute;
-      top: 50px;
+      top: 70px;
       left: 50%;
       transform: translateX(-50%);
-      width: 80%;
+      width: 100%;
       background-color: #f9f9f9;
       flex-direction: column;
       align-items: center;
@@ -137,10 +139,13 @@
     }
   
     .mobile-auth-buttons a {
-      width: 80%;
-      padding: 8px;
-      font-size: 1em;
-      border-radius: 10px;
+      background-color: #333;
+      color: white;
+      padding: 5px 10px;
+      font-size: 0.8em;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
     }
   }
   
