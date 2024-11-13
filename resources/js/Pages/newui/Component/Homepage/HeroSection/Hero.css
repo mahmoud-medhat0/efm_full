@@ -70,7 +70,7 @@
 }
 
 .about-section-icon-text {
-    display: flex;
+    display: block;
     align-items: center;
     gap: 10px;
     font-size: 1em;
@@ -100,6 +100,7 @@
     }
     .hero-section-p{
         margin-left: 0px;
+        font-size: 14px;
     }
   }
 .about-section-icon{
