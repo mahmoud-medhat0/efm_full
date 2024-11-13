@@ -47,7 +47,7 @@ const Navbar = () => {
           <Link href={route("client.login")}>Sign In</Link>
           </>
           ) : (
-            <Link href={route("client.dashboard.dashboard")}>Dashboard</Link>
+            <Link href={route("client.dashboard")}>Dashboard</Link>
           )}
         </div>
       </nav>
@@ -64,7 +64,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-          <Link href={route("client.dashboard.dashboard")}>Dashboard</Link>
+          <Link href={route("client.dashboard")}>Dashboard</Link>
           </>
         )}
       </div>
