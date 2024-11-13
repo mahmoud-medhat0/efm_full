@@ -11,7 +11,7 @@ import About from "../components/website/About";
 import RootLayout from "../layout";
 import Membershipe from "../components/website/membershipe";
 import Advertise from "../components/website/Advertise";
-import Referal from "../components/website/referal";
+// import Referal from "../components/website/referal";
 const HomePage = () => {
   return (
     <RootLayout>
@@ -22,7 +22,7 @@ const HomePage = () => {
         <PaymentsSection />
         <Membershipe />
         <Advertise />
-        <Referal />
+        {/* <Referal /> */}
       
         {/* <AdvertiseSection /> */}
         {/* <VisionSection /> */}
