@@ -78,7 +78,7 @@
     padding: 10px;
     border-radius: 10px;
     color: #DFBC8A;
-    width: 100%;
+    width: 30%;
     margin-bottom: -33px;
     margin-top: 13px
 }
@@ -86,7 +86,7 @@
     font-size: 15px;
     color: #d3a15a;
     text-align: center;
-    /* margin-left: 0px; */
+    margin-left: 33px;
     font-weight: bold
 }
 .about-section-icon-text {
@@ -96,6 +96,10 @@
     .about-section-icon-text {
       flex-direction: column;
       text-align: center;
+      width: 100%;
+    }
+    .hero-section-p{
+        margin-left: 0px;
     }
   }
 .about-section-icon{
