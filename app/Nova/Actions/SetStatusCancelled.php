@@ -25,6 +25,9 @@ class SetStatusCancelled extends Action
     {
         foreach ($models as $model) {
             $model->update(['status' => 'cancelled']);
+            if($model->agentRequest){
+                $model->agentRequest->update(['status' => 'cancelled']);
+            }
         }
         return Action::message('Status Updated to Cancelled.');
     }

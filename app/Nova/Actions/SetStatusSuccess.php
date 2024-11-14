@@ -26,6 +26,9 @@ class SetStatusSuccess extends Action
         foreach ($models as $model) {
             if($model->status == 'pending'){    
                 $model->update(['status' => 'success']);
+                if($model->agentRequest){
+                    $model->agentRequest->update(['status' => 'success']);
+                }
                 if($model->tnx_type == 'add'){
                     $model->client->update(['balance' => $model->client->balance + $model->amount]);
                 }elseif($model->tnx_type == 'sub'){
