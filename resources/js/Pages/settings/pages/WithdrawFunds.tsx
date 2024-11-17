@@ -106,6 +106,7 @@ const WithdrawFundsPage = () => {
       }
   };
   useEffect(() => {
+    console.log(selectedMethod.withdrawAccounts.length);
     if (selectedMethod.withdrawAccounts.length == 0) {
       toast.error("You don't have any withdraw accounts. Please add one to proceed.", {
         position: "bottom-center",
@@ -241,7 +242,7 @@ const WithdrawFundsPage = () => {
               <Button fullWidth isLoading={isLoading}>Withdraw</Button>
             </div>
           </form>
-          {selectedMethod.withdrawFields && selectedMethod.withdrawFields.length > 0 && <Modal isOpen={isOpen} closeModal={closeModal}>
+          {selectedMethod.withdrawFields && selectedMethod.withdrawFields.length > 0 && selectedMethod.withdrawAccounts.length == 0&& <Modal isOpen={isOpen} closeModal={closeModal}>
                 <div className='absolute top-[-20px] right-0'>
                     <div className='bg-[#E8F0F7] rounded-full p-1'>
                         <XMarkIcon className='w-6 h-6 cursor-pointer text-red-600' onClick={closeModal} />
