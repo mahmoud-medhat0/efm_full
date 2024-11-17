@@ -116,7 +116,7 @@ const WithdrawFundsPage = () => {
   }, []);
   const handleMethodChange = (method) => {
     setSelectedMethod(method);
-    if (selectedMethod.withdrawAccounts.length === 0) {
+    if (selectedMethod.withdrawAccounts.length == 0) {
       toast.error("You don't have any withdraw accounts. Please add one to proceed.", {
         position: "bottom-center",
         duration: 3000,
@@ -185,7 +185,7 @@ const WithdrawFundsPage = () => {
         <div className="flex justify-between items-center">
           <h3 className="text-lg mb-5">Withdraw funds</h3>
           <div className="flex justify-end mb-4">
-            {selectedMethod.withdrawAccounts && selectedMethod.withdrawAccounts.length === 0 && <Button onClick={() => setIsOpen(true)}>Add Withdraw Account</Button>}
+            {selectedMethod.withdrawAccounts && selectedMethod.withdrawAccounts.length == 0 && <Button onClick={() => setIsOpen(true)}>Add Withdraw Account</Button>}
           </div>
         </div>
         {selectedMethod && selectedMethod.description_withdraw!=null && selectedMethod.description_withdraw !='' && (
