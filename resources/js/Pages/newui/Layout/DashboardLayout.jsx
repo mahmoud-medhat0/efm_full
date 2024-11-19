@@ -370,7 +370,7 @@ const DashBoardLayout = ({ children }) => {
               <>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.orders') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.orders')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-box" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M8.5 1.5v1h-1v-1h1zM7 1.5v1h1v-1H7zM1 2.5v11h14v-11H1zm1 1h12v9H2v-9z"/>
                     </svg>
                     <span className="ml-2">Orders History</span>
@@ -378,7 +378,7 @@ const DashBoardLayout = ({ children }) => {
                 </li>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.login') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.login')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 8a5 5 0 0 1 10 0H3z"/>
                     </svg>
                     <span className="ml-2">Login History</span>
@@ -386,7 +386,7 @@ const DashBoardLayout = ({ children }) => {
                 </li>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.deposit') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.deposit')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-wallet" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm2-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
                     </svg>
                     <span className="ml-2">Deposit History</span>
@@ -394,7 +394,7 @@ const DashBoardLayout = ({ children }) => {
                 </li>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.withdraw') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.withdraw')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cash" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm2-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
                     </svg>
                     <span className="ml-2">Withdraw History</span>
@@ -402,7 +402,7 @@ const DashBoardLayout = ({ children }) => {
                 </li>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.transaction') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.transaction')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-receipt" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2z"/>
                     </svg>
                     <span className="ml-2">Transaction History</span>
