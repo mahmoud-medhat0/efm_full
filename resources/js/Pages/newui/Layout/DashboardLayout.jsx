@@ -8,6 +8,7 @@ import { usePage } from "@inertiajs/inertia-react";
 import store from './store';
 import copy from '../../newui/photo/copyicon.svg'
 import { toast } from "react-hot-toast";
+import character from "../../../assets/character.jpg";
 // import { useSelector } from 'react-redux';
 // import { toggleDarkMode } from './DarkModeSlice';
 const DashBoardLayout = ({ children }) => {

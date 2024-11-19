@@ -1,0 +1,1 @@
+import{r as s,j as a}from"./app-COec9CJE.js";const p=s.forwardRef(({type:r="text",required:t=!1,...o},e)=>a.jsx("input",{ref:e,className:"border-[1px] border-gray-300 shadow-lg focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary rounded-lg px-3 py-3 text-md w-full bg-transparent duration-200",type:r??"text",required:t,...o}));export{p as I};
