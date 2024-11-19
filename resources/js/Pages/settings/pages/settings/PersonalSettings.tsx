@@ -97,9 +97,8 @@ const PersonalSettingsPage = () => {
           <h3 className="text-2xl mb-4">Personal Settings</h3>
           <div className='w-full flex flex-col items-center justify-between space-y-4'>
            <div className="w-full py-4 px-80 rounded-2xl shadow-md flex flex-col space-y-5 flex-grow">
- 
-</div>
-<div className="w-full py-4 px-6 rounded-2xl shadow-md flex flex-col space-y-5 flex-grow">
+          </div>
+          <div className="w-full py-4 px-6 rounded-2xl shadow-md flex flex-col space-y-5 flex-grow">
               <div className='flex flex-row justify-between items-center'>
                 <div className='flex flex-row items-center justify-between space-x-5'>
                   <div className="bg-[#E8F0F7] rounded-full w-16 max-sm:w-28 p-3 cursor-pointer">
@@ -109,8 +108,7 @@ const PersonalSettingsPage = () => {
                     <p className='text-black/70'>photo change</p>
                     <h4 className='text-black font-medium'>{user.username}</h4>
                     <div className="flex items-center space-x-4">
-      
-    </div>
+                    </div>
                   </div>
                 </div>
                 <PencilSquareIcon className='w-8 text-primary cursor-pointer' 
@@ -118,7 +116,7 @@ const PersonalSettingsPage = () => {
               </div>
             </div>
 
- <div className="w-full py-4 px-6 rounded-2xl shadow-md flex flex-col space-y-5 flex-grow">
+            <div className="w-full py-4 px-6 rounded-2xl shadow-md flex flex-col space-y-5 flex-grow">
               <div className='flex flex-row justify-between items-center'>
                 <div className='flex flex-row items-center justify-between space-x-5'>
                   <div className="bg-[#E8F0F7] rounded-full w-16 max-sm:w-28 p-3 cursor-pointer">

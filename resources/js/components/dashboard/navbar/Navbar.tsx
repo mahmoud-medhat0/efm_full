@@ -44,7 +44,7 @@ const DashboardNavbar = () => {
       </div>
       <ul className="flex items-center justify-between max-sm:hidden">
         <li className="text-lg duration-200">
-          <Link className="text-gold hover:text-rom px-2 py-1" href={route('client.dashboard')}>
+          <Link className="text-gold hover:text-rom px-2 py-1" href={route('client.dashboard.dashboard')}>
             {translate("home.title")}
           </Link>
         </li>
@@ -67,7 +67,7 @@ const DashboardNavbar = () => {
         <Help />
       </ul>
       <div className="flex flex-row items-center gap-2">
-        <Link href={route('client.dashboard')}>
+        <Link href={route('client.dashboard.dashboard')}>
           <img className="w-20 h-20 hoving ml-16" src={LogoImg} alt="logo" />
         </Link>
       </div>

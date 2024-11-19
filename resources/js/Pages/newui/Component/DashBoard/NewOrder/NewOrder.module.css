@@ -1,0 +1,235 @@
+/* الحاوية الرئيسية */
+.newOrderContainer {
+    width: 495px;
+    
+    height: 631px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+  }
+  
+  /* العنوان */
+  .newOrderTitle {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #808892;
+    text-align: center;
+   
+  
+  
+    @media (max-width: 768px) {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  }
+  
+  /* قسم السعر */
+  .priceSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .priceLabel {
+    font-size: 1.2rem;
+    color: #DFBC8A;
+    font-weight: bold;
+  }
+  
+  .priceValue {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: normal;
+  }
+  
+  /* مدخلات الطلب */
+  .orderLabel {
+    display: block;
+    margin-top: 15px;
+    color: #DFBC8A;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+  
+  .orderInput {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+    font-size: 0.7em;
+  }
+  
+  .orderInput:focus {
+    border-color: #DFBC8A;
+  }
+  .inputWrapperordrer{
+    display: flex
+;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    padding: 5px;
+    margin-bottom: 36px;
+  }
+  
+
+  /* مدخلات الوقت */
+  .timeInputs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  /* حاوية الأزرار */
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .upgradeButton,
+  .cancelButton {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 15px;
+  }
+  
+  .upgradeButton {
+    background-color:#DFBC8A;
+    color: #fff;
+    margin-right: 10px;
+  }
+  
+  .upgradeButton:hover {
+    background-color: #b36800;
+    transform: translateY(-2px);
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .cancelButton:hover {
+    background-color: #b0b0b0;
+    transform: translateY(-2px);
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة */
+  @media (max-width: 768px) {
+    .newOrderContainer {
+      max-width: 90%;
+      padding: 15px;
+      height: auto;
+    }
+  
+    .priceSection {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .buttonsContainer {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .newOrderTitle {
+      font-size: 20px;
+    }
+  
+    .priceValue {
+      font-size: 1.2rem;
+    }
+  
+    .orderLabel {
+      font-size: 0.9rem;
+    }
+  
+    .orderInput {
+      padding: 8px;
+    }
+  
+    .upgradeButton,
+    .cancelButton {
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+  }
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9; /* لون الخلفية مطابق للصورة */
+    padding: 5px;
+    margin-bottom: 15px; /* مسافة بين الحقول */
+  }
+  
+  .inputIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d3a15a; /* لون الأيقونة */
+    margin-right: 10px;
+    font-size: 1.2em;
+  }
+  
+  .orderInput {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 1em;
+    background: transparent;
+    padding: 5px;
+  }
+  
+  .orderInput::placeholder {
+    color: #bbb; /* لون النص داخل الحقل */
+  }
+  
+  .timeInputs {
+    display: flex;
+    gap: 10px; /* مسافة بين حقلي الوقت */
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .upgradeButton, .cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .upgradeButton {
+    background: #d3a15a;
+    color: #fff;
+  }
+  
+  .cancelButton {
+    background: #f5f5f5;
+    color: #333;
+  }
+  

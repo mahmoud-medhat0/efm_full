@@ -71,7 +71,12 @@ class Client extends Resource
             Password::make('Password', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+                ->updateRules('nullable', Rules\Password::defaults())
+                ->fillUsing(function ($request, $model, $attribute) {
+                    if ($request->filled('password')) {
+                        $model->password = bcrypt($request->password);
+                    }
+                }),
             ToggleSwitchField::make('Email Verified', 'email_verified')->color('#3AB95A'),
             ToggleSwitchField::make('Active', 'is_active')->color('#3AB95A'),
             Text::make('Phone', 'phone')->sortable(),
@@ -85,10 +90,6 @@ class Client extends Resource
             Text::make('Telegram Username', 'telegram_username')->sortable(),
             ToggleSwitchField::make('Telegram Verified', 'telegram_verified')->color('#3AB95A')->sortable(),
             DateTime::make('Telegram Verified At', 'telegram_verified_at')->readonly()->onlyOnDetail()->onlyOnPreview()->sortable(),
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
             Text::make('Session ID', 'session_kyc_id')->readonly(),
             Text::make('Session Status', 'session_kyc_status')->readonly(),
             URL::make('Session URL', 'kyc_url')->readonly()->sortable(),

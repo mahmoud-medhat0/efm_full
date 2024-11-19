@@ -6,6 +6,10 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\AuthClientController;
 use App\Http\Controllers\client\DashboardContrtoller;
+use App\Http\Controllers\client\HistoryController;
+use App\Http\Controllers\client\PersonalSettingsController;
+use App\Http\Controllers\client\TicketsController;
+use App\Http\Controllers\client\OrdersController;
 use App\Http\Middleware\RedirectRoRegsiter;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/set-lang/{lang}', [HomeController::class, 'setLang'])->name('client.set-lang');
@@ -22,7 +26,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::post('logout', 'logout')->name('logout');
     });
     Route::controller(AuthClientController::class)->middleware('auth')->group(function () {
-        Route::post('logout', 'logout')->name('logout');
+        Route::match(['get', 'post'], 'logout', 'logout')->name('logout');
         Route::middleware('has2fa')->group(function () {
             Route::get('2fa', 'twoFa')->name('2fa');
             Route::post('2fa', 'twoFaPost')->name('2fa.post');
@@ -53,26 +57,16 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('telegram-resend', 'telegramResend')->name('telegram-resend');
         });
     });
-    Route::controller(DashboardContrtoller::class)->middleware(['auth', 'verified', '2fa'])->prefix('dashboard')->group(function () {
-        Route::get('/', 'index')->name('dashboard');
-        Route::name('dashboard.')->group(function () {
-            Route::get('create-ticket', 'createTicket')->name('create-ticket');
-            Route::post('create-ticket', 'createTicketPost')->name('create-ticket.post');
-            Route::get('tickets', 'tickets')->name('tickets');
-            Route::get('ticket/{id}', 'showTicket')->name('show-ticket');
+    Route::name('dashboard.')->prefix('dashboard')->middleware(['auth', 'verified', '2fa'])->group(function () {
+        Route::controller(DashboardContrtoller::class)->group(function () {
+            Route::get('/', 'index')->name('dashboard');
             Route::get('currencies', 'currencies')->name('currencies');
-            Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');
-            Route::post('update-profile-image', 'updateProfileImage')->name('update-profile-image');
-            Route::post('change-password', 'ChangePassword')->name('change-password');
             Route::get('referrals', 'referrals')->name('referrals');
             Route::get('advertiser-panel', 'advertiserPanel')->name('advertiser-panel');
             Route::get('messages', 'messages')->name('messages');
             Route::get('membership', 'membership')->name('membership');
             Route::post('membership/upgrade/balance', 'upgradeBalance')->name('membership.upgrade.balance');
             Route::post('membership/upgrade/gateway', 'upgradeBalanceGateway')->name('membership.upgrade.balance.gateway');
-            Route::get('orders', 'orders')->name('orders');
-            Route::get('order', 'newOrder')->name('new-order');
-            Route::post('order', 'newOrderPost')->name('new-order.post');
             Route::get('tasks', 'tasks')->name('tasks');
             Route::post('tasks/update', 'UpdateTask')->name('tasks.update');
             Route::post('yt-video-details', 'YtVideoDetails')->name('yt-video-details');
@@ -91,6 +85,25 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             });
             Route::get('2fa', 'twoFa')->name('2fa');
             Route::get('banners', 'banners')->name('banners');
+        });
+        Route::controller(OrdersController::class)->group(function () {
+            Route::get('orders', 'orders')->name('orders');
+            Route::get('order', 'newOrder')->name('new-order');
+            Route::post('order', 'newOrderPost')->name('new-order.post');
+        });
+        Route::controller(PersonalSettingsController::class)->group(function () {
+            Route::get('personal-settings', 'PersonalSettings')->name('personal-settings');
+            Route::post('update-profile-image', 'updateProfileImage')->name('update-profile-image');
+            Route::post('change-password', 'ChangePassword')->name('change-password');
+        });
+        Route::controller(TicketsController::class)->group(function () {
+            Route::get('create-ticket', 'createTicket')->name('create-ticket');
+            Route::post('create-ticket', 'createTicketPost')->name('create-ticket.post');
+            Route::get('tickets', 'tickets')->name('tickets');
+            Route::get('ticket/{id}', 'showTicket')->name('show-ticket');
+            Route::post('ticket/message', 'storeTicketMessage')->name('ticket.message.store');
+        });
+        Route::controller(HistoryController::class)->group(function () {
             Route::get('logs', 'logs')->name('logs');
             Route::name('logs.')->prefix('logs')->group(function () {
                 Route::get('orders', 'LogOrders')->name('orders');

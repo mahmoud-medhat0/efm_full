@@ -101,7 +101,7 @@ const Navbar = () => {
                 {/* <Help /> */}
             </ul>
             <div className="flex flex-row gap-2">
-                <Link href={route('client.dashboard')}>
+                <Link href={route('client.dashboard.dashboard')}>
                     <img
                         className="w-22 h-20 ml-16" // تم زيادة حجم الصورة
                         src={LogoImg}

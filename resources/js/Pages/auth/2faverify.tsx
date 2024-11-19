@@ -22,7 +22,7 @@ const TwoFactorAuthenticationVerify = () => {
                 position: "top-center",
             });
             setTimeout(() => {
-                Inertia.visit(route('client.dashboard'));
+                Inertia.visit(route('client.dashboard.dashboard'));
             }, 2000);
         } else {
             setError(response.data.message);

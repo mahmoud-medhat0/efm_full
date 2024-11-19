@@ -1,0 +1,222 @@
+/* Container Styles */
+.historyContainer {
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%;
+  }
+  
+  /* Title Styles */
+  .historyTitle {
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background-color: #d3d3d3;
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: -4px;
+  }
+  
+  /* Table Styles */
+  .historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .historyTable th,
+  .historyTable td {
+    padding: 15px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .historyThd {
+    padding: 250px;
+  }
+  
+  .historyTable th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .historyRow {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .historyRow:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+  
+  /* Button Styles */
+  .historyBtn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: capitalize;
+    transition: background-color 0.3s ease;
+    width: 120px;
+  }
+  
+  /* Button Colors Based on Status */
+  
+  .historyBtn.pending {
+    background-color: #d6a35d;
+    color: white;
+  }
+  
+  .historyBtn.approved {
+    background-color: #28a745;
+    color: white;
+  }
+  .historyBtn.success {
+    background-color: #28a745;
+    color: white;
+  }
+  .historyBtn.failed {
+    background-color: #dc3545;
+    color: white;
+  }
+  .historyBtn.declined {
+    background-color: #dc3545;
+    color: white;
+  }
+  .historyBtn.cancelled {
+    background-color: #6c757d;
+    color: white;
+  }
+  /* Assuming these styles are in Historysection.module.css */
+
+.filterButtons {
+  display: flex;
+  gap: -1px;
+  margin-bottom: 600px;
+}
+
+.filterButton {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filterButton:hover {
+  background-color: #bbb;
+}
+
+.active {
+  background-color: #d4a373; /* Example color for active button */
+  color: #fff;
+}
+  /* Mobile Optimization */
+  @media (max-width: 768px) {
+    .historyContainer {
+      padding: 10px;
+      margin: 20px;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+  
+    .historyTable th,
+    .historyTable td {
+      padding: 10px;
+      font-size: 0.8rem;
+     
+    }
+  
+    .historyBtn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+  
+    .historyTitle {
+      font-size: 1.2rem; /* Adjust font size for smaller screens */
+      text-align: center; /* Center align the title on smaller screens */
+      width: 550PX; /* Make the title take the full width */
+      display: flex;
+      justify-content: center; /* Center the text horizontally */
+      align-items: center; /* Center the text vertically */
+    }
+  }
+  
+  /* Assuming these styles are in Historysection.module.css */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.historyTitle {
+  margin: 0PX;
+  text-align: center;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 6px;
+}
+
+.filterButton {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filterButton:hover {
+  background-color: #bbb;
+}
+
+.active {
+  background-color: #d4a373; /* Example color for active button */
+  color: #fff;
+}
+
+.text-center {
+  text-align: center !important;
+}
+.responsive-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.responsive-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.responsive-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+.responsive-buttons .active {
+  background-color: #007bff;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .responsive-buttons button {
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+  }
+}

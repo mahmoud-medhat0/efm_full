@@ -1,0 +1,195 @@
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Cairo', sans-serif;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 28px;
+    margin-bottom: -38px;
+    margin-right: 385px;
+    color: #ff0000;
+  }
+  .textInput {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #000000;
+    outline: none;
+    font-size: 16px;
+  }
+  .inputWithIcon {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .textInput {
+    width: 100%;
+    padding: 12px 12px 12px 45px; 
+    border: 1px solid #d4a259;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  .logo {
+    width: 60px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  @media (min-width: 768px) {
+    .logo {
+      margin-left: 300px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .logo {
+      width: 50px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+ @media (max-width: 480px) {
+    .logo {
+      width: 40px;
+      margin-left: 255px
+    }
+  }
+  
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .label {
+    text-align: left;
+    margin-bottom: 8px;
+    color: #d4a259;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .textarea {
+    width: 100%;
+    padding: 12px;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .fileUploadContainer {
+    position: relative;
+    border: 1px dashed #d4a259;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  
+  .fileInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .fileLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+  
+  .instruction {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+  }
+  
+  .previewContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .previewImage {
+    max-width: 100px;
+    border-radius: 8px;
+  }
+  
+  .removeButton {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .sendButton {
+    background-color: #d4a259;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  /* تحسينات الريسبونسف */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+  
+    .buttonsContainer {
+      flex-direction: column;
+    }
+  }
+  

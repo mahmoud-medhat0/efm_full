@@ -45,7 +45,7 @@ class DashboardContrtoller extends Controller
     public function index()
     {
         $loginFailed = auth()->user()->loginAttempts()->where('successful', false)->get();
-        return Inertia::render('settings/index.tsx', [
+        return Inertia::render('newui/Component/DashBoard/Home/Home.jsx', [
             'loginFailures' => $loginFailed,
             'services' => Service::where('status', 'active')->get()->map(function ($service) {
                 return [
@@ -55,49 +55,13 @@ class DashboardContrtoller extends Controller
                     'completed' => $service->completed_tasks(auth()->user())->count(),
                 ];
             }),
+            'tasks' => auth()->user()->tasks()->where('removed', false)->count(),
+            'tasks_completed' => auth()->user()->tasks()->where('status', 'completed')->where('removed', false)->count(),
+            'deposits' => auth()->user()->transactions()->where('type', 'deposit')->where('status', 'success')->sum('amount'),
             'pending_withdrawls' => auth()->user()->transactions()->where('type', 'withdraw')->where('status', 'pending')->sum('amount'),
             'direct_referrals' => auth()->user()->referrals()->count(),
             'referrals_earn' => auth()->user()->transactions()->where('type', 'referral')->sum('total'),
         ]);
-    }
-    public function PersonalSettings()
-    {
-        return Inertia::render('settings/pages/settings/PersonalSettings.tsx');
-    }
-    public function ChangePassword(Request $request)
-    {
-        $rules = [
-            'current_password' => ['required'],
-            'new_password' => ['required', 'min:8', 'confirmed'],
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
-        }
-
-        $user = auth()->user();
-
-        if (!password_verify($request->current_password, $user->password)) {
-            return response()->json(['success' => false, 'message' => 'Current password is incorrect'], 200);
-        }
-
-        $user->password = bcrypt($request->new_password);
-        $user->save();
-
-        return response()->json(['success' => true, 'message' => 'Password changed successfully'], 200);
-    }
-    public function updateProfileImage(Request $request)
-    {
-        try {
-            $user = auth()->user();
-            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
-            $user->save();
-            return response()->json(['success' => true, 'message' => 'Profile image updated successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Failed to update profile image'], 200);
-        }
     }
     public function advertiserPanel()
     {
@@ -106,10 +70,7 @@ class DashboardContrtoller extends Controller
     //Finance methods
     public function deposit(Request $request)
     {
-        $secretKey = "bd07a49cd84f877bcb4861c567e8bcb12e206c860aa963ba92";
-        $queryParam = "Domain=https://56c7-196-133-114-138.ngrok-free.app&ProviderKey=FAWATERAK.1154";
-        $hash = hash_hmac('sha256', $queryParam, $secretKey, false);
-        return Inertia::render('settings/pages/AddFunds.tsx', [
+        return Inertia::render('newui/Component/DashBoard/AddFunds/AddFunds.jsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
@@ -129,7 +90,6 @@ class DashboardContrtoller extends Controller
             'plan' => $request->plan ?? null,
             'method' => $request->method ?? null,
             'amount' => $request->amount ?? null,
-            'hash' => $hash,
         ]);
     }
     public function depositPost(Request $request)
@@ -197,7 +157,8 @@ class DashboardContrtoller extends Controller
                 }
             }
             $fees = $gateway->charge_type_deposit == 'percentage' ? ($gateway->charge_deposit * $request->amount / 100) : $gateway->charge_deposit;
-            $total = $request->amount + $fees;
+            $vat = $gateway->vat_deposit_type == 'percentage' ? ($gateway->vat_deposit * $request->amount / 100) : $gateway->vat_deposit;
+            $total = $request->amount + $fees + $vat;
             $methodData = json_encode($methodData);
             $tnx = 'DEP' . time();
             $transaction = Transaction::create([
@@ -228,7 +189,7 @@ class DashboardContrtoller extends Controller
     //withdraw methods
     public function withdraw()
     {
-        return Inertia::render('settings/pages/WithdrawFunds.tsx', [
+        return Inertia::render('newui/Component/DashBoard/WithdrawFund/WithdrawFunds.jsx', [
             'methods' => Gateways::withdrawGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
@@ -301,7 +262,8 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
         }
         $fees = $gateway->charge_type_withdraw == 'percentage' ? ($gateway->charge_withdraw * $request->amount / 100) : $gateway->charge_withdraw;
-        $total = $request->amount - $fees;
+        $vat = $gateway->vat_withdraw_type == 'percentage' ? ($gateway->vat_withdraw * $request->amount / 100) : $gateway->vat_withdraw;
+        $total = $request->amount - $fees - $vat;
         $tnx = "WITH" . time();
         $transaction = Transaction::create([
             'amount' => $request->amount,
@@ -319,163 +281,10 @@ class DashboardContrtoller extends Controller
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
-    //logs methods
-    public function LogOrders()
-    {
-        $orders = auth()->user()->orders()->orderBy('created_at', 'desc')->get();
-        return Inertia::render('settings/pages/Userlogs/OrderLogs.tsx', [
-            'orders' => $orders
-        ]);
-    }
-    public function LogTransaction()
-    {
-        $transactions = Transaction::where('client_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
-        return Inertia::render('settings/pages/Userlogs/TransactionLogs.tsx', [
-            'transactions' => $transactions
-        ]);
-    }
-    public function LogLoginAttempts()
-    {
-        $loginAttempts = auth()->user()->loginAttempts()->orderBy('created_at', 'desc')->get();
-        return Inertia::render('settings/pages/Userlogs/LoginLogs.tsx', [
-            'loginAttempts' => $loginAttempts
-        ]);
-    }
-    public function LogWithdraw()
-    {
-        $withdraws = Transaction::where('client_id', auth()->user()->id)->where('type', 'withdraw')->orderBy('created_at', 'desc')->get();
-        return Inertia::render('settings/pages/Userlogs/WithdrawLogs.tsx', [
-            'withdraws' => $withdraws
-        ]);
-    }
-    public function LogDeposit()
-    {
-        $deposits = Transaction::where('client_id', auth()->user()->id)->where('type', 'deposit')->orderBy('created_at', 'desc')->get();
-        return Inertia::render('settings/pages/Userlogs/DepositLogs.tsx', [
-            'deposits' => $deposits
-        ]);
-    }
-    //Order methods
-    public function orders()
-    {
-        return Inertia::render('settings/pages/settings/Orders.tsx', [
-            'orders' => auth()->user()->orders()->get()->toArray()
-        ]);
-    }
-    public function newOrder()
-    {
-        return Inertia::render('settings/pages/NewOrder.tsx', [
-            'services' => Service::where('status', 'active')->get()->map(function ($service) {
-                return [
-                    'id' => $service->id,
-                    'name' => $service->name,
-                    'icon' => $service->icon,
-                    'min' => $service->min_amount,
-                    'max' => $service->max_amount,
-                    'minute_cost' => json_decode($service->calculation_formula, true)['minute_cost'],
-                ];
-            }),
-            'categories' => InterestCategory::all()->toArray()
-        ]);
-    }
-    public function YtVideoDetails(Request $request)
-    {
-        $validator = Validator::make(['url' => $request->url], [
-            'url' => ['required', 'bail', new ValidYoutubeVideo],
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
-        }
-        $videoId = Youtube::parseVidFromURL($request->url);
-        $video = Youtube::getVideoInfo($videoId);
-        if ($video) {
-            $thumbnail = $video->snippet->thumbnails->standard->url;
-            $title = $video->snippet->title;
-            $viewCount = number_format($video->statistics->viewCount);
-            $likeCount = number_format($video->statistics->likeCount);
-            $duration = iso8601ToDuration($video->contentDetails->duration);
-            $interval = new DateInterval($video->contentDetails->duration);
-            $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
-            return response()->json(['success' => true, 'message' => 'Video details fetched successfully', 'thumbnail' => $thumbnail, 'title' => $title, 'viewCount' => $viewCount, 'likeCount' => $likeCount, 'duration' => $duration, 'minutes' => $minutes]);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Video details Cant fetched', 'duration' => '']);
-        }
-    }
-    public function newOrderPost(Request $request)
-    {
-        $rules = [
-            'service_id' => ['required', 'exists:services,id'],
-            'link' => ['required', 'url'],
-            'amount' => ['required', 'numeric', 'min:' . Service::find($request->service_id)->min_amount, 'max:' . Service::find($request->service_id)->max_amount],
-            'order_type' => ['required', 'string', 'in:full_time,custom_time'],
-            'time_start' => ['required_if:order_type,custom_time', 'numeric', 'min:0'],
-            'time_end' => ['required_if:order_type,custom_time', 'numeric', 'min:1', 'gt:time_start'],
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
-        }
-        $service = Service::find($request->service_id);
-        if ($service->is_category_required) {
-            $rules['categories'] = ['required', 'array'];
-            $rules['categories.*'] = ['exists:interest_categories,id'];
-        }
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation failed', 'errors' => $validator->errors()], 200);
-        }
-        if ($request->service_id == "1") {
-            $videoId = Youtube::parseVidFromURL($request->link);
-            $video = Youtube::getVideoInfo($videoId);
-            $interval = new DateInterval($video->contentDetails->duration);
-            $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
-            $price = $request->amount * ($minutes * json_decode($service->calculation_formula, true)['minute_cost']);
-            $user = auth()->user();
-            $thumbnail = $video->snippet->thumbnails->standard->url;
-            $title = $video->snippet->title;
-            if ($user->balance < $price) {
-                return response()->json(['success' => false, 'message' => 'Insufficient balance to place the order'], 200);
-            }
-            Transaction::create([
-                'amount' => $price,
-                'fee' => 0,
-                'total' => $price,
-                'tnx_type' => 'sub',
-                'tnx' => 'ORD' . time(),
-                'type' => 'order',
-                'description' => 'Order from ' . $service->name,
-                'client_id' => auth()->user()->id,
-            ]);
-            foreach (json_decode($service->fields, true) as $field => $value) {
-                $orderdata[$field] = isset(${$field}) ? ${$field} : null;
-            }
-            auth()->user()->update(['balance' => auth()->user()->balance - $price]);
-            $order = Order::create([
-                'order_id' => 'ORD' . time(),
-                'provider_id' => auth()->user()->id,
-                'service_id' => $request->service_id,
-                'link' => $request->link,
-                'target_amount' => $request->amount,
-                'price' => $price,
-                'status' => 'pending',
-                'data' => json_encode($orderdata),
-                'order_type' => $request->order_type,
-                'time_start' => $request->time_start,
-                'time_end' => $request->time_end,
-            ]);
-            if ($service->is_category_required) {
-                $order->categories()->sync($request->categories);
-            }
-        } else {
-            $price = $request->amount * $service->minute_cost;
-        }
-
-        return response()->json(['success' => true, 'message' => 'Order created successfully', 'price' => $price]);
-    }
     //Tasks methods
     public function tasks()
     {
-        return Inertia::render('settings/pages/settings/Tasks.tsx', [
+        return Inertia::render('newui/Component/DashBoard/Tasks/Tasks.jsx', [
             'tasks' => auth()->user()->tasks()->where('status', '!=', 'completed')->where('removed', false)->whereHas('order', function ($query) {
                 $query->where('status', 'approved');
             })->get()->map(function ($task) {
@@ -597,7 +406,7 @@ class DashboardContrtoller extends Controller
     {
         $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
         $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
-        return Inertia::render('settings/pages/Membership.tsx', [
+        return Inertia::render('newui/Component/DashBoard/Upgradeaccount/Upgradeaccount.jsx', [
             'methods' => Gateways::depositGateways()->map(function ($gateway) {
                 return [
                     'name' => $gateway->name,
@@ -723,73 +532,25 @@ class DashboardContrtoller extends Controller
     }
     public function referrals()
     {
-        return Inertia::render('settings/pages/settings/Referrals.tsx', [
+        return Inertia::render('newui/Component/DashBoard/DirectReferrals/DirectReferrals.jsx', [
             'referrals' => auth()->user()->referrals->map(function ($referral) {
                 return [
                     'id' => mb_strtoupper(mb_substr(explode(' ', $referral->name)[0], 0, 1) . mb_substr(explode(' ', $referral->name)[1], 0, 1)),
                     'name' => $referral->name . ($referral->membership ? ' - ' . $referral->membership->name : ' - Free'),
                     'profile_image' => $referral->profile_image ? '/storage/' . $referral->profile_image : null,
+                    'email' => $referral->email,
+                    'type' => $referral->membership ? $referral->membership->name : 'Free',
+                    'has_subscription' => $referral->membership!=null ? true : false,
                 ];
             }),
             'referral_count' => auth()->user()->referrals->count(),
             'parent' => auth()->user()->parent,
-        ]);
-    }
-    //Ticket methods
-    public function createTicket(){
-        $ticketCategories = TicketCategory::all();
-        return Inertia::render('settings/pages/settings/createTicket.tsx',[
-            'ticketCategories' => $ticketCategories,
-        ]);
-    }
-    public function createTicketPost(Request $request){
-        $rules = [
-            'title' => ['required', 'string', 'max:255'],
-            'ticket_category_id' => ['required', 'exists:ticket_categrories,id'],
-            'description' => ['required', 'string'],
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
-        }
-        if(auth()->user()->tickets()->where('status','=','pending')->count() >= 1){
-            return response()->json(['success' => false, 'message' => 'You have reached the maximum number of tickets'], 200);
-        }
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('ticket_images', 'public');
-        }
-        $ticket = Ticket::create([
-            'ticket_id' => 'SUPT#'.rand(100000, 999999),
-            'title' => $request->title,
-            'ticket_category_id' => $request->ticket_category_id,
-            'client_id' => auth()->user()->id,
-        ]);
-        $ticket->ticketMessages()->create([
-            'message' => $request->description,
-            'message_from' => 'user',
-            'client_id' => auth()->user()->id,
-            'image' => $imagePath,
-        ]);
-        return response()->json(['success' => true, 'message' => 'Ticket created successfully with id: ' . $ticket->ticket_id]);
-    }
-    public function tickets(){
-        $tickets = Ticket::where('client_id', auth()->user()->id)->with('ticketCategory')->get();
-        return Inertia::render('settings/pages/settings/tickets.tsx',[
-            'tickets' => $tickets,
-        ]);
-    }
-    public function showTicket($id){
-        $ticket = Ticket::find($id);
-        $ticketMessages = TicketMessage::where('ticket_id', $id)->with(['client', 'user'])->get()->toArray();
-        return Inertia::render('settings/pages/settings/ticketmessages.tsx',[
-            'ticket' => $ticket,
-            'ticketMessages' => $ticketMessages,
+            'me' => auth()->user(),
         ]);
     }
     public function currencies(){
         $currencies = Currency::all();
-        return Inertia::render('settings/pages/currencies.tsx',[
+        return Inertia::render('newui/Component/DashBoard/Currencies/Currencies.jsx',[
             'currencies' => $currencies,
         ]);
     }

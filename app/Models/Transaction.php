@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity; 
-
+use Carbon\Carbon;
 class Transaction extends Model
 {
     use HasFactory, LogsActivity;
@@ -15,6 +15,7 @@ class Transaction extends Model
     protected $casts = [
         'created_at' => 'datetime',
     ];
+    protected $appends = ['created_at_human'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -66,5 +67,9 @@ class Transaction extends Model
     protected static function generateTransactionNumber()
     {
         return 'TNX-' . strtoupper(uniqid());
+    }
+    public function getCreatedAtHumanAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d-m-Y h:i:s A');
     }
 }

@@ -1,0 +1,93 @@
+
+  @media (max-width: 768px) {
+    .withdrawContainer {
+      padding: 15px;
+      font-size: 4vw;
+    }
+  
+    .headerSection {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .addWithdrawButton {
+      width: 100%;
+      margin-top: 10px;
+    }
+  
+    .buttonsContainer {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .upgradeButton, .cancelButton {
+      width: 100%;
+    }
+  
+    .paymentLogos {
+      gap: 10px;
+    }
+  
+    .formTitle {
+      font-size: 3.5vw;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .withdrawContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        margin-top: 0;
+    }
+
+    .withdrawFormContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .headerSection, .buttonsContainer {
+        width: 100%;
+        align-items: center;
+    }
+
+    .addWithdrawButton, .upgradeButton, .cancelButton {
+        width: 100%;
+    }
+
+    .paymentLogos {
+        justify-content: center;
+    }
+
+    .formTitle {
+        text-align: center;
+        font-size: 1.3em;
+        margin-right: 200px;
+    }
+
+    .phoneNumberLabel {
+        white-space: nowrap;
+    }
+  }
+  .iconInsideInput {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    pointer-events: none;
+  }
+
+  .upgradeButton, .cancelButton {
+    transition: background-color 0.3s ease;
+  }
+
+  .upgradeButton:hover {
+    background-color: #cfa06a;
+  }
+
+  .cancelButton:hover {
+    background-color: #bbb;
+  }

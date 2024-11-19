@@ -29,7 +29,7 @@ class ImpersonateClient extends Action
         }
         $client = $models->first();
         Auth::guard('web')->loginUsingId($client->id);
-        return Action::openInNewTab(route('client.dashboard'));
+        return Action::openInNewTab(route('client.dashboard.dashboard'));
     }
 
     /**

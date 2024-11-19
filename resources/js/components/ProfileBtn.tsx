@@ -65,7 +65,7 @@ export default function ProfileBtn() {
                 <div className="bg-gray-50 overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5 z-20">
                   <div className="pt-2 px-2">
                     <Link
-                      href={route("client.dashboard")}
+                      href={route("client.dashboard.dashboard")}
                       className="flow-root rounded-md px-2 py-2 transition hover:bg-[#ebe7e7] ease-in-out duration-200 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                     >
                       <span className="flex items-center gap-3">

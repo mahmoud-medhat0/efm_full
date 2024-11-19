@@ -50,7 +50,7 @@ const Sidebar = () => {
   };
 
   const globalLinks = [
-    { href: route('client.dashboard'), icon: <TvIcon />, label: "Dashboard" },
+    { href: route('client.dashboard.dashboard'), icon: <TvIcon />, label: "Dashboard" },
     {
       href: route('client.dashboard.membership'),
       icon: <ChevronDoubleUpIcon />,
@@ -183,7 +183,7 @@ const Sidebar = () => {
 
           <div className="sidebar-top-wrapper">
             <div className="sidebar-top">
-            <Link to={route('client.dashboard')} className="logo__wrapper">
+            <Link to={route('client.dashboard.dashboard')} className="logo__wrapper">
               <img src={Logo} alt="Logo" className="logo logo-medium" />
             </Link>
 

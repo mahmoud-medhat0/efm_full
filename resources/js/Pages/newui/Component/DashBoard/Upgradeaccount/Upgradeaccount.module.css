@@ -1,0 +1,262 @@
+.upgradeContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+  }
+  
+  .upgradeTitle {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #808892;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .upgradeTitle {
+        text-align: center;
+        font-weight: bold;
+        margin-right: 21px;
+        margin-bottom: 20px;
+    }
+  }
+  .logoUpgrade{
+    max-width: 100%;
+      height: auto;
+      margin-bottom: 33px;
+      margin-right: 3%;
+  }
+  
+  .accountBalance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .balanceInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .balanceLabel {
+    font-size: 0.8em;
+    color: #DFBC8A;
+    font-weight: bold;
+  }
+  
+  .balanceAmount {
+    font-size: 0.8em;
+    color: #DFBC8A;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .balanceDate {
+    font-size: 0.6em;
+    color: #DFBC8A;
+    margin-top: -29px;
+    text-align: right;
+    width: 100%;
+  }
+  
+  .upgradeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .formLabel {
+    text-align: left;
+    color: #DFBC8A;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+
+  }
+  
+  .selectContainer {
+    position: relative;
+    width: 100%;
+  }
+  
+  .selectWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .selectIcon {
+    position: absolute;
+    left: 10px; 
+    width: 20px; 
+    height: 20px;
+    pointer-events: none; 
+  }
+  .selectWrapper::after {
+  
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* لمنع التفاعل مع السهم */
+    color: #DFBC8A; /* لون السهم */
+  }
+  
+  .formInput {
+    appearance: none; 
+    width: 100%;
+    height: 50px;
+    padding-left: 40px; 
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    color:#DFBC8A;
+ 
+
+  }
+  
+  .formInput::-ms-expand {
+    display: none; 
+  }
+  
+  
+  
+  
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .upgradeButton {
+    background-color: #DFBC8A;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    flex: 1;
+    transition: background-color 0.3s;
+    font-size: 1em;
+
+
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    flex: 1;
+    transition: background-color 0.3s;
+    font-size: 0.9em;
+  }
+  
+  .upgradeButton:hover {
+    background-color: #b36800;
+  }
+  
+  .cancelButton:hover {
+    background-color: #b0b0b0;
+  }
+  
+  .paymentLogos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .paymentLogos img {
+    width: 60px;
+    height: auto;
+    margin: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .upgradeContainer {
+      max-width: 90%;
+      padding: 20px;
+      margin: 0 auto;
+    }
+    .paymentLogos img {
+      width: 80px;
+      height: auto;
+     
+    }
+    .accountBalance, .buttonsContainer {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+  
+    .upgradeButton, .cancelButton {
+      width: 100%;
+    }
+  
+    .balanceDate {
+      text-align: center;
+      margin-left: 0;
+    }
+    .balanceAmount {
+        text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .formLabel {
+      text-align: left;
+    }
+  
+    .upgradeTitle {
+      font-size: 20px;
+    }
+  
+    .balanceLabel, .balanceAmount, .balanceDate {
+      font-size: 0.9em;
+    }
+  
+    .upgradeButton, .cancelButton {
+      font-size: 0.9em;
+    }
+  
+    .selectContainer {
+      display: block;
+      width: 100%;
+    }
+  
+    .paymentLogos img {
+      width: 60px;
+    }
+  
+    .upgradeForm {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .formInput {
+      width: 100%;
+      padding-left: 33px;
+    }
+  
+    .buttonsContainer {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .upgradeButton, .cancelButton {
+      width: 100%;
+      font-size: 16px
+    }
+  }
+  

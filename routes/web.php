@@ -6,6 +6,7 @@ use App\Http\Controllers\FileController;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\FawaterakController;
+use App\Models\Client;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +24,12 @@ Route::get('/set-webhook', function () {
     ]);
     dd($response);
     return $response ? 'Webhook set successfully' : 'Failed to set webhook';
+});
+Route::get('/test', function () {
+    $clients = Client::whereHas('subscriptionMemberships', function ($query) {
+        // $query->where('status', 'active');
+    })->whereNull('activator_count')->count();
+    dd($clients);
 });
 Route::post('/webhook/telegram/{token}', [TelegramController::class, 'handleWebhook'])->withoutMiddleware('verifyCsrfToken');
 Route::post('/webhook/fawaterk/success',[FawaterakController::class,'successhook'])->withoutMiddleware('verifyCsrfToken');

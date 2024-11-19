@@ -19,7 +19,7 @@ class Order extends Model
         'updated_at' => 'datetime',
         'created_at' => 'datetime',
     ];
-    protected $appends = ['service_name'];
+    protected $appends = ['service_name','created_at_human'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -61,8 +61,22 @@ class Order extends Model
     {
         return $this->belongsToMany(InterestCategory::class, 'order_categories');
     }
-    public function getCreatedAtHumanAttribute($value)
+    public function getCreatedAtHumanAttribute()
     {
-        return Carbon::parse($value)->format('Y-m-d H:i:s A');
+        return Carbon::parse($this->created_at)->format('Y-m-d h:i:s A');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            if (is_null($order->order_id)) {
+                $order->order_id = self::generateOrderId();
+            }
+        });
+    }
+    protected static function generateOrderId()
+    {
+        return 'ORD' . time();
     }
 }

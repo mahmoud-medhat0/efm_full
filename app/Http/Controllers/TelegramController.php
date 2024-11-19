@@ -168,7 +168,9 @@ class TelegramController extends Controller
                 case '/count':
                     $this->deleteMessage($chatId,$message_id);
                     $registeredUsers = ClientUser::count();
-                    $activeUsers = ClientUser::whereNotNull('activator_count')->count();
+                    $activeUsers = ClientUser::whereHas('subscriptionMemberships', function ($query) {
+                        $query->where('status', 'active');
+                    })->count();
                     $this->sendMessage($chatId, "Number of Users: " . $registeredUsers . "\nNumber of Active Users: " . $activeUsers);
                     break;
             }

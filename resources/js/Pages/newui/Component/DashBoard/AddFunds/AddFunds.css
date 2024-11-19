@@ -1,0 +1,208 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 200px;
+    background-color: #f9f9f9;
+    width: 632px;
+    height: 789px
+}
+.card {
+   width: 600px;
+  
+}
+.inputWrapperaddfunds{
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    padding: 5px;
+    margin-bottom: 36px;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.title {
+    font-size: 24px;
+    color: #EAD7BC;
+}
+.phone {
+    font-size: 16px;
+    color: #EAD7BC;
+    text-align: right;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.phoneIcon {
+    margin-left: 5px;
+}
+.totalContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.totalLabel {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+.totalValue {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+.form {
+    text-align: left;
+}
+.inputWrapper {
+    margin-bottom: 15px;
+}
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+}
+.inputWithIcon {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+.icon {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+}
+.fileUpload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ddd;
+    border-radius: 5px;
+    height: 50px;
+    color: #999;
+    font-size: 14px;
+    position: relative;
+}
+.uploadText {
+    pointer-events: none;
+}
+.fileInput {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.previewContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+}
+.previewImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+.removeButton {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.column {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+.inputWithCurrency {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    height: 50px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.inputSmall {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    text-align: left;
+    color: #555;
+    background-color: transparent;
+}
+.currency {
+    margin-left: -96px;
+    font-size: 16px;
+    color: #888;
+    font-weight: bold;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+.sendButton {
+    flex: 1;
+    background-color: #d4af37;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sendButton:hover {
+    background-color: #b36800; /* Darker gold */
+}
+
+.cancelButton {
+    flex: 1;
+    background-color: #ddd;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cancelButton:hover {
+    background-color: #bbb; /* Darker grey */
+}
+.logosContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.logo {
+    width: 40px;
+    height: 40px;
+}

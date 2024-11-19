@@ -5,7 +5,9 @@ import { createInertiaApp } from '@inertiajs/inertia-react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Toaster } from "react-hot-toast";
 import NProgress from 'nprogress'
-import { router } from '@inertiajs/react'
+import { router } from '@inertiajs/react';
+import { Provider } from 'react-redux';
+import store from './Pages/newui/Layout/store';
 import './utils/functions'; // Import the utility file
 createInertiaApp({
     // Resolving all React components from resources/js/Pages folder with .jsx and .tsx extensions
@@ -15,10 +17,10 @@ createInertiaApp({
     ])),
     setup({ el, App, props }) {
         createRoot(el).render(
-            <>
+            <Provider store={store}>
                 <App {...props} />
                 <Toaster toastOptions={{ style: { fontSize: "20px" } }} />
-            </>
+            </Provider>
         );
     },
     progress: {

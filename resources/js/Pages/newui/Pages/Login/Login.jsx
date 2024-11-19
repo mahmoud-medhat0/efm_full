@@ -30,7 +30,7 @@ const onSubmit = async (data) => {
           duration: 4000,
         });
         setTimeout(() => {
-          Inertia.get(route('client.dashboard'));
+          Inertia.get(route('client.dashboard.dashboard'));
         }, 2000);
       } else {
         throw new Error("Unexpected response status");
