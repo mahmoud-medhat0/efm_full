@@ -63,7 +63,12 @@
   .card-title {
     font-size: 14px;
     color: #f8f4ec;
-    opacity: 0.8;
+    opacity: 0.95;
+    margin: 0;
+  }
+  .card-membership{
+    font-size: 14px;
+    color: #ffffff;
     margin: 0;
   }
   

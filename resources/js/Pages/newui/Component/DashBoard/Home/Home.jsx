@@ -18,8 +18,8 @@ function Homes() {
       <div className="card-container">
         <div className="balance-card">
           <p className="card-title">Current Balance</p>
-          <p className="card-title">Your Membership: {client.membership?.name ?? "Free"}</p>
           <h1 className="card-amount">{client.balance} EGP</h1>
+          <p className="card-membership">Your Membership Is : <span style={{ color: client.membership ? '#ffd370' : 'white' }}>{client.membership?.name ?? "Free"}</span></p>
           <div className="card-footer">
             <span className="card-id">ID : {client.id}</span>
             <span className="card-date">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
