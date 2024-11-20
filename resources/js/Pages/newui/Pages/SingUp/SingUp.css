@@ -202,7 +202,7 @@
   input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 197px;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -213,14 +213,14 @@ input[type="password"] {
     transition: all 0.3s ease; 
 }
 input[type="password"]{
-    width: 415px;
+    width: 100%;
 }
 input[type="text"]{
-    width: 400px;
+    width: 100%;
 
 }
 input[type="email"]{
-    width: 400px;
+    width: 100%;
 
 }
 .phone-input {
