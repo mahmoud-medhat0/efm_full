@@ -15,7 +15,9 @@ const Orders = () => {
     : orders.filter(order => order.status === selectedCategory);
   return (
     <DashboardLayout>
+      <center>
        <span className='title-orders'>Orders</span>
+      </center>
       <div className="buttons">
       
         {categories.map((category) => (

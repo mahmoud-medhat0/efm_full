@@ -499,7 +499,7 @@ const DashBoardLayout = ({ children }) => {
       height: "100%",
       boxSizing: "border-box",
       padding: "20px",
-      flex: "1" // Added flex: 1 to make the content area grow
+      flex: "1" 
     }}
   >
     {children}
