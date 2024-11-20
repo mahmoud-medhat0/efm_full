@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\client;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Ticket;
-use App\Models\TicketCategory;
+use Illuminate\Http\Request;
 use App\Models\TicketMessage;
+use App\Models\TicketCategory;
+use App\Http\Controllers\Controller;
+use App\Jobs\SendMessageNotificationBot;
+use Illuminate\Support\Facades\Validator;
 
 class TicketsController extends Controller
 {
@@ -47,6 +48,8 @@ class TicketsController extends Controller
             'client_id' => auth()->user()->id,
             'image' => $imagePath,
         ]);
+        $message = 'New Ticket from ' . auth()->user()->name .' With Title: ' . $request->title . ' and id: ' . $ticket->ticket_id;
+        SendMessageNotificationBot::dispatch($message)->onQueue('default');
         return response()->json(['success' => true, 'message' => 'Ticket created successfully with id: ' . $ticket->ticket_id]);
     }
     public function tickets(){

@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Client;
 use App\Models\Ticket;
 use App\Models\Service;
+use App\Models\Currency;
 use App\Models\Gateways;
 use App\Models\BanAttemp;
 use App\Models\Membershib;
@@ -19,6 +20,7 @@ use App\Models\ManualField;
 use App\Models\Transaction;
 use App\Models\AgentRequest;
 use Illuminate\Http\Request;
+use App\Models\TicketMessage;
 use App\Models\TicketCategory;
 use App\Models\ReferralSetting;
 use App\Models\InterestCategory;
@@ -32,14 +34,15 @@ use App\Jobs\PushDepositNotification;
 use App\Models\SubscriptionMembership;
 use App\Jobs\PushWithdrawlNotification;
 use App\Jobs\PushMembershipNotification;
+use App\Jobs\SendMessageNotificationBot;
 use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Support\Facades\Validator;
+use App\Jobs\MembershipCongratsMessageJob;
 use Stevebauman\Location\Facades\Location;
 use Alaouy\Youtube\Rules\ValidYoutubeVideo;
 use Laravel\Nova\Notifications\NovaNotification;
 use App\Rules\WithdrawAccountBelongsToAuthClient;
-use App\Models\TicketMessage;
-use App\Models\Currency;
+
 class DashboardContrtoller extends Controller
 {
     public function index()
@@ -181,6 +184,8 @@ class DashboardContrtoller extends Controller
                 'status' => 'pending',
             ]);
             PushDepositNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
+            $message = 'New Deposit Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
+            SendMessageNotificationBot::dispatch($message)->onQueue('default');
             return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
@@ -279,6 +284,8 @@ class DashboardContrtoller extends Controller
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $total]);
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
+        $message = 'New Withdraw Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
+        SendMessageNotificationBot::dispatch($message)->onQueue('default');
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
     //Tasks methods
@@ -508,6 +515,9 @@ class DashboardContrtoller extends Controller
                     'is_lifetime' => $plan->subscriptionMemberships,
                 ]);
                     PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
+                    $message = 'New Membership Upgrade from ' . auth()->user()->name .' To ' . $plan->name;
+                    SendMessageNotificationBot::dispatch($message)->onQueue('default');
+                    MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
                 }catch(\Exception $e){
                     DB::rollBack();
                     \Log::error($e->getMessage());

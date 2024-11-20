@@ -16,7 +16,7 @@ class UserTelegramNotVerified
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->user()->telegram_verified == 1) {
-            return redirect()->route('client.dashboard');
+            return redirect()->route('client.dashboard.dashboard');
         }
         return $next($request);
     }

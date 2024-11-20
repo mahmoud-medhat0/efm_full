@@ -32,9 +32,13 @@ const DashBoardLayout = ({ children }) => {
     // store.dispatch(toggleDarkMode());
   };
   const copyReferralLink = () => {
-    const referralLink = `${app_url}/register?ref=${client.username }`;
-    navigator.clipboard.writeText(referralLink);
-    toast.success("Referral link copied to clipboard");
+    if(client.has_active_subscription){
+      const referralLink = `${app_url}/register?ref=${client.username }`;
+      navigator.clipboard.writeText(referralLink);
+      toast.success("Referral link copied to clipboard");
+    }else{
+      toast.error("Please upgrade your account to copy the referral link");
+    }
   };
 
   return (
@@ -441,6 +445,7 @@ const DashBoardLayout = ({ children }) => {
             )}
 
             {/* New User Info Section */}
+            {client.has_active_subscription && (
             <li className="flex items-center space-x-3 mt-4">
               <span className="font-bold">Referral Link</span>
               <img
@@ -450,6 +455,7 @@ const DashBoardLayout = ({ children }) => {
                 onClick={copyReferralLink}
               />
             </li>
+            )}
             <li className="flex items-center space-x-3 mt-4">
               <img
                 src={accImg}

@@ -17,7 +17,7 @@ class Has2faEnabled
     {
         
         if (session('2fa_verified')) {
-            return redirect()->route('client.dashboard');
+            return redirect()->route('client.dashboard.dashboard');
         }
         if (auth()->user()->is_2a) {
             return $next($request);
