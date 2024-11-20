@@ -33,7 +33,7 @@ const DashBoardLayout = ({ children }) => {
   };
   const copyReferralLink = () => {
     if(client.has_active_subscription){
-      const referralLink = `${app_url}/register?ref=${client.username }`;
+      const referralLink = `${app_url}register?ref=${client.username }`;
       navigator.clipboard.writeText(referralLink);
       toast.success("Referral link copied to clipboard");
     }else{

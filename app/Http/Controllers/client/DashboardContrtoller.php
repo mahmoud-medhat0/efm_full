@@ -252,7 +252,7 @@ class DashboardContrtoller extends Controller
         $rules = [
             'selectedMethod' => ['required', 'exists:gateways,id'],
             'account_id' => ['required', 'exists:withdraw_accounts,id', new WithdrawAccountBelongsToAuthClient],
-            'amount' => ['required', 'numeric', 'min:' . Gateways::find($request->selectedMethod)->min_withdraw, 'max:' . Gateways::find($request->selectedMethod)->max_withdraw],
+            'amount' => ['required', 'numeric', 'min:' . Gateways::find($request->selectedMethod)->min_withdraw, 'max:' . Gateways::find($request->selectedMethod)->max_withdraw . '|max:' . auth()->user()->balance],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -260,7 +260,7 @@ class DashboardContrtoller extends Controller
         }
         $gateway = Gateways::find($request->selectedMethod);
         $rules = [
-            'amount' => ['required', 'numeric', 'min:' . $gateway->min_withdraw, 'max:' . $gateway->max_withdraw],
+            'amount' => ['required', 'numeric', 'min:' . $gateway->min_withdraw, 'max:' . $gateway->max_withdraw . '|max:' . auth()->user()->balance],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -282,7 +282,7 @@ class DashboardContrtoller extends Controller
             'client_id' => auth()->user()->id,
             'withdraw_account_id' => $request->account_id,
         ]);
-        auth()->user()->update(['balance' => auth()->user()->balance - $total]);
+        auth()->user()->update(['balance' => auth()->user()->balance - $request->amount]);
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
         $message = 'New Withdraw Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
         SendMessageNotificationBot::dispatch($message)->onQueue('default');
