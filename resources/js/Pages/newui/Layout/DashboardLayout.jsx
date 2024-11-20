@@ -385,7 +385,7 @@ const DashBoardLayout = ({ children }) => {
                 </li>
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.login') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.login')} className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#DFBC8A" viewBox="0 0 16 16">
                       <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 8a5 5 0 0 1 10 0H3z"/>
                     </svg>
                     <span className="ml-2">Login History</span>
@@ -432,7 +432,7 @@ const DashBoardLayout = ({ children }) => {
                 <li className={`flex items-center ${current_url === route('client.dashboard.logs.transaction') ? 'active' : ''}`}>
                   <Link href={route('client.dashboard.logs.transaction')} className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M3 3H21V5H3V3ZM3 7H21V9H3V7ZM3 11H21V13H3V11ZM3 15H21V17H3V15ZM3 19H21V21H3V19Z" fill="currentColor"/>
+                      <path d="M3 3H21V5H3V3ZM3 7H21V9H3V7ZM3 11H21V13H3V11ZM3 15H21V17H3V15ZM3 19H21V21H3V19Z" fill="#DFBC8A"/>
                     </svg>
                     <span className="ml-2">Transaction History</span>
                   </Link>
