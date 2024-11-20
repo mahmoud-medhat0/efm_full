@@ -12,6 +12,7 @@ const DirectReferrals = () => {
       children: referrals,
     };
     const accImg = me.profile_image ? me.profile_image_url : character;
+    const lineWidth = `${referrals.length * 102}px`;
     return (
       <DashboardLayout>
       <div style={styles.container}>
@@ -57,9 +58,9 @@ const DirectReferrals = () => {
   
         <div style={styles.childrenContainer}>
         <motion.div
-          style={styles.horizontalLine}
+          style={{ ...styles.horizontalLine, width: lineWidth }}
           initial={{ width: 0 }}
-          animate={{ width: "53%" }}
+          animate={{ width: lineWidth }}
           transition={{ duration: 0.5, delay: 0.6 }}
         ></motion.div>
           {data.children.map((child, index) => (
@@ -136,13 +137,16 @@ const DirectReferrals = () => {
     },
     childrenContainer: {
       display: "flex",
-      justifyContent: "space-between",
+      justifyContent: "center",
+      flexWrap: "nowrap",
       position: "relative",
       marginTop: "40px",
       gap: "20px",
-      flexWrap: "nowrap",
+      overflowX: "auto",
+      maxHeight: "200px",
     },
     childWrapper: {
+      marginTop: "45px",
       position: "relative",
       display: "flex",
       flexDirection: "column",
@@ -196,10 +200,10 @@ const DirectReferrals = () => {
       position: "absolute",
       height: "2px",
       backgroundColor: "#ddd",
-      top: "-73px",
-      width: "53%",
+      top: "0",
       zIndex: 1,
-      left: "23%",
+      left: "0",
+      transform: "translateX(0)",
     },
     arrow: {
       position: "absolute",
@@ -234,6 +238,7 @@ const DirectReferrals = () => {
       },
       childrenContainer: {
         flexWrap: "wrap",
+        overflowX: "auto",
       },
       childBox: {
         width: "100px",

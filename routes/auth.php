@@ -19,7 +19,7 @@ Route::group(['prefix' => 'client'], function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     auth()->user()->update(['email_verified' => 1,'email_verified_at'=>now()]);
-    return redirect(route('client.dashboard'));
+    return redirect(route('client.dashboard.dashboard'));
 })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::get('/password/reset/{token}', function ($token,Request $request) {
     return Inertia::render('auth/ResetNewPasswordd.tsx', ['token' => $token,'email'=>$request->email]);

@@ -23,7 +23,6 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
         Route::post('register', 'registerPost')->name('register.post');
         Route::get('reset-password', 'resetPassword')->name('reset-password');
         Route::post('reset-password', 'resetPasswordPost')->name('reset-password.post');
-        Route::post('logout', 'logout')->name('logout');
     });
     Route::controller(AuthClientController::class)->middleware('auth')->group(function () {
         Route::match(['get', 'post'], 'logout', 'logout')->name('logout');

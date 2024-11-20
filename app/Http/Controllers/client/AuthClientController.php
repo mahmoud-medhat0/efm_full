@@ -68,11 +68,10 @@ class AuthClientController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
             $cookie = Cookie::forget('session_id');
-
-            return response()->json(['success' => true, 'message' => 'Logout successful'], 200)->cookie($cookie);
+            return redirect()->route('client.login')->cookie($cookie);
+            // return response()->json(['success' => true, 'message' => 'Logout successful'], 200)->cookie($cookie);
      }catch(\Exception $e){
             \Log::error($e->getMessage());
-            return response()->json(['success' => false,'message' => $e->getMessage()], 500);
         }
     }
     public function twoFa()
