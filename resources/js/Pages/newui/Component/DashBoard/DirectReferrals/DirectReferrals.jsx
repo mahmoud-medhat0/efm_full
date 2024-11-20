@@ -12,7 +12,7 @@ const DirectReferrals = () => {
       children: referrals,
     };
     const accImg = me.profile_image ? me.profile_image_url : character;
-    const lineWidth = `${referrals.length * 102}px`;
+    const lineWidth = `${referrals.length * 9.5}em`;
     return (
       <DashboardLayout>
       <div style={styles.container}>
@@ -202,7 +202,7 @@ const DirectReferrals = () => {
       backgroundColor: "#ddd",
       top: "0",
       zIndex: 1,
-      left: "0",
+      left: "7%",
       transform: "translateX(0)",
     },
     arrow: {
