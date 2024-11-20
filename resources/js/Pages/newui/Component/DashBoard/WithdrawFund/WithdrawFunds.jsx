@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import mony from "../../../photo/mony.svg";
 import orangee from "../../../photo/orange.svg";
@@ -12,10 +12,11 @@ import DashboardLayout from "../../../Layout/DashboardLayout";
 import { usePage } from "@inertiajs/inertia-react";
 import Select from "react-select";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Inertia from "@inertiajs/inertia";
+import styles from "./WithdrawFunds.module.css";
+
 const WithdrawFunds = () => {
     const methods = usePage().props.methods;
     const { lang: locale, app_url } = usePage().props;
@@ -147,32 +148,27 @@ const WithdrawFunds = () => {
     };
   return (
     <DashboardLayout>
-      <h2 style={{
-        fontSize: "1.4rem",
-        fontWeight: "bold",
-        color: "#808892",
-        textAlign: "center"
-      }}>Withdraw Funds</h2>
+      <h2 className={styles.headerText}>Withdraw Funds</h2>
 
       
-        <div style={styles.card}>
-          <div style={styles.logo}>
-            <img style={styles.logoTitle} src={upgred} alt="Logo" />
+        <div className={styles.card}>
+          <div className={styles.logo}>
+            <img className={styles.logoTitle} src={upgred} alt="Logo" />
           </div>
         { selectedMethod && selectedMethod.withdrawAccounts.length > 0 && (
             selectedMethod.withdrawAccounts.map((account) => (
-                        <div style={styles.inputWrapper}>
-                        <label style={styles.label}>{Object.keys(JSON.parse(account.data))[0].replace(/\b\w/g, char => char.toUpperCase())}</label>
-                        <div style={styles.inputWithIcon}>
-                          <input disabled value={JSON.parse(account.data)[Object.keys(JSON.parse(account.data))[0]]} placeholder={Object.keys(JSON.parse(account.data))[0]} style={styles.input} />
+                        <div className={styles.inputWrapper}>
+                        <label className={styles.label}>{Object.keys(JSON.parse(account.data))[0].replace(/\b\w/g, char => char.toUpperCase())}</label>
+                        <div className={styles.inputWithIcon}>
+                          <input disabled value={JSON.parse(account.data)[Object.keys(JSON.parse(account.data))[0]]} placeholder={Object.keys(JSON.parse(account.data))[0]} className={styles.input} />
                         </div>
                       </div>
             ))
           )}
-          <form style={styles.form}>
-            <div style={styles.inputWrapper}>
-              <label style={styles.label}>Method</label>
-              <div style={{ ...styles.inputWithIcon, display: "block" }}>
+          <form className={styles.form}>
+            <div className={styles.inputWrapper}>
+              <label className={styles.label}>Method</label>
+              <div className={`${styles.block}`}>
               <Select
                 options={serviceOptions}
                 className={styles.orderInput}
@@ -186,11 +182,11 @@ const WithdrawFunds = () => {
             </div>
 
             {/* Amount */}
-            <div style={styles.inputWrapper}>
-              <label style={styles.label}>Amount</label>
-              <div style={styles.inputWithIcon}>
-                <img style={styles.icon} src={mony} alt="Amount Icon" />
-                <input type="number" placeholder="0" style={styles.inputes} value={amount} onKeyDown={(e) => {
+            <div className={styles.inputWrapper}>
+              <label className={styles.label}>Amount</label>
+              <div className={styles.inputWithIcon}>
+                <img className={styles.icon} src={mony} alt="Amount Icon" />
+                <input type="number" placeholder="0" className={styles.inputes} value={amount} onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       calcTotal();
@@ -198,26 +194,26 @@ const WithdrawFunds = () => {
                   }} onInput={handleAmountChange}
                   min="0"
                   />
-                <span style={styles.egpText}>EGP</span>
+                <span className={styles.egpText}>EGP</span>
               </div>
             </div>
 
             {/* Total */}
-            <div style={styles.inputWrapper}>
-              <label style={styles.label}>Total</label>
-              <div style={styles.inputWithIcon}>
-                <img style={styles.icon} src={toteld} alt="Total Icon" />
-                <input type="text" placeholder="0" style={styles.inputes} value={total} disabled/>
-                <span style={styles.egpText}>EGP</span>
+            <div className={styles.inputWrapper}>
+              <label className={styles.label}>Total</label>
+              <div className={styles.inputWithIcon}>
+                <img className={styles.icon} src={toteld} alt="Total Icon" />
+                <input type="text" placeholder="0" className={styles.inputes} value={total} disabled/>
+                <span className={styles.egpText}>EGP</span>
               </div>
             </div>
 
             {/* Buttons */}
-            <div style={styles.buttonContainer}>
-              <button type="submit" style={styles.upgradeButton}>
+            <div className={styles.buttonContainer}>
+              <button type="submit" className={styles.upgradeButton}>
                 Send
               </button>
-              <button type="button" style={styles.cancelButton}>
+              <button type="button" className={styles.cancelButton}>
                 Cancel
               </button>
             </div>
@@ -226,27 +222,27 @@ const WithdrawFunds = () => {
       
 
       {isModalOpen && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modal}>
-            <h2 style={styles.modalTitle}>Add Withdraw Account</h2>
-            <p style={styles.modalSubtitle}>
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2 className={styles.modalTitle}>Add Withdraw Account</h2>
+            <p className={styles.modalSubtitle}>
               The Selected Method has the following fields
             </p>
-            <div style={styles.modalInputWrapper}>
+            <div className={styles.modalInputWrapper}>
               {selectedMethod.withdrawFields.map((field) => (
                 <div key={field.id}>
-                  <label style={styles.modalLabel}>{field.name[locale]}</label>
-                  <div style={styles.inputWithIcon}>
-                  <input type={field.type} placeholder={field.name['en']} style={styles.input} {...registerModal(field.name['en'])}/>
+                  <label className={styles.modalLabel}>{field.name[locale]}</label>
+                  <div className={styles.inputWithIcon}>
+                  <input type={field.type} placeholder={field.name['en']} className={styles.input} {...registerModal(field.name['en'])}/>
                   </div>
               </div>
             ))}
             </div>
-            <div style={styles.modalButtonContainer}>
-              <button style={styles.upgradeButton} onClick={handleSubmitModal(onSubmitModal)}>
+            <div className={styles.modalButtonContainer}>
+              <button className={styles.upgradeButton} onClick={handleSubmitModal(onSubmitModal)}>
                 send
               </button>
-              <button style={styles.cancelButton} onClick={closeModal}>
+              <button className={styles.cancelButton} onClick={closeModal}>
                 Cancel
               </button>
             </div>
@@ -255,223 +251,6 @@ const WithdrawFunds = () => {
       )}
     </DashboardLayout>
   );
-};
-
-const styles = {
-  headerText: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    color: "#808892",
-    textAlign: "center",
-    margin: "0 auto",
-  },
-  orderInput :{
-    width: "100%",
-    padding: "10px",
-    marginTop: "5px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    backgroundColor: "#fff",
-    transition: "border-color 0.3s ease",
-    fontSize: "0.7em",
-  },
-  input: {
-    border: "none",
-    outline: "none",
-    fontSize: "85%",
-    color: "#555",
-    backgroundColor:"unset"
-  },
-  inputes: {
-    border: "none",
-    outline: "none",
-    fontSize: "85%",
-    color: "#555",
-    width: "90%",
-  },
-  card: {
-    width: "100%",
-    maxWidth: "792px",
-    backgroundColor: "#fff",
-    borderRadius: "15px",
-    padding: "20px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
-    margin: "20px auto",
-  },
-  logoTitle: {
-    width: "73px",
-    margin: "10px auto",
-  },
-  inputWrapper: {
-    marginBottom: "15px",
-    width: "100%",
-  },
-  label: {
-    display: "block",
-    marginBottom: "5px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    marginRight:"632px",
-    color:"#DFBC8A"
-  },
-  inputWithIcon: {
-    display: "flex",
-    alignItems: "center",
-    border: "1px solid #ddd",
-    borderRadius: "5px",
-    padding: "10px",
-    width: "100%",
-    position: "relative",
-    flexDirection: "row",
-  },
-  egpText: {
-    position: "absolute",
-    right: "10px",
-    fontSize: "14px",
-    color: "#555",
-  },
-  methodIcon: {
-    width: "30px",
-    height: "30px",
-    marginRight: "10px",
-  },
-  icon: {
-    width: "20px",
-    height: "20px",
-    marginRight: "10px",
-  },
-  select: {
-    flex: 1,
-    border: "none",
-    outline: "none",
-    fontSize: "16px",
-    color: "#555",
-    appearance: "none",
-    backgroundColor: "transparent",
-  },
-  dropdownIcon: {
-    fontSize: "20px",
-    color: "#888",
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "20px",
-    flexDirection: "row",
-  },
-  upgradeButton: {
-    flex: 1,
-    backgroundColor: "#DFBC8A",
-    color: "#fff",
-    padding: "10px",
-    borderRadius: "5px",
-    border: "none",
-    fontSize: "16px",
-    cursor: "pointer",
-    marginRight: "10px",
-    transition: "background-color 0.3s ease",
-    ':hover': {
-      backgroundColor: "#cfa06a",
-    },
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    color: "#333",
-    padding: "10px",
-    borderRadius: "5px",
-    border: "none",
-    fontSize: "16px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-    ':hover': {
-      backgroundColor: "#bbb",
-    },
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    width: "400px",
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    padding: "20px",
-    textAlign: "center",
-  },
-  modalTitle: {
-    fontSize: "20px",
-    marginBottom: "10px",
-    color:"#808892"
-  },
-  modalSubtitle: {
-    fontSize: "14px",
-    marginBottom: "20px",
-    color: "#808892",
-  },
-  modalInputWrapper: {
-    display: "flex"
-    ,
-        alignItems: "center",
-        border: "1px solid rgb(221, 221, 221)",
-        borderRadius: "5px",
-        padding: "10px"
-  },
-  modalLabel: {
-    display: "block",
-    marginBottom: "5px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    color:"#808892"
-  },
-  modalButtonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  '@media (max-width: 768px)': {
-    card: {
-      padding: "15px",
-    },
-    inputWithIcon: {
-      flexDirection: "column",
-      alignItems: "flex-start",
-    },
-    buttonContainer: {
-      flexDirection: "column",
-    },
-    egpText: {
-      position: "static",
-      marginTop: "5px",
-    },
-    upgradeButton: {
-      marginRight: "0",
-      marginBottom: "10px",
-    },
-  },
-  '@media (max-width: 480px)': {
-    card: {
-      padding: "10px",
-    },
-    inputWithIcon: {
-      padding: "5px",
-    },
-    upgradeButton: {
-      fontSize: "14px",
-      padding: "8px",
-    },
-    cancelButton: {
-      fontSize: "14px",
-      padding: "8px",
-    },
-  },
 };
 
 export default WithdrawFunds;

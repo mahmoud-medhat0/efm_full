@@ -1,93 +1,240 @@
+.headerText {
+  font-size: 20px;
+  font-weight: bold;
+  color: #808892;
+  text-align: center;
+  margin: 0 auto;
+}
 
-  @media (max-width: 768px) {
-    .withdrawContainer {
-      padding: 15px;
-      font-size: 4vw;
-    }
-  
-    .headerSection {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .addWithdrawButton {
-      width: 100%;
-      margin-top: 10px;
-    }
-  
-    .buttonsContainer {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .upgradeButton, .cancelButton {
-      width: 100%;
-    }
-  
-    .paymentLogos {
-      gap: 10px;
-    }
-  
-    .formTitle {
-      font-size: 3.5vw;
-    }
+.orderInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+  font-size: 0.7em;
+}
+
+.input {
+  border: none;
+  outline: none;
+  font-size: 85%;
+  color: #555;
+  background-color: unset;
+}
+
+.inputes {
+  border: none;
+  outline: none;
+  font-size: 85%;
+  color: #555;
+  width: 90%;
+}
+
+.card {
+  width: 100%;
+  max-width: 792px;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px auto;
+}
+
+.logoTitle {
+  width: 73px;
+  margin: 10px auto;
+}
+
+.inputWrapper {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #DFBC8A;
+}
+
+.inputWithIcon {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  position: relative;
+  flex-direction: row;
+}
+
+.egpText {
+  position: absolute;
+  right: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.methodIcon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.select {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #555;
+  appearance: none;
+  background-color: transparent;
+}
+
+.dropdownIcon {
+  font-size: 20px;
+  color: #888;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-direction: row;
+}
+
+.upgradeButton {
+  flex: 1;
+  background-color: #DFBC8A;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.upgradeButton:hover {
+  background-color: #cfa06a;
+}
+
+.cancelButton {
+  flex: 1;
+  background-color: #ddd;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #bbb;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.modalTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #808892;
+}
+
+.modalSubtitle {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #808892;
+}
+
+.modalInputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.modalLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #808892;
+}
+
+.modalButtonContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 15px;
   }
-  
-  @media (max-width: 480px) {
-    .withdrawContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 15px;
-        margin-top: 0;
-    }
-
-    .withdrawFormContainer {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .headerSection, .buttonsContainer {
-        width: 100%;
-        align-items: center;
-    }
-
-    .addWithdrawButton, .upgradeButton, .cancelButton {
-        width: 100%;
-    }
-
-    .paymentLogos {
-        justify-content: center;
-    }
-
-    .formTitle {
-        text-align: center;
-        font-size: 1.3em;
-        margin-right: 200px;
-    }
-
-    .phoneNumberLabel {
-        white-space: nowrap;
-    }
+  .inputWithIcon {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .iconInsideInput {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    pointer-events: none;
+  .buttonContainer {
+    flex-direction: column;
   }
+  .egpText {
+    position: static;
+    margin-top: 5px;
+  }
+  .upgradeButton {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
 
-  .upgradeButton, .cancelButton {
-    transition: background-color 0.3s ease;
+@media (max-width: 480px) {
+  .card {
+    padding: 10px;
   }
-
-  .upgradeButton:hover {
-    background-color: #cfa06a;
+  .inputWithIcon {
+    padding: 5px;
   }
-
-  .cancelButton:hover {
-    background-color: #bbb;
+  .upgradeButton {
+    font-size: 14px;
+    padding: 8px;
   }
+  .cancelButton {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
