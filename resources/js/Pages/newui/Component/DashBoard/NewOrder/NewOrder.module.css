@@ -1,8 +1,7 @@
 /* الحاوية الرئيسية */
 .newOrderContainer {
-    width: 495px;
-    
-    height: 631px;
+    width: auto;
+    height: auto;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -150,6 +149,30 @@
     }
   }
   
+  @media (min-width: 481px) and (max-width: 768px) {
+    .newOrderTitle {
+      font-size: 1.4rem;
+    }
+  
+    .priceValue {
+      font-size: 1.5rem;
+    }
+  
+    .orderLabel {
+      font-size: 0.9rem;
+    }
+  
+    .orderInput {
+      padding: 10px;
+    }
+  
+    .upgradeButton,
+    .cancelButton {
+      font-size: 15px;
+      padding: 12px;
+    }
+  }
+  
   @media (max-width: 480px) {
     .newOrderTitle {
       font-size: 20px;
@@ -232,4 +255,5 @@
     background: #f5f5f5;
     color: #333;
   }
+  
   

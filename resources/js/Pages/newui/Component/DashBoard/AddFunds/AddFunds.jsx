@@ -217,7 +217,7 @@ const AddFunds = () => {
         <DashboardLayout>
              <h1 style={styles.title}>Add Funds</h1>
             <div style={styles.container}>
-                <div  style={{width: "792px",height: "auto",backgroundColor:"#fff",
+                <div  style={{width: "auto",height: "auto",backgroundColor:"#fff",
                     borderRadius: "15px",
                     padding:"20px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -342,6 +342,7 @@ const AddFunds = () => {
                                         placeholder="0"
                                         style={styles.inputSmall}
                                         value={vat}
+                                        disabled
                                     />
                                     <span style={styles.currency}>EGP</span>
                                 </div>
@@ -581,6 +582,7 @@ const styles = {
         border: "none",
         outline: "none",
         fontSize: "16px",
+        width: "10%",
         textAlign: "left",
         color: "#555",
         backgroundColor: "transparent",

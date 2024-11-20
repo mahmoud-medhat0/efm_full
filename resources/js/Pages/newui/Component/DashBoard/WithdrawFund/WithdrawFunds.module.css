@@ -205,10 +205,6 @@
   .card {
     padding: 15px;
   }
-  .inputWithIcon {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   .buttonContainer {
     flex-direction: column;
   }
