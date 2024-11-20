@@ -18,6 +18,7 @@ function Homes() {
       <div className="card-container">
         <div className="balance-card">
           <p className="card-title">Current Balance</p>
+          <p className="card-title">Your Membership: {client.membership?.name ?? "Free"}</p>
           <h1 className="card-amount">{client.balance} EGP</h1>
           <div className="card-footer">
             <span className="card-id">ID : {client.id}</span>
