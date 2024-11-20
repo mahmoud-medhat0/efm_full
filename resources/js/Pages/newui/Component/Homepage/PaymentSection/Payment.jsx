@@ -5,13 +5,21 @@ import instpay from '../../../photo/انستباي.svg'
  import bank from '../../../photo/banx.svg'
  import vodefone from '../../../photo/vodefone.svg'
  import orange from '../../../photo/orange.svg'
-
+import { useEffect } from 'react';
 
 import we from '../../../photo/we pay.svg'
 
 const Payment = () => {
+    useEffect(() => {
+        if (window.location.hash === '#offers') {
+          const aboutSection = document.getElementById('offers');
+          if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }, []);
   return (
-    <div className="offers-section">
+    <div className="offers-section" id="offers">
     <div className="offers-header">
         <h2>OFFERS</h2>
     </div>

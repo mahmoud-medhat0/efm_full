@@ -66,28 +66,71 @@ const Homepage = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        {[Hero, AboutUs, Profile, Membership, Payment, Faq].map((SectionComponent, index) => {
-          const controls = useAnimation();
-          animationControls.current[index] = controls;
+        <motion.div
+          ref={(el) => (sectionRefs.current[0] = el)}
+          initial="visible"
+          animate={animationControls.current[0]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <Hero />
+        </motion.div>
 
-          useEffect(() => {
-            controls.start("hidden");
-          }, [controls]);
+        <motion.div
+          ref={(el) => (sectionRefs.current[1] = el)}
+          initial="visible"
+          animate={animationControls.current[1]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <AboutUs />
+        </motion.div>
 
-          return (
-            <motion.div
-              key={index}
-              ref={(el) => (sectionRefs.current[index] = el)}
-              initial="visible"
-              animate={controls}
-              variants={sectionVariants}
-              transition={{ duration: 0.3 }}
-              style={styles.section}
-            >
-              <SectionComponent />
-            </motion.div>
-          );
-        })}
+        <motion.div
+          ref={(el) => (sectionRefs.current[2] = el)}
+          initial="visible"
+          animate={animationControls.current[2]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <Profile />
+        </motion.div>
+
+        <motion.div
+          ref={(el) => (sectionRefs.current[3] = el)}
+          initial="visible"
+          animate={animationControls.current[3]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <Membership />
+        </motion.div>
+
+        <motion.div
+          ref={(el) => (sectionRefs.current[4] = el)}
+          initial="visible"
+          animate={animationControls.current[4]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <Payment />
+        </motion.div>
+
+        <motion.div
+          ref={(el) => (sectionRefs.current[5] = el)}
+          initial="visible"
+          animate={animationControls.current[5]}
+          variants={sectionVariants}
+          transition={{ duration: 0.3 }}
+          style={styles.section}
+        >
+          <Faq />
+        </motion.div>
       </motion.div>
     </Layout>
   );

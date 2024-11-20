@@ -1,7 +1,15 @@
 import './Membership.css';
 import characterImage from '../../../photo/photo4.svg';
-
+import { useEffect } from 'react';
 const Membership = () => {
+    useEffect(() => {
+        if (window.location.hash === '#membership') {
+          const aboutSection = document.getElementById('membership');
+          if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }, []);
   return (
  
 <>

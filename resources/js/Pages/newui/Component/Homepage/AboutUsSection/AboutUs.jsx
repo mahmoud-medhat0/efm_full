@@ -3,7 +3,18 @@ import loggggo from "../../../photo/logo2.svg";
 import photo3 from "../../../photo/photo3.svg";
 import logoo333 from "../../../photo/logo3.svg";
 import icon from "../../../photo/Icon.svg";
+import { useEffect } from 'react';
+
 const Aboutus = () => {
+  useEffect(() => {
+    if (window.location.hash === '#about') {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
   return (
     <>
     <div className="bg-[#f9f9f9]" id="about">

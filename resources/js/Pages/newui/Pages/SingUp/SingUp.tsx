@@ -18,6 +18,7 @@ import { AxiosError } from 'axios';
 import { IErrorResponse } from "../../../../interfaces";
 import { Link } from "@inertiajs/inertia-react";
 import { usePage } from "@inertiajs/inertia-react";
+import { Inertia } from '@inertiajs/inertia';
 const SingUp = () => {
     const { register, handleSubmit } = useForm();
     const [showPassword, setShowPassword] = useState(false);

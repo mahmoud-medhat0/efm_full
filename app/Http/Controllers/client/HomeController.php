@@ -81,6 +81,7 @@ class HomeController extends Controller
                 });
             }])
             ->orderByDesc('referrals_count')
+            ->take(50)
             ->get();
         $referralsLast24HoursTop100 = Client::select('name')
             ->whereHas('subscriptionMemberships', function ($query) {
@@ -106,6 +107,7 @@ class HomeController extends Controller
                 });
             }])
             ->orderBy('referrals_count', 'desc')
+            ->take(50)
             ->get();
         $referralsLast7DaysTop100 = Client::select('name')
             ->whereHas('subscriptionMemberships', function ($query) {
@@ -143,7 +145,7 @@ class HomeController extends Controller
                 });
             }])
             ->orderBy('referrals_count', 'desc')
-            ->take(100)
+            ->take(50)
             ->get();
         $referralsTop100 = Client::select('name')
             ->whereHas('subscriptionMemberships', function ($query) {
