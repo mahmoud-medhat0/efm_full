@@ -185,7 +185,7 @@ class DashboardContrtoller extends Controller
             ]);
             PushDepositNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
             $message = 'New Deposit Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
-            SendMessageNotificationBot::dispatch($message)->onQueue('default');
+            SendMessageNotificationBot::dispatch($message)->onQueue('default')->uniqueFor(now()->addMinutes(10));
             return response()->json(['success' => true, 'message' => 'Deposit successful', 'tnx' => $tnx]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
@@ -285,7 +285,7 @@ class DashboardContrtoller extends Controller
         auth()->user()->update(['balance' => auth()->user()->balance - $request->amount]);
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
         $message = 'New Withdraw Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
-        SendMessageNotificationBot::dispatch($message)->onQueue('default');
+        SendMessageNotificationBot::dispatch($message)->onQueue('default')->uniqueFor(now()->addMinutes(10));
         return response()->json(['success' => true, 'message' => 'Withdraw successful', 'tnx' => $tnx]);
     }
     //Tasks methods
@@ -516,8 +516,8 @@ class DashboardContrtoller extends Controller
                 ]);
                     PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
                     $message = 'New Membership Upgrade from ' . auth()->user()->name .' To ' . $plan->name;
-                    SendMessageNotificationBot::dispatch($message)->onQueue('default');
-                    MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
+                    SendMessageNotificationBot::dispatch($message)->onQueue('default')->uniqueFor(now()->addMinutes(10));
+                    MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default')->uniqueFor(now()->addMinutes(10));
                 }catch(\Exception $e){
                     DB::rollBack();
                     \Log::error($e->getMessage());
