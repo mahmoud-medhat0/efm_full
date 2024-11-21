@@ -17,25 +17,17 @@ class SendMessageNotificationBot implements ShouldQueue
      * The message to be sent.
      */
     public string $message;
-
-    /**
-     * List of chat IDs to send messages to.
-     */
-    protected array $chatIds = [
-        '948449142',
-        '7812601988',
-        '5864049778',
-        '6461632565',
-    ];
+    public string $chatId;
 
     /**
      * Create a new job instance.
      *
      * @param string $message
      */
-    public function __construct(string $message)
+    public function __construct(string $message, string $chatId)
     {
         $this->message = $message;
+        $this->chatId = $chatId;
     }
 
     /**
@@ -47,9 +39,7 @@ class SendMessageNotificationBot implements ShouldQueue
         $telegram = new Api('7747906094:AAHXfHL9YgIx-vA6s5z-w6l8SKFzq6aubtw');
 
         // Send the message to each unique chat ID
-        foreach (array_unique($this->chatIds) as $chatId) {
-            $this->sendMessage($telegram, $chatId, $this->message);
-        }
+        $this->sendMessage($telegram, $this->chatId, $this->message);
     }
 
     /**
