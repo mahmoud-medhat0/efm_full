@@ -52,6 +52,7 @@ const AddFunds = () => {
                 }
             });
         }
+        calcTotal();
     };
 
     const handleAttachmentChange = (file, fieldName) => {
@@ -79,6 +80,7 @@ const AddFunds = () => {
         });
     };
     const calcTotal = () => {
+        if(selectedMethod){
         if (amount > 0) {
             let charge = 0;
 
@@ -104,6 +106,9 @@ const AddFunds = () => {
             setTotal(calculatedTotal > 0 ? calculatedTotal : 0);
         } else {
             setTotal(0);
+        }
+        }else{
+            toast.error("Please select a Deposit method");
         }
     };
     const copyToClipboard = () => {

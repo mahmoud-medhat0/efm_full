@@ -52,6 +52,7 @@ const WithdrawFunds = () => {
         });
         openModal();
       }
+      calcTotal();
     };
 
     const formatOptionLabel = ({ name, logo }) => (
@@ -128,6 +129,7 @@ const WithdrawFunds = () => {
     }, [amount]);
 
     const calcTotal = () => {
+        if(selectedMethod){
         if (amount > 0) {
             let charge = 0;
             // Calculate the charge based on the type
@@ -144,6 +146,9 @@ const WithdrawFunds = () => {
             setTotal(calculatedTotal > 0 ? calculatedTotal : 0);
         } else {
             setTotal(0);
+        }
+        }else{
+            toast.error("Please select a Withdraw method");
         }
     };
   return (
