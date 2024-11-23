@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
-use App\Nova\Actions\RoiSubscriptionAction;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Nova\Filters\SubscriptionMembership\ClientFilter;
 use App\Nova\Filters\SubscriptionMembership\StatusFilter;
@@ -136,8 +135,6 @@ class SubscriptionMembership extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            new RoiSubscriptionAction,
-        ];
+        return [];
     }
 }

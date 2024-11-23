@@ -2,10 +2,13 @@
 
 namespace App\Nova;
 
+use App\Models\Transaction;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use App\Models\RoiSubscription as RoiSubscriptionModel;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use App\Models\SubscriptionMembership;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class RoiSubscription extends Resource
@@ -45,13 +48,39 @@ class RoiSubscription extends Resource
             ID::make()->sortable(),
             Select::make('Patch')
                 ->options([
-                    'firstHalf' => 'First Half (1-14)',
-                    'secondHalf' => 'Second Half (15-30)',
+                    'firstHalf' => 'First Half (15-30)',
+                    'secondHalf' => 'Second Half (1-14)',
                 ]),
-            Number::make('Percent'),
+            Number::make('Percent')->step(0.01),
         ];
     }
-
+    public static function afterCreate(NovaRequest $request, $model)
+    {
+        $patch = $request->patch;
+        $percent = $request->percent;
+        RoiSubscriptionModel::create([
+            'patch' => $patch,
+            'percent' => $percent,
+        ]);
+        $subscriptions = SubscriptionMembership::{$patch}()->get();
+        foreach ($subscriptions as $subscription) {
+            $amount = $subscription->membership->price;
+            $roi = $amount * $percent / 100;
+            Transaction::create([
+                'client_id' => $subscription->client_id,
+                'amount' => $roi,
+                'fee' => 0,
+                'total' => $roi,
+                'type' => 'roi',
+                'tnx_type' => 'add',
+                'tnx' => 'Roi'. uniqid(),
+                'description' => 'ROI for ' . $subscription->membership->name,
+                'status' => 'success',
+            ]);
+            $subscription->client->balance += $roi;
+            $subscription->client->save();
+        }
+    }
     /**
      * Get the cards available for the request.
      *
