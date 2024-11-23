@@ -44,7 +44,7 @@ class TypeFilter extends Filter
             'Fee' => 'fee',
             'Refund' => 'refund',
             'Bonus' => 'bonus',
-            'Interest' => 'interest',
+            'Roi' => 'roi',
         ];
     }
 }

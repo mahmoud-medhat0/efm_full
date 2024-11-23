@@ -10,6 +10,7 @@ use App\Nova\Order;
 use App\Nova\Client;
 use App\Nova\Ticket;
 use App\Nova\Service;
+use App\Nova\Currency;
 use App\Nova\Feedback;
 use App\Nova\Gateways;
 use Laravel\Nova\Nova;
@@ -26,6 +27,7 @@ use App\Nova\RejectionCause;
 use App\Nova\TicketCategory;
 use App\Nova\ReferralSection;
 use App\Nova\ReferralSetting;
+use App\Nova\RoiSubscription;
 use App\Nova\TicketCategrory;
 use App\Nova\WithdrawAccount;
 use App\Nova\AdvertiseSection;
@@ -39,7 +41,7 @@ use Laravel\Nova\Menu\MenuSection;
 use App\Nova\SubscriptionMembership;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use App\Nova\Currency;
+
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -85,6 +87,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(AgentRequest::class),
                     MenuItem::resource(Membershib::class),
                     MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
+                    MenuItem::resource(RoiSubscription::class)->name('Roi Subscriptions'),
                     MenuItem::resource(ReferralSetting::class),
                     MenuItem::resource(RegistrationOffer::class),
                     MenuItem::resource(WithdrawAccountField::class),

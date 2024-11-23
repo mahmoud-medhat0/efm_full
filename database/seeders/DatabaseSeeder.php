@@ -23,9 +23,10 @@ class DatabaseSeeder extends Seeder
             // AgentRequestPermission::class,
             // NotificationPermissionSeeder::class,
             // WithdrawAccountFieldPermission::class,
-            TicketPermission::class,
-            PermissionTicketMessage::class,
-            CurrencySeederPermission::class,
+            // TicketPermission::class,
+            // PermissionTicketMessage::class,
+            // CurrencySeederPermission::class,
+            RoiSubscriptionPremission::class,
         ]);
     }
 }

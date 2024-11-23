@@ -185,7 +185,7 @@ class DashboardContrtoller extends Controller
                 'status' => 'pending',
             ]);
             PushDepositNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
-            $message = 'New Deposit Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
+            $message = 'New Deposit Request from ' . auth()->user()->name .' ('.auth()->user()->username.')'.' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
             SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
             SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
             SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
@@ -288,7 +288,7 @@ class DashboardContrtoller extends Controller
         ]);
         auth()->user()->update(['balance' => auth()->user()->balance - $request->amount]);
         PushWithdrawlNotification::dispatch(auth()->user(),$transaction)->onQueue('default');
-        $message = 'New Withdraw Request from ' . auth()->user()->name .' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
+        $message = 'New Withdraw Request from ' . auth()->user()->name .' ('.auth()->user()->username.')'.' With Gateway: '. $transaction->gateway->name . ' for ' . $transaction->amount . ' EGP';
         SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
         SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
         SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
@@ -521,7 +521,7 @@ class DashboardContrtoller extends Controller
                     'is_lifetime' => $plan->subscriptionMemberships,
                 ]);
                     PushMembershipNotification::dispatch(auth()->user(),$subscription->id)->onQueue('default');
-                    $message = 'New Membership Upgrade from ' . auth()->user()->name .' To ' . $plan->name;
+                    $message = 'New Membership Upgrade from ' . auth()->user()->name .' ('.auth()->user()->username.')'.' To ' . $plan->name;
                     SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
                     SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
                     SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');

@@ -78,8 +78,11 @@ class Transaction extends Resource
                 'subtract' => 'Subtract',
                 'referral' => 'Referral',
                 'membership' => 'Membership',
-                'bonus' => 'Bonus'
-            ])->sortable(),
+                'bonus' => 'Bonus',
+                'roi' => 'Roi',
+            ])->sortable()->displayUsing(function ($value) {
+                return ucfirst($value);
+            }),
             Select::make('Status')->options([
                 'pending' => 'Pending',
                 'success' => 'Success',

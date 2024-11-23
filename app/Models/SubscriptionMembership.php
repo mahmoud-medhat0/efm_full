@@ -5,12 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Activity; 
+use Spatie\Activitylog\LogOptions;
 class SubscriptionMembership extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
     protected $guarded = [];
     protected $casts = ['start_date'=>'datetime','end_date'=>'datetime'];
     protected $appends = ['remaining_days','start_date_human','end_date_human','is_lifetime_human'];
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()->logOnlyDirty();
+    }
+    public function activityLogs()
+    {
+        return $this->morphMany(Activity::class,'subject');
+    }
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -37,5 +48,14 @@ class SubscriptionMembership extends Model
             return 'Lifetime';
         }
         return Carbon::parse($this->end_date)->diffInDays(Carbon::now());
+    }
+    public function scopeFirstHalf($query)
+    {
+        return $query->whereRaw('DAY(created_at) <= 14');
+    }
+
+    public function scopeSecondHalf($query)
+    {
+        return $query->whereRaw('DAY(created_at) > 14');
     }
 }
