@@ -78,6 +78,7 @@ class Transaction extends Resource
                 'subtract' => 'Subtract',
                 'referral' => 'Referral',
                 'membership' => 'Membership',
+                'bonus' => 'Bonus'
             ])->sortable(),
             Select::make('Status')->options([
                 'pending' => 'Pending',

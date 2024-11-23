@@ -32,6 +32,7 @@ use App\Models\WithdrawAccountField;
 use Endroid\QrCode\Writer\PngWriter;
 use App\Jobs\PushDepositNotification;
 use App\Models\SubscriptionMembership;
+use App\Rules\ValidUserViaUSerOrEmail;
 use App\Jobs\PushWithdrawlNotification;
 use App\Jobs\PushMembershipNotification;
 use App\Jobs\SendMessageNotificationBot;
@@ -459,7 +460,6 @@ class DashboardContrtoller extends Controller
         $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
         $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
         $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
-
         if (auth()->user()->balance < $planPrice) {
             return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
         }
@@ -572,5 +572,44 @@ class DashboardContrtoller extends Controller
         return Inertia::render('newui/Component/DashBoard/Currencies/Currencies.jsx',[
             'currencies' => $currencies,
         ]);
+    }
+    public function transferMoney(){
+        return Inertia::render('newui/Component/DashBoard/TransferMoneyPage/TransferMoneyPage.jsx');
+    }
+    public function transferMoneyPost(Request $request){
+        $rules = [
+            'client' => ['required', new ValidUserViaUSerOrEmail],
+            'amount' => ['required', 'numeric', 'min:1', 'max:' . auth()->user()->balance],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+        $client = Client::where('username', $request->client)->orWhere('email', $request->client)->first();
+        Transaction::create([
+            'amount' => $request->amount,
+            'fee' => 0,
+            'total' => $request->amount,
+            'tnx_type' => 'sub',
+            'tnx' => 'TRF' . time(),
+            'type' => 'transfer',
+            'description' => 'Transfer to ' . $client->name,
+            'client_id' => auth()->user()->id,
+            'status' => 'success',
+        ]);
+        auth()->user()->update(['balance' => auth()->user()->balance - $request->amount]);
+        Transaction::create([
+            'amount' => $request->amount,
+            'fee' => 0,
+            'total' => $request->amount,
+            'tnx_type' => 'add',
+            'tnx' => 'TRF' . time(),
+            'type' => 'transfer',
+            'description' => 'Transfer from ' . auth()->user()->name,
+            'client_id' => $client->id,
+            'status' => 'success',
+        ]);
+        $client->update(['balance' => $client->balance + $request->amount]);
+        return response()->json(['success' => true, 'message' => 'Transfer successful']);
     }
 }

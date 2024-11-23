@@ -82,6 +82,8 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
                 Route::post('withdraw', 'withdrawPost')->name('withdraw.post');
                 Route::post('withdraw-account', 'withdrawAccount')->name('withdraw-account');
             });
+            Route::get('transfer-money', 'transferMoney')->name('transfer-money');
+            Route::post('transfer-money', 'transferMoneyPost')->name('transfer-money.post');
             Route::get('2fa', 'twoFa')->name('2fa');
             Route::get('banners', 'banners')->name('banners');
         });
