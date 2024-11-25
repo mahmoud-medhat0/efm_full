@@ -55,16 +55,6 @@ const WithdrawFunds = () => {
       calcTotal();
     };
 
-    const formatOptionLabel = ({ name, logo }) => (
-        <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-                src={app_url + "/storage/" + logo}
-                alt=""
-                style={{ width: "30px", height: "20px", marginRight: "10px" }}
-            />
-            {name}
-        </div>
-    );
     const {
         register: registerModal,
         handleSubmit: handleSubmitModal,
@@ -81,7 +71,7 @@ const WithdrawFunds = () => {
                     duration: 2000,
                 });
                 closeModal();
-                setIsLoading(false);
+                (false);
                 Inertia.visit(route('client.dashboard.withdraw'));
             } else if (response.data.success === false) {
                 if (response.data.errors) {
@@ -151,6 +141,52 @@ const WithdrawFunds = () => {
             toast.error("Please select a Withdraw method");
         }
     };
+    const onSubmit = async (e) => {
+      e.preventDefault();
+      try{
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if(!selectedMethod){
+          toast.error('Please select a withdrawal method');
+          return;
+        }
+        if(amount<=0){
+          toast.error('Please enter an amount');
+          return;
+        }
+        const formData = new FormData();
+        formData.append('selectedMethod', selectedMethodOption.value);
+        formData.append('amount', amount);
+        formData.append('account_id', selectedMethod.withdrawAccounts[0].id);
+        const config = {
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+  
+        const response = await axios.post(route('client.dashboard.withdraw.post'), formData, config);
+        if(response.data.success){
+          toast.success(response.data.message + ' with transaction id: ' + response.data.tnx);
+          setTimeout(() => {
+            Inertia.visit(route('client.dashboard'));
+        }, 1000);
+        }else{
+          Object.keys(response.data.errors).forEach((key) => {
+            response.data.errors[key].forEach((errorMsg) => {
+                toast.error(errorMsg, {
+                    position: "bottom-center",
+                    duration: 2000,
+                });
+            });
+        });
+  
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      } finally {
+        (false);
+      }
+    };
   return (
     <DashboardLayout>
       <h2 className={styles.headerText}>Withdraw Funds</h2>
@@ -170,7 +206,7 @@ const WithdrawFunds = () => {
                       </div>
             ))
           )}
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={onSubmit}>
             <div className={styles.inputWrapper}>
               <label className={styles.label}>Method</label>
               <div className={`${styles.block}`}>

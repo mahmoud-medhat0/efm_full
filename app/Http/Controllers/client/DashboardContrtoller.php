@@ -256,7 +256,7 @@ class DashboardContrtoller extends Controller
         $rules = [
             'selectedMethod' => ['required', 'exists:gateways,id'],
             'account_id' => ['required', 'exists:withdraw_accounts,id', new WithdrawAccountBelongsToAuthClient],
-            'amount' => ['required', 'numeric', 'min:' . Gateways::find($request->selectedMethod)->min_withdraw, 'max:' . Gateways::find($request->selectedMethod)->max_withdraw . '|max:' . auth()->user()->balance],
+            'amount' => ['required', 'numeric', 'min:' . Gateways::find($request->selectedMethod)->min_withdraw, 'max:' . min(Gateways::find($request->selectedMethod)->max_withdraw, auth()->user()->balance)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -264,7 +264,7 @@ class DashboardContrtoller extends Controller
         }
         $gateway = Gateways::find($request->selectedMethod);
         $rules = [
-            'amount' => ['required', 'numeric', 'min:' . $gateway->min_withdraw, 'max:' . $gateway->max_withdraw . '|max:' . auth()->user()->balance],
+            'amount' => ['required', 'numeric', 'min:' . $gateway->min_withdraw, 'max:' . min($gateway->max_withdraw, auth()->user()->balance)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
