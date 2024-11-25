@@ -31,8 +31,6 @@ class SetStatusSuccess extends Action
                 }
                 if($model->tnx_type == 'add'){
                     $model->client->update(['balance' => $model->client->balance + $model->amount]);
-                }elseif($model->tnx_type == 'sub'){
-                    $model->client->update(['balance' => $model->client->balance - $model->amount]);
                 }
             }
         }
