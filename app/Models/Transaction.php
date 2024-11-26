@@ -27,7 +27,7 @@ class Transaction extends Model
     }
     public function getRejectionCauseAttribute()
     {
-        return $this->rejectionCause ? $this->rejectionCause : null;
+        return $this->rejectionCause();
     }
     public function activityLogs()
     {
