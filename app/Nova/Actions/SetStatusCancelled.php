@@ -24,7 +24,12 @@ class SetStatusCancelled extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $model->update(['status' => 'cancelled']);
+            if($model->status != 'cancelled'){
+                $model->update(['status' => 'cancelled']);
+            }
+            if($model->tnx_type == 'sub' && $model->status == 'cancelled'){
+                $model->client->update(['balance' => $model->client->balance + $model->amount]);
+            }
             if($model->agentRequest){
                 $model->agentRequest->update(['status' => 'cancelled']);
             }

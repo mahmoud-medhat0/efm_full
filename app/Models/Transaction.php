@@ -15,11 +15,15 @@ class Transaction extends Model
     protected $casts = [
         'created_at' => 'datetime',
     ];
-    protected $appends = ['created_at_human'];
+    protected $appends = ['created_at_human','rejectionCause'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()->logOnlyDirty();
+    }
+    public function rejectionCause()
+    {
+        return $this->belongsTo(TransactionRejectionCause::class, 'rejection_cause_id');
     }
     public function activityLogs()
     {

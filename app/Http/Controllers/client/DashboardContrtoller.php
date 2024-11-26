@@ -451,7 +451,7 @@ class DashboardContrtoller extends Controller
     }
     public function upgradeBalance(Request $request)
     {
-        Mail::to(auth()->user()->email)->send(new SubscriptionMail(auth()->user()));
+        // Mail::to(auth()->user()->email)->send(new SubscriptionMail(auth()->user()));
         $rules = [
             'plan' => ['required', 'exists:membershibs,id'],
         ];

@@ -161,6 +161,9 @@ class Transaction extends Resource
             BelongsTo::make('Admin', 'admin', User::class)->displayUsing(function ($admin) {
                 return $admin->name;
             })->sortable()->nullable(),
+            BelongsTo::make('Rejection Cause', 'rejectionCause', TransactionRejectionCause::class)->displayUsing(function ($rejectionCause) {
+                return $rejectionCause->name;
+            })->sortable()->nullable(),
             HasOne::make('Withdraw Account', 'withdrawAccount'),
             MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
         ];

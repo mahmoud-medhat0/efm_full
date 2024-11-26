@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             // TicketPermission::class,
             // PermissionTicketMessage::class,
             // CurrencySeederPermission::class,
-            RoiSubscriptionPremission::class,
+            // RoiSubscriptionPremission::class,
+            TransactionRejectionCausePermission::class,
         ]);
     }
 }

@@ -21,6 +21,7 @@ const Historysection = () => {
             <th className={historystyles.historyTh}>Amount</th>
             <th>Fee</th>  
             <th>Total</th>
+            <th>Rejection Cause</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -36,6 +37,7 @@ const Historysection = () => {
               <td>{item.amount}</td>
               <td>{item.fee}</td>
               <td>{item.total}</td>
+              <td>{item.rejectionCause ? item.rejectionCause.name : 'N/A'}</td>
               <td>
                 <button className={`${historystyles.historyBtn} ${historystyles[item.status.toLowerCase()]}`}>
                   {item.status}
