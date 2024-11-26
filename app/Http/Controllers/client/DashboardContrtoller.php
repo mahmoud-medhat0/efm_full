@@ -21,6 +21,7 @@ use App\Models\Transaction;
 use App\Models\AgentRequest;
 use Illuminate\Http\Request;
 use App\Models\TicketMessage;
+use App\Mail\SubscriptionMail;
 use App\Models\TicketCategory;
 use App\Models\ReferralSetting;
 use App\Models\InterestCategory;
@@ -30,6 +31,7 @@ use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
 use App\Models\WithdrawAccountField;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Mail;
 use App\Jobs\PushDepositNotification;
 use App\Models\SubscriptionMembership;
 use App\Rules\ValidUserViaUSerOrEmail;
@@ -449,6 +451,7 @@ class DashboardContrtoller extends Controller
     }
     public function upgradeBalance(Request $request)
     {
+        Mail::to(auth()->user()->email)->send(new SubscriptionMail(auth()->user()));
         $rules = [
             'plan' => ['required', 'exists:membershibs,id'],
         ];

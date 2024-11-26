@@ -1,0 +1,530 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #000;
+  line-height: 1.6;
+}
+
+.header .top-bar {
+  height: 23px;
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.gold-bar {
+  background-color: #dfbc8a;
+  width: 65%;
+  border-radius: 20px;
+  margin-left: 95px;
+}
+
+.black-bar {
+  width: 21%;
+  background-color: black;
+  border-radius: 20px;
+  margin-left: 17px;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  background-color: #f8f8f8;
+  height: 134px;
+  border-radius: 22px;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-bottom: 30px;
+}
+
+.line1 {
+  margin-left: 10px;
+  margin-bottom: 16px;
+}
+
+.line2 {
+  margin-top: 2px;
+}
+
+.titel3 {
+  margin-left: 6px;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.invoice-title h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.invoice-header span {
+  color: #d3b489;
+  margin-left: 5px;
+}
+
+.highlight-bar {
+  height: 50px;
+  background: #dfbc8a;
+  margin: 20px 0;
+  width: 250px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+}
+
+.welcome-message {
+  direction: rtl;
+  text-align: center;
+  font-size: 21px;
+  margin-bottom: 5px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(209, 205, 205);
+}
+
+.welcome-message span {
+  color: #dfbc8a;
+}
+
+.invoice-details .content-box {
+  background: #f8f8f8;
+  width: 80%;
+  margin-left: 10%;
+  border-radius: 10px;
+}
+
+.invoice-info {
+  direction: rtl;
+  padding: 10px;
+}
+
+.invoice-info p {
+  margin-bottom: 5px;
+}
+
+.invoice-info strong {
+  color: #d3b489;
+}
+
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  list-style-type: disc;
+  padding: 0;
+  margin: 0;
+}
+
+.benefits li {
+  margin-bottom: 10px;
+  width: 30%;
+  text-align: right;
+}
+
+.benefits li span {
+  font-weight: bold;
+  margin-right: -10px;
+}
+
+.benefits li::marker {
+  color: #c69c6d;
+  font-size: 1.8rem;
+}
+
+.card {
+  height: 340px;
+  border-radius: 15px;
+  background-color: #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 15px;
+  width: 52%;
+  margin-left: 24%;
+}
+
+.card-header {
+  background-color: #d3b489;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+}
+
+.card-body {
+  background-image: url('./photo/card.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  background-size: auto;
+  height: calc(100% - 50px);
+  position: relative;
+}
+
+.card-body ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  color: gray;
+  font-size: 20px;
+  border-bottom: 1px solid #cdbfbf;
+}
+
+.card-body ul li:last-child {
+  border-bottom: none;
+}
+
+.card-body p {
+  text-align: center;
+  margin-top: 10px;
+  color: #585353;
+  font-size: 20px;
+}
+
+.card-numbers {
+  display: flex;
+  justify-content: space-between;
+  color: gray;
+  margin: auto;
+  margin-top: 8px;
+  width: 52%;
+}
+
+.card-logo {
+  opacity: 0.2;
+  max-width: 80%;
+}
+
+.note {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 20px;
+  color: gray;
+}
+
+.note span {
+  color: #dfbc8a;
+}
+
+.invoice-details .with-logo {
+  position: relative;
+}
+
+.custom-button {
+  width: 388px;
+  height: 56px;
+  border-radius: 25px;
+  display: flex;
+  overflow: hidden;
+  border: 2px solid #d3b489;
+  margin-top: 80px;
+}
+
+.left-part,
+.right-part {
+  width: 50%;
+  height: 100%;
+}
+
+.left-part {
+  background-color: #fff;
+  font-size: 26px;
+  text-align: center;
+  color: gray;
+}
+
+.right-part {
+  background-color: #d3b489;
+  border-radius: 23px;
+  text-align: center;
+  font-size: 30px;
+  color: white;
+}
+
+.watermark {
+  position: absolute;
+  opacity: 0.2;
+  width: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.footer {
+  background-color: #f5f5f5;
+  padding: 20px 40px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.footer-item {
+  max-width: 30%;
+  margin-left: 28px;
+}
+
+.footer-item img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.footer-item h4 {
+  font-size: 19px;
+  margin-bottom: 10px;
+  margin-left: 9px;
+}
+
+.footer-item p {
+  margin: 13px 13px;
+  line-height: 1.6;
+  color: #808080;
+}
+
+.footer-item img:first-child {
+  width: 50px;
+  height: auto;
+}
+
+.efm-titel {
+  font-family: italic;
+  font-size: 24px;
+  color: #808080;
+}
+
+.footer-copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.footer .bottom-bar {
+  height: 22px;
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.bottom-bargold {
+  width: 23%;
+  background-color: #dfbc8a;
+  border-radius: 20px;
+  margin-left: 27px;
+}
+
+.bottom-barblack {
+  width: 79%;
+  background-color: #000000;
+  border-radius: 20px;
+  margin-left: 23px;
+}
+
+@media (max-width: 768px) {
+  .about-section p {
+    margin-right: 20px;
+    font-size: 16px;
+  }
+
+  .invoice-header {
+    flex-direction: column;
+    width: 90%;
+    margin-left: 5%;
+    height: auto;
+  }
+
+  .invoice-title {
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .highlight-bar {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .custom-button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+    width: 200px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .footer-item {
+    max-width: 90%;
+  }
+
+  .invoice-details .content-box {
+    height: auto;
+    width: 80%;
+    border-radius: 5px;
+  }
+
+  .header .top-bar {
+    height: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .gold-bar,
+  .black-bar {
+    width: 36%;
+    margin: 0;
+  }
+
+  .gold-bar {
+    margin-left: 15%;
+  }
+
+  .black-bar {
+    margin-right: 10%;
+  }
+
+  .footer .bottom-bar {
+    height: 10px;
+    margin-top: 15px;
+  }
+
+  .bottom-bargold,
+  .bottom-barblack {
+    width: 100%;
+    margin-left: 15px;
+    margin-top: 5px;
+    height: 10px;
+    border-radius: 10px;
+  }
+
+  .invoice-title h1 {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .invoice-info p {
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .welcome-message {
+    font-size: 18px;
+    text-align: justify;
+    padding: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .benefits {
+        justify-content: center;
+        margin-right: 45px;
+    }
+
+    .benefits li {
+        width: 100%; 
+    }
+}
+
+@media (min-width: 769px) {
+    .benefits li {
+        width: 30%; 
+    }
+}
+
+  .card-header {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .card-body ul li {
+    font-size: 16px;
+    padding: 10px;
+    text-align: right;
+  }
+
+  .card-body p {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .custom-button {
+    font-size: 16px;
+  }
+
+  .note {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .footer-item p {
+    font-size: 14px;
+  }
+
+  .footer-item h4 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .card-numbers {
+    flex-direction: column;
+    width: 90%;
+  }
+
+  .card-numbers p {
+    font-size: 14px;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  .card-numbers span {
+    text-align: center;
+  }
+}
+
+
