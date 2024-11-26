@@ -23,32 +23,12 @@ class SubscriptionMail extends Mailable
         $this->client = $client;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Subscription Invoice Mail',
-        );
-    }
-
     public function build()
     {
-        return $this->view('invoice')->with([
+        return $this->subject('Subscription Invoice Mail')->view('invoice')->with([
             'client' => $this->client,
             'membership' => $this->client->getMembershipAttribute()->price,
             'discount' => RegistrationOffer::where('min_activator_count', '<=', $this->client->activator_count)->where('max_activator_count', '>=', $this->client->activator_count)->first()->value,
         ]);
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }
