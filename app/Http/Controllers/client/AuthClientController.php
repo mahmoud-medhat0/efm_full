@@ -110,10 +110,10 @@ class AuthClientController extends Controller
             'last_name' => 'required',
             'email' => ['required', 'unique:clients,email', new ValidMail],
             'password' => 'required|min:8|confirmed',
-            'telegram' => 'required|unique:clients,telegram_username',
+            'telegram' => ['required', 'unique:clients,telegram_username', 'regex:/^[^\s@]+$/'],
             'referral_code' => ['nullable', new checkactiveReferralUserCode],
             'phone' => 'required|unique:clients,phone',
-            'username' => 'required|unique:clients,username',
+            'username' => ['required', 'unique:clients,username', 'regex:/^[^\s@]+$/'],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
