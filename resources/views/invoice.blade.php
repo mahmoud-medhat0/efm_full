@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Invoice</title>
-    <link rel="stylesheet" href="{{ url('invoiceassets/css/Invoice.css') }}">
+    <link rel="stylesheet" href="{{ $base_url }}/invoiceassets/css/Invoice.css">
 </head>
 <body>
     <header class="header">
@@ -17,8 +17,8 @@
     <main class="main-content">
         <div class="invoice-header">
             <div class="logo-section">
-                <img src="{{ url('invoiceassets/photo/Group.svg') }}" alt="EFM Logo" class="logo">
-                <img src="{{ url('invoiceassets/photo/line2.svg') }}" alt="EFM Logo" class="line2" />
+                <img src="{{ $base_url }}/invoiceassets/photo/Group.svg" alt="EFM Logo" class="logo">
+                <img src="{{ $base_url }}/invoiceassets/photo/line2.svg" alt="EFM Logo" class="line2" />
                 <div class="titel3">
                     <h2>EFM</h2>
                     <p>Earn Free Money</p>
@@ -31,7 +31,7 @@
                     <br />
                     Transaction Invoice
                 </h1>
-                    <img src="{{ url('invoiceassets/photo/line1.svg') }}" alt="EFM Logo" class="line1" />
+                    <img src="{{ $base_url }}/invoiceassets/photo/line1.svg" alt="EFM Logo" class="line1" />
             </div>
             <div class="invoice-info">
                 <p><strong>رقم الفاتورة</strong>: {{ $client->transactions->where('type', 'membership')->first()->txn }}</p>
@@ -114,7 +114,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-item">
-                <img src="{{ url('invoiceassets/photo/Group (2).svg') }}" alt="EFM Logo" />
+                <img src="{{ $base_url }}/invoiceassets/photo/Group (2).svg" alt="EFM Logo" />
                 <span class="efm-titel">hub</span>
                 <p style="color:  #808080;">
                     EFM is the strongest company<br /> for making money online,<br /> offering unparalleled
@@ -132,10 +132,10 @@
             </div>
             <div class="footer-item">
                 <h4 style="color: #d3b489;">Contact Us</h4>
-                <p><img src="{{ url('invoiceassets/photo/phone.svg') }}" alt="Email Icon" style="width: 16px; height:16px; "><a href="mailto:support@efmhub.com" style="color: inherit; text-decoration: none;">support@efmhub.com</a>
+                <p><img src="{{ $base_url }}/invoiceassets/photo/phone.svg" alt="Email Icon" style="width: 16px; height:16px; "><a href="mailto:support@efmhub.com" style="color: inherit; text-decoration: none;">support@efmhub.com</a>
                 </p>
-                <p><img src="{{ url('invoiceassets/photo/Email.svg') }}" alt="Phone Icon" style="width: 16px; height:16px; "><a href="tel:+20120655342" style="color: inherit; text-decoration: none;">+20120655342</a></p>
-                <p><img src="{{ url('invoiceassets/photo/Vector (4).svg') }}" alt="Twitter Icon" style="width: 16px; height:16px; "><a href="https://t.me/EFM_Hub" target="_blank" style="color: inherit; text-decoration: none;">@EFM_Hub</a></p>
+                <p><img src="{{ $base_url }}/invoiceassets/photo/Email.svg" alt="Phone Icon" style="width: 16px; height:16px; "><a href="tel:+20120655342" style="color: inherit; text-decoration: none;">+20120655342</a></p>
+                <p><img src="{{ $base_url }}/invoiceassets/photo/Vector (4).svg" alt="Twitter Icon" style="width: 16px; height:16px; "><a href="https://t.me/EFM_Hub" target="_blank" style="color: inherit; text-decoration: none;">@EFM_Hub</a></p>
             </div>
         </div>
         <div class="bottom-bar">

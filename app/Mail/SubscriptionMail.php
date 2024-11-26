@@ -29,6 +29,7 @@ class SubscriptionMail extends Mailable
             'client' => $this->client,
             'membership' => $this->client->getMembershipAttribute()->price,
             'discount' => RegistrationOffer::where('min_activator_count', '<=', $this->client->activator_count)->where('max_activator_count', '>=', $this->client->activator_count)->first()->value,
+            'base_url' => config('app.url') // Pass the base URL
         ]);
     }
 }
