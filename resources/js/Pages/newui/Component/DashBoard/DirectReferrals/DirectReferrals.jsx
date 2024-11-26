@@ -12,11 +12,11 @@ const DirectReferrals = () => {
       children: referrals,
     };
     const accImg = me.profile_image ? me.profile_image_url : character;
-    const lineWidth = `${referrals.length * 9.5}em`;
+    const lineWidth = `${referrals.length * 8}em`;
     return (
       <DashboardLayout>
       <div style={styles.container}>
-        <h1 style={styles.title}>Direct Referrals</h1>
+        <h1 style={styles.title}>Direct Referrals {referrals.length}</h1>
         {data.parent !== null && (
         <div style={styles.parentBox}>
           <div style={styles.imageContainer}>
@@ -101,12 +101,10 @@ const DirectReferrals = () => {
       borderRadius: "10px",
       padding: "20px",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      
       flexDirection: "column",
       alignItems: "center",
       overflow: "auto",
-     
-
+      paddingRight: "calc(20px + 1em)",
     },
     title: {
       fontSize: "24px",
@@ -137,20 +135,17 @@ const DirectReferrals = () => {
     },
     childrenContainer: {
       display: "flex",
-      justifyContent: "center",
       flexWrap: "nowrap",
       position: "relative",
       marginTop: "40px",
       gap: "20px",
       overflowX: "auto",
-      maxHeight: "200px",
+      maxHeight: "none",
     },
     childWrapper: {
       marginTop: "45px",
       position: "relative",
       display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
     },
     childBox: {
       textAlign: "center",
@@ -229,6 +224,7 @@ const DirectReferrals = () => {
     "@media (max-width: 768px)": {
       container: {
         padding: "10px",
+        paddingRight: "calc(10px + 1em)",
       },
       parentBox: {
         width: "90%",

@@ -19,5 +19,8 @@ class ValidUserViaUSerOrEmail implements ValidationRule
         if (!$client) {
             $fail('The :attribute must be a valid user or email.');
         }
+        if (!$client->has_active_subscription) {
+            $fail('The :attribute is doesnot have active subscription.');
+        }
     }
 }
