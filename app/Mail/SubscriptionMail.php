@@ -33,19 +33,13 @@ class SubscriptionMail extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'invoice',
-            with: [
-                'client' => $this->client,
-                'membership' => $this->client->getMembershipAttribute()->price,
-                'discount' => RegistrationOffer::where('min_activator_count', '<=', $this->client->activator_count)->where('max_activator_count', '>=', $this->client->activator_count)->first()->value,
-            ],
-        );
+        return $this->view('invoice')->with([
+            'client' => $this->client,
+            'membership' => $this->client->getMembershipAttribute()->price,
+            'discount' => RegistrationOffer::where('min_activator_count', '<=', $this->client->activator_count)->where('max_activator_count', '>=', $this->client->activator_count)->first()->value,
+        ]);
     }
 
     /**
