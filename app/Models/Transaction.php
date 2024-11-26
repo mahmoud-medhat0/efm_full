@@ -25,6 +25,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(TransactionRejectionCause::class, 'rejection_cause_id');
     }
+    public function getRejectionCauseAttribute()
+    {
+        return $this->rejectionCause ? $this->rejectionCause : null;
+    }
     public function activityLogs()
     {
         return $this->morphMany(Activity::class,'subject');
