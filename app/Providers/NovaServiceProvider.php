@@ -40,6 +40,7 @@ use App\Nova\WithdrawAccountField;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\SubscriptionMembership;
 use Illuminate\Support\Facades\Gate;
+use App\Nova\TransactionRejectionCause;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -84,6 +85,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(ManualField::class),
                     MenuItem::resource(Gateways::class),
                     MenuItem::resource(Transaction::class),
+                    MenuItem::resource(TransactionRejectionCause::class),
                     MenuItem::resource(AgentRequest::class),
                     MenuItem::resource(Membershib::class),
                     MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
