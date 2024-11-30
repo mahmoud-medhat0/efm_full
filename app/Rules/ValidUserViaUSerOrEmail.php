@@ -22,5 +22,8 @@ class ValidUserViaUSerOrEmail implements ValidationRule
         if (!$client->has_active_subscription) {
             $fail('The :attribute is doesnot have active subscription.');
         }
+        if ($client->id == auth()->user()->id) {
+            $fail('The :attribute is you.');
+        }
     }
 }
