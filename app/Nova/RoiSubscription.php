@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use App\Models\SubscriptionMembership;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
+use Illuminate\Support\Facades\DB;
 class RoiSubscription extends Resource
 {
     /**
@@ -56,9 +56,10 @@ class RoiSubscription extends Resource
     }
     public static function afterCreate(NovaRequest $request, $model)
     {
-        $patch = $request->patch;
-        $percent = $request->percent;
-        RoiSubscriptionModel::create([
+        DB::transaction(function () use ($request) {    
+            $patch = $request->patch;
+            $percent = $request->percent;
+            RoiSubscriptionModel::create([
             'patch' => $patch,
             'percent' => $percent,
         ]);
@@ -67,19 +68,26 @@ class RoiSubscription extends Resource
             $amount = $subscription->membership->price;
             $roi = $amount * $percent / 100;
             Transaction::create([
-                'client_id' => $subscription->client_id,
-                'amount' => $roi,
-                'fee' => 0,
-                'total' => $roi,
-                'type' => 'roi',
-                'tnx_type' => 'add',
-                'tnx' => 'Roi-' . uniqid(),
-                'description' => 'ROI for ' . $subscription->membership->name,
-                'status' => 'success',
-            ]);
-            $subscription->client->balance += $roi;
-            $subscription->client->save();
-        }
+                    'client_id' => $subscription->client_id,
+                    'amount' => $roi,
+                    'fee' => 0,
+                    'total' => $roi,
+                    'type' => 'roi',
+                    'tnx_type' => 'add',
+                    'tnx' => 'Roi-' . uniqid(),
+                    'description' => 'ROI for ' . $subscription->membership->name,
+                    'status' => 'success',
+                ]);
+                $client = $subscription->client;
+                if($client){    
+                    $client->balance += $roi;
+                    $subscription->client->save();
+                }
+                else{
+                    throw new \Exception('Client not found '.$subscription->client_id .'for subscription '.$subscription->id);
+                }
+            }
+        });
     }
     /**
      * Get the cards available for the request.
