@@ -73,7 +73,7 @@ class RoiSubscription extends Resource
                 'total' => $roi,
                 'type' => 'roi',
                 'tnx_type' => 'add',
-                'tnx' => 'Roi'. uniqid(),
+                'tnx' => 'Roi-' . uniqid(),
                 'description' => 'ROI for ' . $subscription->membership->name,
                 'status' => 'success',
             ]);
