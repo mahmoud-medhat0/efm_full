@@ -11,6 +11,7 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 class SetStatusCancelled extends Action
 {
     use InteractsWithQueue, Queueable;
@@ -28,6 +29,9 @@ class SetStatusCancelled extends Action
         foreach ($models as $model) {
             if($model->status != 'cancelled'){
                 $model->update(['status' => 'cancelled', 'rejection_cause_id' => $reason->id]);
+                if($fields->note){
+                    $model->update(['note' => $fields->note]);
+                }
             }
             if($model->tnx_type == 'sub' && $model->status == 'cancelled'){
                 $model->client->update(['balance' => $model->client->balance + $model->amount]);
@@ -48,8 +52,8 @@ class SetStatusCancelled extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            Select::make('Reason', 'reason')
-                ->options(TransactionRejectionCause::all()->pluck('name', 'id')),
+            Select::make('Reason', 'reason')->options(TransactionRejectionCause::all()->pluck('name', 'id')),
+            Text::make('Note', 'note')->nullable(),
         ];
     }
 }
