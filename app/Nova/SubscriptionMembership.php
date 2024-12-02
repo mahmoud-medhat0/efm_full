@@ -15,7 +15,7 @@ use App\Nova\Filters\SubscriptionMembership\StatusFilter;
 use App\Nova\Filters\SubscriptionMembership\CreatedAtEndFilter;
 use App\Nova\Filters\SubscriptionMembership\CreatedAtEndtFilter;
 use App\Nova\Filters\SubscriptionMembership\CreatedAtStartFilter;
-
+use Laravel\Nova\Fields\Text;
 class SubscriptionMembership extends Resource
 {
     /**
@@ -62,6 +62,7 @@ class SubscriptionMembership extends Resource
                 'inactive'=>'Inactive',
                 'expired'=>'Expired',
             ])->sortable(),
+            Text::make('Contract ID','contract_id')->nullable()->sortable(),
             DateTime::make('Start Date','start_date')->dependsOn('is_lifetime',function($field,$request,$formData){
                 if($formData['is_lifetime'] == 0){
                     $field->show();
