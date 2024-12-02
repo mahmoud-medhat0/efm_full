@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Select;
 use App\Models\SubscriptionMembership;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\DB;
+
 class RoiSubscription extends Resource
 {
     /**
@@ -56,18 +57,14 @@ class RoiSubscription extends Resource
     }
     public static function afterCreate(NovaRequest $request, $model)
     {
-        DB::transaction(function () use ($request) {    
+        DB::transaction(function () use ($request) {
             $patch = $request->patch;
             $percent = $request->percent;
-            RoiSubscriptionModel::create([
-            'patch' => $patch,
-            'percent' => $percent,
-        ]);
-        $subscriptions = SubscriptionMembership::{$patch}()->get();
-        foreach ($subscriptions as $subscription) {
-            $amount = $subscription->membership->price;
-            $roi = $amount * $percent / 100;
-            Transaction::create([
+            $subscriptions = SubscriptionMembership::{$patch}()->get();
+            foreach ($subscriptions as $subscription) {
+                $amount = $subscription->membership->price;
+                $roi = $amount * $percent / 100;
+                Transaction::create([
                     'client_id' => $subscription->client_id,
                     'amount' => $roi,
                     'fee' => 0,
@@ -79,12 +76,11 @@ class RoiSubscription extends Resource
                     'status' => 'success',
                 ]);
                 $client = $subscription->client;
-                if($client){    
+                if ($client) {
                     $client->balance += $roi;
                     $subscription->client->save();
-                }
-                else{
-                    throw new \Exception('Client not found '.$subscription->client_id .'for subscription '.$subscription->id);
+                } else {
+                    throw new \Exception('Client not found ' . $subscription->client_id . 'for subscription ' . $subscription->id);
                 }
             }
         });
