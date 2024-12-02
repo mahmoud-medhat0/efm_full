@@ -50,7 +50,7 @@
         right: 20px;
         width: 50px;
         height: 50px;
-        background-color: #0073e6; /* Change to your preferred color */
+        background-color: #00e686; /* Change to your preferred color */
         color: white;
         border: none;
         border-radius: 50%;
@@ -65,7 +65,7 @@
   </head>
   <body>
     @inertia
-    <button id="openModalButton">+</button>
+    <button id="openModalButton">&#9733;</button>
 
     <!-- TrustBox widget as a modal -->
     <div id="trustpilotModal" class="trustpilot-widget-modal">
