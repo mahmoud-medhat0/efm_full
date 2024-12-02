@@ -148,7 +148,9 @@ class Transaction extends Resource
                 })
                 ->asHtml()
                 ->onlyOnDetail(),
-            DateTime::make('Created At')->sortable(),
+            DateTime::make('Created At')->displayUsing(function ($value) {
+                return Carbon::parse($value)->format('Y-m-d h:i:s A');
+            })->sortable(),
             Text::make('Time Ago', function ($transaction) {
                 return Carbon::parse($transaction->created_at)->diffForhumans();
             })->sortable(),
