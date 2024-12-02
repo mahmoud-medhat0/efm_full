@@ -109,6 +109,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('shield-check')->collapsible(),
             ];
         });
+        Nova::serving(function () {
+            Nova::script('nova-filters', asset('js/nova-filters.js'));
+        });
     }
 
     /**
