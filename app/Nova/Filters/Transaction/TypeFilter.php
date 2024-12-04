@@ -37,7 +37,7 @@ class TypeFilter extends Filter
     {
         return [
             'Deposit' => 'deposit',
-            'Withdrawal' => 'withdrawal',
+            'Withdraw' => 'withdraw',
             'Referral' => 'referral',
             'Membership' => 'membership',
             'Transfer' => 'transfer',
