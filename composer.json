@@ -102,7 +102,7 @@
         },
         {
             "type": "path",
-            "url": "./nova-components/DepositsAndWithdrawals"
+            "url": "./nova-components/Depositsandwithdrawals"
         }
     ]
 }
