@@ -52,7 +52,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/helpers.php"
+            "app/helpers.php",
+            "nova-components/Depositsandwithdrawals/src/CardServiceProvider.php"
         ]
     },
     "autoload-dev": {

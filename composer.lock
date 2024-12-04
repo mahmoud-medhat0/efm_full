@@ -1197,7 +1197,7 @@
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "./nova-components/DepositsAndWithdrawals",
+                "url": "./nova-components/DepositsandWithdrawals",
                 "reference": "8156321615ddfef9476553f58a33825cf97834ed"
             },
             "require": {
