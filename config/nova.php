@@ -202,5 +202,7 @@ return [
         'started' => '/',
         'stopped' => '/',
     ],
-
+    'metrics' => [
+        'allowHtml' => true,
+    ],
 ];

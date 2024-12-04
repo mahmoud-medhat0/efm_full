@@ -3,8 +3,11 @@
 namespace App\Nova\Dashboards;
 
 use Laravel\Nova\Cards\Help;
+use App\Nova\Metrics\ClientsEmailVerified;
+use App\Nova\Metrics\ClientsTelegramVerified;
+use App\Nova\Metrics\AllClients;
 use Laravel\Nova\Dashboards\Main as Dashboard;
-
+use Efm\Depositsandwithdrawals\DepositsAndWithdrawals;
 class Main extends Dashboard
 {
     /**
@@ -15,7 +18,10 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            new Help,
+            new AllClients,
+            new ClientsEmailVerified,
+            (new ClientsTelegramVerified)->withMeta(['asHtml' => true]),
+            new DepositsAndWithdrawals,
         ];
     }
 }
