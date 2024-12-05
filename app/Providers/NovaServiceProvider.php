@@ -36,6 +36,7 @@ use App\Nova\MembershipSection;
 use App\Nova\RegistrationOffer;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuList;
+use App\Nova\AgentRecieveRequest;
 use App\Nova\WithdrawAccountField;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\SubscriptionMembership;
@@ -86,6 +87,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(Gateways::class),
                     MenuItem::resource(Transaction::class),
                     MenuItem::resource(TransactionRejectionCause::class),
+                    MenuItem::resource(AgentRecieveRequest::class),
                     MenuItem::resource(AgentRequest::class),
                     MenuItem::resource(Membershib::class),
                     MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
