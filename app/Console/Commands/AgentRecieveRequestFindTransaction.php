@@ -29,8 +29,8 @@ class AgentRecieveRequestFindTransaction extends Command
         $requests = AgentRecieveRequest::pending()->get();
         foreach($requests as $request){
             $transaction = Transaction::where('gateway_id',$request->gateway_id)->where('type','deposit')->where('status','pending')->where('total',$request->amount)->where('manual_fields','like','%"'.$request->sender_identifier.'"%')->first();
-            $this->info($request->id.' - '.$transaction->id);
             if($transaction){
+                $this->info($request->id.' - '.$transaction->id);
                 $request->status = 'approved';
                 $request->transaction_id = $transaction->id;
                 $request->save();
