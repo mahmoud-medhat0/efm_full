@@ -57,7 +57,7 @@ class AgentRecieveRequest extends Resource
             Select::make('Gateway', 'gateway_id')->options(GatewaysModel::whereIn('id', json_decode(auth('admin')->user()->gateways, true))->pluck('name', 'id'))->displayUsingLabels()->rules('required')->hideFromDetail()->hideFromIndex(),
             Text::make('Sender Name')->rules('nullable'),
             Text::make('Sender Identifier')->rules('required'),
-            Currency::make('Amount')->rules('required'),
+            Currency::make('Amount')->rules('required', 'min:1'),
             Text::make('Status')->displayUsing(fn($status) => $status == 'pending' ? '<span class="badge badge-warning">Pending</span>' : '<span class="badge badge-success">Approved</span>')->hideWhenCreating()->hideWhenUpdating()->asHtml(),
             BelongsTo::make('User', 'user', User::class)->hideFromDetail()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating()->nullable(),
             BelongsTo::make('Transaction')->hideFromDetail()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating()->nullable(),
