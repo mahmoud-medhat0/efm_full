@@ -12,7 +12,8 @@ use Laravel\Nova\Fields\Select;
 use App\Models\Gateways as GatewaysModel;
 use Laravel\Nova\Fields\Currency;
 use App\Models\Transaction as TransactionModel;
-
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+use Laravel\Nova\Fields\MorphMany;
 class AgentRecieveRequest extends Resource
 {
     /**
@@ -62,6 +63,7 @@ class AgentRecieveRequest extends Resource
             BelongsTo::make('User', 'user', User::class)->hideFromDetail()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating()->nullable(),
             BelongsTo::make('Transaction')->hideFromDetail()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating()->nullable(),
             BelongsTo::make('Gateway', 'gateway', Gateways::class)->display(fn($gateway) => $gateway->name)->hideWhenCreating()->hideWhenUpdating(),
+            MorphMany::make('Activity', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 
