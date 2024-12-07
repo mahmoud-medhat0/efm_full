@@ -13,6 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('process:agent-recieve-request')->everyMinute();
+        $schedule->command('app:cancel-deposit-long-time')->everyMinute();
+        $schedule->command('activate:night')->dailyAt('00:00');
+        $schedule->command('activate:work')->dailyAt('08:00');
     }
 
     /**
