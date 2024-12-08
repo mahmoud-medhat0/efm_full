@@ -109,10 +109,10 @@ class AuthClientController extends Controller
             'last_name' => 'required',
             'email' => ['required', 'unique:clients,email', new ValidMail],
             'password' => 'required|min:8|confirmed',
-            'telegram' => ['required', 'unique:clients,telegram_username', 'regex:/^[^\s@]+$/'],
+            'telegram' => ['required', 'unique:clients,telegram_username', 'regex:/^[^\s@]+$/', 'regex:/^[^\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}\x{FB50}-\x{FDFF}\x{FE70}-\x{FEFF}\x{10E60}-\x{10E7F}\x{1EE00}-\x{1EEFF}]+$/u'],
             'referral_code' => ['nullable', new checkactiveReferralUserCode],
             'phone' => 'required|unique:clients,phone',
-            'username' => ['required', 'unique:clients,username', 'regex:/^[^\s@]+$/'],
+            'username' => ['required', 'unique:clients,username', 'regex:/^[^\s@]+$/', 'regex:/^[^\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}\x{FB50}-\x{FDFF}\x{FE70}-\x{FEFF}\x{10E60}-\x{10E7F}\x{1EE00}-\x{1EEFF}]+$/u'],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -138,7 +138,7 @@ class AuthClientController extends Controller
     public function resetPasswordPost(Request $request)
     {
         $rules = [
-            'email' => ['required', 'email','exists:clients,email'],
+            'email' => ['required', 'email','exists:clients,email', new ValidMail],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
