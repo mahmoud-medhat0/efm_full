@@ -104,7 +104,6 @@ class AuthClientController extends Controller
     }
     public function registerPost(Request $request)
     {
-        // dd($request->all());
         $rules = [
             'first_name' => 'required',
             'last_name' => 'required',

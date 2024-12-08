@@ -24,7 +24,7 @@ use App\Models\Aboutsection;
 use App\Models\MembershipSection;
 use App\Models\AdvertiseSection;
 use App\Models\ReferralSection;
-
+use App\Models\Transaction;
 class HomeController extends Controller
 {
     public function setLang($lang)
@@ -237,6 +237,26 @@ class HomeController extends Controller
             'text' => $messageText,
             'parse_mode' => 'HTML',
         ]);
+        if($user->ref_id){
+            $parent = Client::find($user->ref_id);
+            $parent->increment('invites_free');
+            if($parent->invites_free >=50){
+                $parent->increment('invites_free_period');
+                $parent->decrement('invites_free', 50);
+                Transaction::create([
+                    'amount' => 20,
+                    'fee' => 0,
+                    'total' => 20,
+                    'tnx_type' => 'add',
+                    'tnx' => 'BON' . time(),
+                    'type' => 'bonus',
+                    'description' => 'Bonus reward for ' . $parent->name,
+                    'client_id' => $parent->id,
+                    'status' => 'success',
+                ]);
+                $parent->increment('balance', 20);
+            }
+        }
         return response()->json(['success' => true, 'message' => 'Telegram verification successful.']);
     }
 
