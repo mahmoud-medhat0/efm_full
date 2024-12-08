@@ -114,6 +114,7 @@ class Client extends Resource
             HasMany::make('Transactions', 'transactions', Transaction::class)->sortable(),
             HasMany::make('Tasks', 'tasks', Task::class)->sortable(),
             HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class)->sortable(),
+            HasMany::make('Coupouns', 'coupouns', Coupoun::class)->sortable(),
             MorphMany::make('Activities', 'activities', ActivityLog::class)->sortable(),
         ];
     }

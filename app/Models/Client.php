@@ -32,12 +32,17 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Activity::class, 'causer_id', 'id');
     }
+    public function coupouns()
+    {
+        return $this->hasMany(Coupoun::class);
+    }
     public function ValidClient()
     {
         return $this->where('email_verified', 1)
-        ->where('is_active', 1)
-        ->where('telegram_verified', 1)
-        ->where('kyc_verified', 1);
+        // ->where('is_active', 1)
+        // ->where('telegram_verified', 1)
+        // ->where('kyc_verified', 1)
+        ;
     }
     public function orders()
     {
