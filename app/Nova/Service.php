@@ -101,7 +101,6 @@ class Service extends Resource
             Number::make('max amount')->sortable(),
             Code::make('credentials')->sortable(),
             Code::make('calculation_formula')->sortable(),
-            Code::make('fields'),
             Text::make('service code')->sortable(),
             Currency::make('cost per unit')->step(0.01)->sortable(),
             HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail()->sortable(),
