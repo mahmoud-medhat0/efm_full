@@ -86,7 +86,7 @@ const Tasks = () => {
                 {filteredTasks.length > 0 ? (
                     filteredTasks.map((task) => (
                         <div className="tasks-tasksCard" key={task.id}>
-                            <img src={`${task.data.thumbnail}`} alt={`Task ${task.id}`} className="tasks-tasksImage" />
+                            <img src={`${task.data.thumbnail??''}`} alt={`Task ${task.id}`} className="tasks-tasksImage" />
                             <div className="tasks-tasksDetails">
                                 <h3>{task.order.service.name.en}</h3>
                                 <p>
