@@ -381,8 +381,8 @@ class DashboardContrtoller extends Controller
             $data = [];
             foreach ($fields as $field) {
                 if ($field->type == 'image') {
-                    if ($request->hasFile($field->name_en)) {
-                        $uploadedFile = $request->file($field->name_en);
+                    if ($request->hasFile(str_replace(' ', '_', $field->name_en))) {
+                        $uploadedFile = $request->file(str_replace(' ', '_', $field->name_en));
                         $filename = 'task-manual-attachment-' . time() . '-' . pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $uploadedFile->getClientOriginalExtension();
                         $data[$field->name_en]['value'] = $uploadedFile->storeAs('attachments/private/tasks/manual/' . auth()->user()->id, $filename, 'public');
                         $data[$field->name_en]['type'] = $field->type;
@@ -396,6 +396,10 @@ class DashboardContrtoller extends Controller
             }
             $data = json_encode($data);
             $task->update(['status' => 'under_review', 'data' => $data]);
+            $user_agent = $request->userAgent();
+            $ip = Location::get($request->ip());
+            $country = $ip ? $ip->countryName : null;
+            $task->update(['ip' => $ip, 'country' => $country, 'user_agent' => $user_agent]);
             return response()->json(['success' => true, 'message' => 'Task updated successfully']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
