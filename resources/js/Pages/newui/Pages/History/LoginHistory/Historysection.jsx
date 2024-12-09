@@ -1,18 +1,17 @@
-import styled from 'styled-components';
-import historystyles from "../Historysection.module.css";
+
 import { usePage } from "@inertiajs/inertia-react";
 import DashboardLayout from '../../../Layout/DashboardLayout';
 const Historysection = () => {
   const { props } = usePage();
   const loginAttempts = props.loginAttempts;
-  const StyledContainer = styled.div`
-  @media (max-width: 768px) {
-  .${historystyles.historyTitles}{
-  width:400px;
-  }
+  // const StyledContainer = styled.div`
+  // @media (max-width: 768px) {
+  // .${historystyles.historyTitles}{
+  // width:400px;
+  // }
   
   
-  }`
+  // }`
   return (
     <DashboardLayout>
             <h2 style={{ 
@@ -22,12 +21,12 @@ const Historysection = () => {
       textAlign: 'center' 
     }}>Orders History</h2>
 
-    <div className={historystyles.historyContainer} style={{ maxHeight: '540px', overflowY: 'auto', position: 'relative' }}>
-      <table className={historystyles.historyTable}>
+    <div className="historyContainer" style={{ maxHeight: '540px', overflowY: 'auto', position: 'relative' }}>
+      <table className="historyTable">
         <thead>
           <tr style={{ position: 'relative', top: 0, backgroundColor: 'white', zIndex: 10 }}>
             <th>Date</th>
-            <th className={historystyles.historyTh}>Country</th>
+            <th className="historyTh">Country</th>
             <th>IP</th>
             <th>Status</th>
           </tr>
@@ -38,12 +37,12 @@ const Historysection = () => {
                     <td colSpan={4} style={{ textAlign: 'center' }} className="text-center py-4">No login attempts found</td>
                 </tr>
             ) : (loginAttempts.map((item, index) => (
-            <tr key={item.id} className={historystyles.historyRow}>
+            <tr key={item.id} className="historyRow">
               <td>{item.created_at_human}</td>
               <td>{item.country}</td>
               <td>{item.ip_address}</td>
               <td>
-                <button className={`${historystyles.historyBtn} ${historystyles[item.successful ? 'approved' : 'declined']}`}>
+                <button className={`historyBtn ${item.successful ? 'approved' : 'declined'}`}>
                   {item.successful ? 'Success' : 'Failed'}
                 </button>
               </td>

@@ -4,7 +4,7 @@ import {
     PencilSquareIcon,
     LockClosedIcon,
 } from "@heroicons/react/24/solid";
-import PersonalSettingsstyle from "./PersonalSettings.module.css";
+
 import character from "../../../../../assets/character.jpg";
 import DashboardLayout from "../../../Layout/DashboardLayout";
 import { usePage } from "@inertiajs/inertia-react";
@@ -15,6 +15,8 @@ import { Inertia } from "@inertiajs/inertia";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import qricones from "../../../photo/qr.svg";
+
+
 const PersonalSettings = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -140,24 +142,23 @@ const PersonalSettings = () => {
 
     return (
         <DashboardLayout>
-            <div className={PersonalSettingsstyle.container}>
-                <h2 className={PersonalSettingsstyle.title}>
+            <div className="personalstteing-container">
+                <h2 className="personalstteing-title">
                     Personal Settings
                 </h2>
-                <div className={PersonalSettingsstyle.profileSection}>
+                <div className="personalstteing-profileSection">
                     <img
                         src={accImg}
                         alt="Profile"
-                        className={PersonalSettingsstyle.profileImage}
+                        className="personalstteing-profileImage"
                     />
-                    <div className={PersonalSettingsstyle.profileInfo}>
+                    <div className="personalstteing-profileInfo">
                         <h3 style={{fontSize:"18px" ,marginBottom:"5px"}}>{user.name}</h3>
-                       
                         <p style={{fontSize:"18px" }}>{user.email}</p>
                     </div>
-                    <div className={PersonalSettingsstyle.buttons}>
+                    <div className="personalstteing-buttons">
                         <button
-                            className={PersonalSettingsstyle.editButton}
+                            className="personalstteing-editButton"
                             alt="Edit Photo"
                             onClick={handleEditClick}
                         >
@@ -167,7 +168,7 @@ const PersonalSettings = () => {
                                 height="26"
                                 viewBox="0 0 26 26"
                                 fill="none"
-                                className={PersonalSettingsstyle.icon}
+                                className="personalstteing-icon"
                             >
                                 <path
                                     d="M11.9181 3.16443H5.09428C2.83307 3.16443 1 4.99744 1 7.25857V20.9059C1 23.167 2.83307 25 5.09428 25H18.7419C21.0031 25 22.8361 23.167 22.8361 20.9059L22.8361 14.0822M7.82379 18.1763L12.7892 17.1758C13.0528 17.1227 13.2949 16.9929 13.4849 16.8027L24.6005 5.6814C25.1335 5.14819 25.1331 4.28388 24.5997 3.75112L22.245 1.39917C21.7119 0.866627 20.848 0.86699 20.3153 1.39998L9.19852 12.5225C9.0088 12.7123 8.87926 12.9538 8.8261 13.2169L7.82379 18.1763Z"
@@ -180,7 +181,7 @@ const PersonalSettings = () => {
                             Edit
                         </button>
                         <button
-                            className={PersonalSettingsstyle.passwordButton}
+                            className="personalstteing-passwordButton"
                             alt="Change Password"
                             onClick={handlePasswordClick}
                         >
@@ -207,24 +208,24 @@ const PersonalSettings = () => {
                         </button>
                     </div>
                 </div>
-                <div className={PersonalSettingsstyle.switchSection}>
-                    <span className={PersonalSettingsstyle.label}>
+                <div className="personalstteing-switchSection">
+                    <span className="personalstteing-label">
                         Two Factor Authentication
                     </span>
-                    <label className={PersonalSettingsstyle.switch}>
+                    <label className="personalstteing-switch">
                         <input
                             type="checkbox"
                             checked={isEnabled}
                             onChange={toggleSwitch}
                         />
-                        <span className={PersonalSettingsstyle.slider}></span>
+                        <span className="personalstteing-slider"></span>
                     </label>
                 </div>
-                <div className={PersonalSettingsstyle.formContainer}>
+                <div className="personalstteing-formContainer">
                     <form>
-                        <div className={PersonalSettingsstyle.inputGroup}>
+                        <div className="personalstteing-inputGroup">
                             <div>
-                                <label className={PersonalSettingsstyle.labelPersonals}>Full Name</label>
+                                <label className="personalstteing-labelPersonals">Full Name</label>
                                 <input
                                     type="text"
                                     disabled
@@ -233,7 +234,7 @@ const PersonalSettings = () => {
                                 />
                             </div>
                             <div>
-                                <label  className={PersonalSettingsstyle.labelPersonals}>Last Name</label>
+                                <label className="personalstteing-labelPersonals">Last Name</label>
                                 <input
                                     type="text"
                                     disabled
@@ -243,9 +244,9 @@ const PersonalSettings = () => {
                             </div>
                         </div>
 
-                        <div className={PersonalSettingsstyle.inputGroup}>
+                        <div className="personalstteing-inputGroup">
                             <div>
-                                <label  className={PersonalSettingsstyle.labelPersonals}>Telegram Username</label>
+                                <label className="personalstteing-labelPersonals">Telegram Username</label>
                                 <input
                                     type="text"
                                     disabled
@@ -254,7 +255,7 @@ const PersonalSettings = () => {
                                 />
                             </div>
                             <div>
-                                <label  className={PersonalSettingsstyle.labelPersonals}>Username</label>
+                                <label className="personalstteing-labelPersonals">Username</label>
                                 <input
                                     type="text"
                                     disabled
@@ -264,9 +265,9 @@ const PersonalSettings = () => {
                             </div>
                         </div>
 
-                        <div className={PersonalSettingsstyle.inputGroup}>
+                        <div className="personalstteing-inputGroup">
                             <div>
-                                <label  className={PersonalSettingsstyle.labelPersonals}>Email</label>
+                                <label className="personalstteing-labelPersonals">Email</label>
                                 <input
                                     type="email"
                                     disabled
@@ -275,7 +276,7 @@ const PersonalSettings = () => {
                                 />
                             </div>
                             <div>
-                                <label  className={PersonalSettingsstyle.labelPersonals}>Phone Number</label>
+                                <label className="personalstteing-labelPersonals">Phone Number</label>
                                 <PhoneInput
                                     value={client.phone}
                                     disabled={true}
@@ -324,13 +325,13 @@ const PersonalSettings = () => {
                     </div>
                 )}
                 {isPasswordModalOpen && (
-                    <div className={PersonalSettingsstyle.modalOverlay}>
-                        <div className={PersonalSettingsstyle.modalContent}>
-                            <div className={PersonalSettingsstyle.modalHeader} style={{display:"flex",justifyContent:"space-between"}}>
+                    <div className="personalstteing-modalOverlay">
+                        <div className="personalstteing-modalContent">
+                            <div className="personalstteing-modalHeader" style={{display:"flex",justifyContent:"space-between"}}>
                                 <h3>Change Password</h3>
                                 <button
                                     onClick={closePasswordModal}
-                                    className={PersonalSettingsstyle.closeButton}
+                                    className="personalstteing-closeButton"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -342,19 +343,8 @@ const PersonalSettings = () => {
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        style={{
-                                            cursor: "pointer",
-                                            transition: "transform 0.2s",
-                                            borderRadius: "50%",
-                                            hover: {
-                                              
-                                            },
-                                            padding: "4px",
-                                            ":hover": {
-                                                transform: "scale(1.1)",
-                                                stroke: "#d4a259",
-                                            },
-                                        }}
+                                        className="personalstteing-closeButton1"
+                                       
                                     >
                                         <line
                                             x1="18"
@@ -371,64 +361,48 @@ const PersonalSettings = () => {
                                     </svg>
                                 </button>
                             </div>
-                            <div className={PersonalSettingsstyle.passwordForm}>
-                                <label className={PersonalSettingsstyle.label}>
+                            <div className="personalstteing-passwordForm">
+                                <label className="personalstteing-label">
                                     Current Password
                                 </label>
                                 <input
-                                    className={PersonalSettingsstyle.input}
+                                    className="personalstteing-input"
                                     onChange={(e) => setPassword(e.target.value)}
                                     type="password"
                                     placeholder="Current Password"
                                     style={{ fontSize: "14px" }}
                                 />
-                                <label className={PersonalSettingsstyle.label}>
+                                <label className="personalstteing-label">
                                     New Password
                                 </label>
                                 <input
-                                    className={PersonalSettingsstyle.input}
+                                    className="personalstteing-input"
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     type="password"
                                     placeholder="New Password"
                                     style={{ fontSize: "14px" }}
                                 />
-                                <label className={PersonalSettingsstyle.label}>
+                                <label className="personalstteing-label">
                                     Confirm New Password
                                 </label>
                                 <input
-                                    className={PersonalSettingsstyle.input}
+                                    className="personalstteing-input"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     type="password"
                                     placeholder="Confirm New Password"
                                     style={{ fontSize: "14px" }}
                                 />
-                                <div className={PersonalSettingsstyle.buttons}>
+                                <div className="personalstteing-buttons">
                                     <button
-                                        style={{
-                                            backgroundColor: "#d4a259",
-                                            color: "white",
-                                            padding: "10px",
-                                            border: "none",
-                                            borderRadius: "8px",
-                                            cursor: "pointer",
-                                            marginTop: "10px",
-                                            width: "50%",
-                                        }}
+                                    className="personalstteing-saveButton1"
+                                     
                                         onClick={handlePasswordChange}
                                     >
                                         Save
                                     </button>
                                     <button
-                                        style={{
-                                            backgroundColor: "#C7C7C7",
-                                            color: "white",
-                                            padding: "10px",
-                                            border: "none",
-                                            borderRadius: "8px",
-                                            cursor: "pointer",
-                                            marginTop: "10px",
-                                            width: "50%",
-                                        }}
+                                    className="personalstteing-saveButton2"
+                                   
                                         onClick={closePasswordModal}
                                     >
                                         Cancel
@@ -439,8 +413,8 @@ const PersonalSettings = () => {
                     </div>
                 )}
                 {isEnabled && qrCodeUrl ? (
-                    <div className={PersonalSettingsstyle.modalOverlay}>
-                        <div className={PersonalSettingsstyle.modalContent}>
+                    <div className="personalstteing-modalOverlay">
+                        <div className="personalstteing-modalContent">
                             <h3 style={{ fontSize: "18px" }}>
                                 Scan this QR Code to Enable 2FA
                             </h3>
@@ -449,19 +423,17 @@ const PersonalSettings = () => {
                                 below. Please enter the code from your
                                 authenticator app to enable 2FA.
                             </p>
-                            <div className={PersonalSettingsstyle.qrCode}>
+                            <div className="personalstteing-qrCode">
                                 <img
                                     src={qrCodeUrl}
                                     alt="QR Code"
-                                    style={{
-                                        justifyContent: "center",
-                                        margin: "0 auto",
-                                        width: "60%",
-                                    }}
+                                    className="personalstteing-qrCodeImage"
+                                  
                                 />
                             </div>
                             <div
-                                className={PersonalSettingsstyle.inputGroup}
+                                className="personalstteing-inputGroup"
+                            
                                 style={{
                                     position: "relative",
                                     width: "100%",
@@ -471,64 +443,32 @@ const PersonalSettings = () => {
                                 <img
                                     src={qricones}
                                     alt="Icon"
-                                    style={{
-                                        position: "absolute",
-                                        left: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        width: "20px",
-                                        height: "20px",
-                                    }}
+                                    className="personalstteing-icon22"
+                                
                                 />
                                 <input
                                     type="text"
                                     placeholder="Enter Code"
-                                    style={{
-                                        width: "100%",
-                                        padding: "10px 10px 10px 40px",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "8px",
-                                        outline: "none",
-                                        fontSize: "14px",
-                                        backgroundColor: "#f9f9f9",
-                                    }}
+                                    className="personalstteing-input223"
+                                   
                                     onChange={(e) => setCode(e.target.value)}
                                 />
                             </div>
                             <div
-                                className={
-                                    PersonalSettingsstyle.modalButtonContainer
-                                }
+                                className="personalstteing-modalButtonContainer"
                             >
                                 <button
                                     onClick={enable2fa}
+                                    className="personalstteing-enableButton"
                                     style={{
-                                        backgroundColor: "#d4a259",
-                                        color: "white",
-                                        padding: "10px",
-                                        border: "none",
-                                        borderRadius: "8px",
-                                        cursor: "pointer",
-                                        marginTop: "10px",
-                                        width: "50%",
-                                        fontSize: "18px",
+                                     
                                     }}
                                 >
                                     Enable
                                 </button>
                                 <button
-                                    style={{
-                                        backgroundColor: "#C7C7C7",
-                                        color: "white",
-                                        padding: "10px",
-                                        border: "none",
-                                        borderRadius: "8px",
-                                        cursor: "pointer",
-                                        marginTop: "10px",
-                                        width: "48%",
-                                        marginLeft: "2px",
-                                        fontSize: "18px",
-                                    }}
+                                className="personalstteing-cancelButton"
+                                   
                                     onClick={() => setIsEnabled(false)}
                                 >
                                     Cancel

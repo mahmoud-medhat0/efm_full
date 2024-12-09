@@ -41,6 +41,7 @@ use App\Jobs\SendMessageNotificationBot;
 use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Support\Facades\Validator;
 use App\Jobs\MembershipCongratsMessageJob;
+use App\Rules\TaskBelongsToAuthClientRule;
 use Stevebauman\Location\Facades\Location;
 use Alaouy\Youtube\Rules\ValidYoutubeVideo;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -310,6 +311,10 @@ class DashboardContrtoller extends Controller
                     'service_id' => $task->service_id,
                     'service_name' => $task->service->name,
                     'service_code' => $task->service->service_code,
+                    'service_type' => $task->service->type,
+                    'description' => $task->order->description,
+                    'fields' => $task->service->fields(),
+                    'instructions' => $task->order->instructions,
                     'status' => $task->status,
                     'data' => json_decode($task->order->data, true),
                     'categories' => $task->order->categories->pluck('name')->toArray(),
@@ -351,6 +356,48 @@ class DashboardContrtoller extends Controller
                 auth()->user()->increment('balance', $task->reward());
                 $task->order->increment('current_amount');
             }
+        }
+    }
+    public function UpdateManualTask(Request $request)
+    {
+        try {
+            $rules = [
+                'task_id' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule],
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+            }
+            $task = Task::find($request->task_id);
+            $fields = $task->service->fields();
+            foreach ($fields as $field) {
+                $rules[str_replace(' ', '_', $field->name_en)] = ($field->required == 1 ? 'required' : 'nullable');
+            }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+            }
+            $data = [];
+            foreach ($fields as $field) {
+                if ($field->type == 'image') {
+                    if ($request->hasFile($field->name_en)) {
+                        $uploadedFile = $request->file($field->name_en);
+                        $filename = 'task-manual-attachment-' . time() . '-' . pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $uploadedFile->getClientOriginalExtension();
+                        $data[$field->name_en]['value'] = $uploadedFile->storeAs('attachments/private/tasks/manual/' . auth()->user()->id, $filename, 'public');
+                        $data[$field->name_en]['type'] = $field->type;
+                    } else {
+                        return response()->json(['success' => false, 'message' => 'File not uploaded'], 200);
+                    }
+                } else {
+                    $data[$field->name_en]['value'] = $request->input(str_replace(' ', '_', $field->name_en));
+                    $data[$field->name_en]['type'] = $field->type;
+                }
+            }
+            $data = json_encode($data);
+            $task->update(['status' => 'under_review', 'data' => $data]);
+            return response()->json(['success' => true, 'message' => 'Task updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
         }
     }
     public function cliBan(Request $request)

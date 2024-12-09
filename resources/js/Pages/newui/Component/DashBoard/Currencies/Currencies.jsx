@@ -1,4 +1,4 @@
-import "./Currencies.css";
+
 import { useState } from "react";
 import mony from "../../../photo/mony.svg";
 import orangee from "../../../photo/orange.svg";
@@ -31,41 +31,36 @@ const Currencies = () => {
     };
     return (
         <DashboardLayout>
-            <div className="currencies-container">
-                <h1 className="title">Currencies</h1>
-                <div className="card">
-                <div className="header">
-                    <div className="logo-container">
+            <div className="Currencies-currencies-container">
+                <h1 className="Currencies-title">Currencies</h1>
+                <div className="Currencies-card">
+                <div className="Currencies-header">
+                    <div className="Currencies-logo-container">
                       
                         <span
-                            style={{
-                                textAlign: "center",
-                                marginLeft: "0px",
-                                color: "#DFBC8A",
-                                fontWeight: "bold",
-                                fontSize:"20px"
-                            }}
+                        className="Currencies-result"
+                         
                         >
                             Result
                         </span>
                     </div>
-                    <div className="exchange-rate">
+                    <div className="Currencies-exchange-rate">
                         <span style={{ color: "#DFBC8A" ,fontSize:"20px" }}>Exchange Rate</span>
                     </div>
                 </div>
 
-                <div className="TOTALRESULT">
-                    <h2 className="result">{calculateResult()} {currency.name[locale]}</h2>
-                    <h3 className="money">EGP {exchangeRate}</h3>
+                <div className="Currencies-TOTALRESULT">
+                    <h2 className="Currencies-result">{calculateResult()} {currency.name[locale]}</h2>
+                    <h3 className="Currencies-money">EGP {exchangeRate}</h3>
                 </div>
 
-                <div className="balance">
+                <div className="Currencies-balance">
                     <span style={{fontSize:"16px"}}>Current balance</span>
                     <span>{auth.client.balance} EGP</span>
                 </div>
-                <div className="input-group">
+                <div className="Currencies-input-group">
                     <label style={{ color: "#DFBC8A" }}>Amount</label>
-                    <div className="input-with-icon">
+                    <div className="Currencies-input-with-icon">
                         <img src={mony} alt="Currency Icon" />
                         <input
                             type="text"
@@ -73,13 +68,13 @@ const Currencies = () => {
                             onChange={(e) => setAmount(e.target.value)}
                             placeholder="0"
                         />
-                        <span className="input-currency">{currency.name[locale]}</span>
+                        <span className="Currencies-input-currency">{currency.name[locale]}</span>
                     </div>
                 </div>
 
-                <div className="input-group">
+                <div className="Currencies-input-group">
                     <label style={{ color: "#DFBC8A" }}>Currency</label>
-                    <div className="select-container">
+                    <div className="Currencies-select-container">
                         <select
                             value={currency.id}
                             onChange={handleCurrencyChange}
@@ -93,7 +88,7 @@ const Currencies = () => {
                     </div>
                 </div>
 
-                <footer className="footer-logos">
+                <footer className="Currencies-footer-logos">
                     <img src={orangee} alt="Orange" />
                     <img src={weeee} alt="WePay" />
                     <img src={insta} alt="InstaPay" />

@@ -3,10 +3,10 @@
 namespace App\Nova\Dashboards;
 
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Dashboards\Main as Dashboard;
 use App\Nova\Metrics\ClientsEmailVerified;
 use App\Nova\Metrics\ClientsTelegramVerified;
 use App\Nova\Metrics\AllClients;
-use Laravel\Nova\Dashboards\Main as Dashboard;
 use Efm\Depositsandwithdrawals\Depositsandwithdrawals;
 class Main extends Dashboard
 {

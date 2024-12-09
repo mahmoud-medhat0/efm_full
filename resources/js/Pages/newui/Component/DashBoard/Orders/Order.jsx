@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import DashboardLayout from '../../../Layout/DashboardLayout';
 import { usePage } from "@inertiajs/inertia-react";
-import './Order.css';
 const categories = ["All", "approved", "pending", "canceled"];
 
 const Orders = () => {
@@ -16,22 +15,22 @@ const Orders = () => {
   return (
     <DashboardLayout>
       <center>
-       <span className='title-orders'>Orders</span>
+       <span className='orderr-title-orders'>Orders</span>
       </center>
-      <div className="buttons">
+      <div className="orderr-buttons">
       
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => handleCategoryClick(category)}
-            className={selectedCategory === category ? 'active' : ''}
+            className={selectedCategory === category ? 'orderr-active' : ''}
             style={{fontSize: '1rem'}}
           >
             {category}
           </button>
         ))}
       </div>
-    <div className="container" >
+    <div className="orderr-container" >
      
       <div style={{ maxHeight: '1840px', overflowY: 'auto', position: 'relative' }}>
       <table>
@@ -57,7 +56,7 @@ const Orders = () => {
                 <td>{order.target_amount}</td>
                 <td>{order.current_amount}</td>
                 <td>
-                  <span className={`status ${order.status.toLowerCase()}`}>
+                  <span className={`orderr-status ${order.status.toLowerCase()}`}>
                     {order.status}
                   </span>
                 </td>

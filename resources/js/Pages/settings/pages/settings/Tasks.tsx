@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import WelcomeTab from "../../../../components/dashboard/welcome/WelcomeTab";
 import { usePage } from "@inertiajs/inertia-react";
 import DashboardLayout from "../../../../Pages/settings/Layout";
-import YouTubePlayer from "../../../../components/dashboard/tasks/ytiframeapi";
+import YouTubePlayer from "../../../newui/Component/DashBoard/Tasks/ytiframeapi";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 const TasksPage = () => {
     const { tasks, categories } = usePage().props;

@@ -1,4 +1,4 @@
-import upgredacountstyles from "./Upgradeaccount.module.css";
+
 import upgred from "../../../photo/upgreed.svg";
 import orangee from "../../../photo/orange.svg";
 import weeee from "../../../photo/we pay.svg";
@@ -19,29 +19,29 @@ const UpgradeAccount = () => {
     const [selectedPlan, setSelectedPlan] = useState(plans[0]);
     return (
         <DashboardLayout>
-            <h2 className={upgredacountstyles.upgradeTitle}>Upgrade Account</h2>
+            <h2 className="UpgradeAccount-upgradeTitle">Upgrade Account</h2>
 
-            <div className={upgredacountstyles.upgradeContainer}>
-                <div className={upgredacountstyles.accountBalance}>
-                    <div className={upgredacountstyles.balanceInfo}>
-                        <span className={upgredacountstyles.balanceLabel}>
+            <div className="UpgradeAccount-upgradeContainer">
+                <div className="UpgradeAccount-accountBalance">
+                    <div className="UpgradeAccount-balanceInfo">
+                        <span className="UpgradeAccount-balanceLabel">
                             Current Balance
                         </span>
-                        <span className={upgredacountstyles.balanceAmount}>
+                        <span className="UpgradeAccount-balanceAmount">
                             {page.props.auth.client.balance} EGP
                         </span>
                     </div>
                     <img
                         src={upgred}
                         alt="Balance Icon"
-                        className={upgredacountstyles.logoUpgrade}
+                        className="UpgradeAccount-logoUpgrade"
                     />
-                    <div className={upgredacountstyles.balanceDate}>
+                    <div className="UpgradeAccount-balanceDate">
                         Date: {new Date().toLocaleDateString()}
                     </div>
                 </div>
 
-                <form className={upgredacountstyles.upgradeForm} onSubmit={async (e) => {
+                <form className="UpgradeAccount-upgradeForm" onSubmit={async (e) => {
                     e.preventDefault();
                     const response = await axios.post(route('client.dashboard.membership.upgrade.balance'), {
                         _method: 'POST',
@@ -62,25 +62,25 @@ const UpgradeAccount = () => {
                         });
                     }
                 }}>
-                    <label className={upgredacountstyles.formLabel}>
+                    <label className="UpgradeAccount-formLabel">
                         Select Payment
                     </label>
-                    <div className={upgredacountstyles.selectContainer}>
-                        <div className={upgredacountstyles.selectWrapper}>
+                    <div className="UpgradeAccount-selectContainer">
+                        <div className="UpgradeAccount-selectWrapper">
                             <img
-                                className={upgredacountstyles.selectIcon}
+                                className="UpgradeAccount-selectIcon"
                                 src={moneychack}
                                 alt="icon"
                             />
-                            <select className={upgredacountstyles.formInput}>
+                            <select className="UpgradeAccount-formInput">
                                 <option>Upgrade Using Balance</option>
                             </select>
                         </div>
                     </div>
 
-                    <label className={upgredacountstyles.formLabel}>Plan</label>
-                    <div className={upgredacountstyles.selectContainer}>
-                        <select className={upgredacountstyles.formInput}>
+                    <label className="UpgradeAccount-formLabel">Plan</label>
+                    <div className="UpgradeAccount-selectContainer">
+                        <select className="UpgradeAccount-formInput">
                             {plans.map((plan) => (
                                 <option key={plan.id}>{plan.name}</option>
                             ))}
@@ -88,18 +88,18 @@ const UpgradeAccount = () => {
                     </div>
 
                     {/* الأزرار */}
-                    <div className={upgredacountstyles.buttonsContainer}>
-                        <button className={upgredacountstyles.upgradeButton}>
+                    <div className="UpgradeAccount-buttonsContainer">
+                        <button className="UpgradeAccount-upgradeButton">
                             Upgrade
                         </button>
-                        <button className={upgredacountstyles.cancelButton}>
+                        <button className="UpgradeAccount-cancelButton">
                             Cancel
                         </button>
                     </div>
                 </form>
 
                 {/* الشعارات */}
-                <div className={upgredacountstyles.paymentLogos}>
+                <div className="UpgradeAccount-paymentLogos">
                     <img src={orangee} alt="Logo 1" />
                     <img src={weeee} alt="Logo 2" />
                     <img src={insta} alt="Logo 3" />

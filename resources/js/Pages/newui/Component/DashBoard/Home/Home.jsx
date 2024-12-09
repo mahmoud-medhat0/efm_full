@@ -1,5 +1,4 @@
 import React from "react";
-import "./Homes.css";
 import DashboardLayout from '../../../Layout/DashboardLayout';
 import homs from '../../../../newui/photo/homs.svg'
 import homs2 from '../../../../newui/photo/Homes2.svg'
@@ -27,9 +26,6 @@ function Homes() {
           <div className="card-logo">EFM</div>
         </div>
       </div>
-
-
-      
         <div className="card-containers">
           <div className="continer-header">
            <span className="continer-header-span">General Stats</span> 

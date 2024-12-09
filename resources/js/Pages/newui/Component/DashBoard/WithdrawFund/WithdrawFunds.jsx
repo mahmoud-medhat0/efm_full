@@ -15,7 +15,8 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Inertia from "@inertiajs/inertia";
-import styles from "./WithdrawFunds.module.css";
+
+
 
 const WithdrawFunds = () => {
     const methods = usePage().props.methods;
@@ -31,11 +32,13 @@ const WithdrawFunds = () => {
     const serviceOptions = methods.map(method => ({
       value: method.id,
       label: (
-          <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
+          <div 
+          className="WithdrawFunds-serviceOption">
               <img 
                   src={`${app_url}/storage/${method.logo}`} 
                   alt={`${method.name} Icon`} 
-                  style={{ width: '20px', marginRight: '8px' }} 
+                  className="WithdrawFunds-serviceOptionIcon"
+               
               />
               {method.name}
           </div>
@@ -189,30 +192,30 @@ const WithdrawFunds = () => {
     };
   return (
     <DashboardLayout>
-      <h2 className={styles.headerText}>Withdraw Funds</h2>
+      <h2 className="WithdrawFunds-headerText">Withdraw Funds</h2>
 
       
-        <div className={styles.card}>
-          <div className={styles.logo}>
-            <img className={styles.logoTitle} src={upgred} alt="Logo" />
+        <div className="WithdrawFunds-card">
+          <div className="WithdrawFunds-logo">
+            <img className="WithdrawFunds-logoTitle" src={upgred} alt="Logo" />
           </div>
         { selectedMethod && selectedMethod.withdrawAccounts.length > 0 && (
             selectedMethod.withdrawAccounts.map((account) => (
-                        <div className={styles.inputWrapper}>
-                        <label className={styles.label}>{Object.keys(JSON.parse(account.data))[0].replace(/\b\w/g, char => char.toUpperCase())}</label>
-                        <div className={styles.inputWithIcon}>
-                          <input disabled value={JSON.parse(account.data)[Object.keys(JSON.parse(account.data))[0]]} placeholder={Object.keys(JSON.parse(account.data))[0]} className={styles.input} />
+                        <div className="WithdrawFunds-inputWrapper">
+                        <label className="WithdrawFunds-label">{Object.keys(JSON.parse(account.data))[0].replace(/\b\w/g, char => char.toUpperCase())}</label>
+                        <div className="WithdrawFunds-inputWithIcon">
+                          <input disabled value={JSON.parse(account.data)[Object.keys(JSON.parse(account.data))[0]]} placeholder={Object.keys(JSON.parse(account.data))[0]} className="WithdrawFunds-input" />
                         </div>
                       </div>
             ))
           )}
-          <form className={styles.form} onSubmit={onSubmit}>
-            <div className={styles.inputWrapper}>
-              <label className={styles.label}>Method</label>
-              <div className={`${styles.block}`}>
+          <form className="WithdrawFunds-form" onSubmit={onSubmit}>
+            <div className="WithdrawFunds-inputWrapper">
+              <label className="WithdrawFunds-label">Method</label>
+              <div className="WithdrawFunds-block">
               <Select
                 options={serviceOptions}
-                className={styles.orderInput}
+                className="WithdrawFunds-orderInput"
                 styles={{ control: (base) => ({ ...base, fontSize: '15px' }) }}
                 placeholder="Select a service"
                 style={{fontSize:"15px"}}
@@ -223,11 +226,11 @@ const WithdrawFunds = () => {
             </div>
 
             {/* Amount */}
-            <div className={styles.inputWrapper}>
-              <label className={styles.label}>Amount</label>
-              <div className={styles.inputWithIcon}>
-                <img className={styles.icon} src={mony} alt="Amount Icon" />
-                <input type="number" placeholder="0" className={styles.inputes} value={amount} onKeyDown={(e) => {
+            <div className="WithdrawFunds-inputWrapper">
+              <label className="WithdrawFunds-label">Amount</label>
+              <div className="WithdrawFunds-inputWithIcon">
+                <img className="WithdrawFunds-icon" src={mony} alt="Amount Icon" />
+                <input type="number" placeholder="0" className="WithdrawFunds-inputes" value={amount} onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       calcTotal();
@@ -235,26 +238,26 @@ const WithdrawFunds = () => {
                   }} onInput={handleAmountChange}
                   min="0"
                   />
-                <span className={styles.egpText}>EGP</span>
+                <span className="WithdrawFunds-egpText">EGP</span>
               </div>
             </div>
 
             {/* Total */}
-            <div className={styles.inputWrapper}>
-              <label className={styles.label}>Total</label>
-              <div className={styles.inputWithIcon}>
-                <img className={styles.icon} src={toteld} alt="Total Icon" />
-                <input type="text" placeholder="0" className={styles.inputes} value={total} disabled/>
-                <span className={styles.egpText}>EGP</span>
+            <div className="WithdrawFunds-inputWrapper">
+              <label className="WithdrawFunds-label">Total</label>
+              <div className="WithdrawFunds-inputWithIcon">
+                <img className="WithdrawFunds-icon" src={toteld} alt="Total Icon" />
+                <input type="text" placeholder="0" className="WithdrawFunds-inputes" value={total} disabled/>
+                <span className="WithdrawFunds-egpText">EGP</span>
               </div>
             </div>
 
             {/* Buttons */}
-            <div className={styles.buttonContainer}>
-              <button type="submit" className={styles.upgradeButton}>
+            <div className="WithdrawFunds-buttonContainer">
+              <button type="submit" className="WithdrawFunds-upgradeButton">
                 Send
               </button>
-              <button type="button" className={styles.cancelButton}>
+              <button type="button" className="WithdrawFunds-cancelButton">
                 Cancel
               </button>
             </div>
@@ -263,27 +266,27 @@ const WithdrawFunds = () => {
       
 
       {isModalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h2 className={styles.modalTitle}>Add Withdraw Account</h2>
-            <p className={styles.modalSubtitle}>
+        <div className="WithdrawFunds-modalOverlay">
+          <div className="WithdrawFunds-modal">
+            <h2 className="WithdrawFunds-modalTitle">Add Withdraw Account</h2>
+            <p className="WithdrawFunds-modalSubtitle">
               The Selected Method has the following fields
             </p>
-            <div className={styles.modalInputWrapper}>
+            <div className="WithdrawFunds-modalInputWrapper">
               {selectedMethod.withdrawFields.map((field) => (
                 <div key={field.id}>
-                  <label className={styles.modalLabel}>{field.name[locale]}</label>
-                  <div className={styles.inputWithIcon}>
-                  <input type={field.type} placeholder={field.name['en']} className={styles.input} {...registerModal(field.name['en'])}/>
+                  <label className="WithdrawFunds-modalLabel">{field.name[locale]}</label>
+                  <div className="WithdrawFunds-inputWithIcon">
+                  <input type={field.type} placeholder={field.name['en']} className="WithdrawFunds-input" {...registerModal(field.name['en'])}/>
                   </div>
               </div>
             ))}
             </div>
-            <div className={styles.modalButtonContainer}>
-              <button className={styles.upgradeButton} onClick={handleSubmitModal(onSubmitModal)}>
+            <div className="WithdrawFunds-modalButtonContainer">
+              <button className="WithdrawFunds-upgradeButton" onClick={handleSubmitModal(onSubmitModal)}>
                 send
               </button>
-              <button className={styles.cancelButton} onClick={closeModal}>
+              <button className="WithdrawFunds-cancelButton" onClick={closeModal}>
                 Cancel
               </button>
             </div>

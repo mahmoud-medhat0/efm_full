@@ -29,11 +29,12 @@ const AddFunds = () => {
     const serviceOptions = methods.map(method => ({
         value: method.id,
         label: (
-            <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
+            <div className="Addfunds-serviceOption" >
                 <img 
                     src={`${app_url}/storage/${method.logo}`} 
                     alt={`${method.name} Icon`} 
-                    style={{ width: '20px', marginRight: '8px' }} 
+                   
+                    className="Addfunds-serviceIcon"
                 />
                 {method.name}
             </div>
@@ -48,7 +49,6 @@ const AddFunds = () => {
         if (selectedMethod.client_fields && selectedMethod.client_fields.length > 0) {
             selectedMethod.client_fields.forEach((field) => {
                 if (field.type === "image") {
-                    // Handle image fields if necessary
                 }
             });
         }
@@ -220,168 +220,146 @@ const AddFunds = () => {
     const [isCancelButtonHovered, setIsCancelButtonHovered] = useState(false);
     return (
         <DashboardLayout>
-             <h1 style={styles.title}>Add Funds</h1>
-            <div style={styles.container}>
-                <div  style={{width: "auto",height: "auto",backgroundColor:"#fff",
-                    borderRadius: "15px",
-                    padding:"20px",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                    textAlign: "center",
-                    marginTop:"12px"
-                    }}>
-                    <div style={styles.header}>
-                       
+            <h1 className="Addfunds-title">Add Funds</h1>
+            <div className="Addfunds-container">
+                <div className="Addfunds-card">
+                    <div className="Addfunds-header">
                         {selectedMethod && selectedMethod.target_deposit && (
-                            <p style={styles.phone} onClick={copyToClipboard}>
+                            <p className="Addfunds-phone" onClick={copyToClipboard}>
                                 {selectedMethod.target_deposit}{" "}
                                 <img
-                                    style={{ padding: "8px" }}
+                                    className="Addfunds-phoneIcon"
                                     src={copy}
                                     alt="copy"
                                 />
                             </p>
                         )}
                     </div>
-                    <form style={styles.form} onSubmit={handleSubmit}>
-                        <div style={styles.inputWrapperaddfunds}>
-                            <label style={styles.label}>
+                    <form className="Addfunds-form" onSubmit={handleSubmit}>
+                        <div className="Addfunds-inputWrapperaddfunds">
+                            <label className="Addfunds-label">
                                 Method of transfer
                             </label>
-                            <div style={{ ...styles.inputWithIcon, display: "block" }}>
-                            <Select
+                            <div className="Addfunds-inputWithIcon">
+                                <Select
                                     options={serviceOptions}
                                     onChange={(selectedOption) => handleMethodChange(selectedOption)}
                                     styles={{ control: (base) => ({ ...base, fontSize: '15px' }) }}
+                                    className="Addfunds-select"
                                     placeholder="Select a Method"
                                     value={selectedMethodOption}
                                 />  
                             </div>
                         </div>
-
-                        <div style={styles.inputWrapperaddfunds}>
-                            <label style={styles.label}>Amount</label>
-                            <div style={styles.inputWithIcon}>
+                        <div className="Addfunds-inputWrapperaddfunds">
+                            <label className="Addfunds-label">Amount</label>
+                            <div className="Addfunds-inputWithIcon">
                                 <img
-                                    style={styles.icon}
+                                    className="Addfunds-icon"
                                     src={mony}
                                     alt="amount icon"
                                 />
                                 <input
                                     type="text"
                                     placeholder="Enter The Amount"
-                                    style={{ width: "90%", fontWeight: "bold", fontSize: "14px" }}
+                                    className="Addfunds-amountInput"
                                     onChange={(e) => setAmount(e.target.value)}
                                 />
                             </div>
                         </div>
-                            {selectedMethod && selectedMethod.client_fields && selectedMethod.client_fields.length > 0 && (
-                              selectedMethod.client_fields.map((field) => (
-                                <div style={styles.inputWrapperaddfunds} key={field.id}>
-                                  <label
-                                    htmlFor={field.name[locale]}
-                                    style={styles.label}
-                                  >
-                                    {field.name[locale] || field.name['en']}
-                                  </label>
-                                  {field.type === 'text' && (
-                                    <input 
-                                      id={field.name['en']} 
-                                      type="text" 
-                                      required={field.required} 
-                                      style={{ 
-                                        width: '100%', 
-                                        padding: '8px', 
-                                        border: '1px solid #ccc', 
-                                        borderRadius: '4px' 
-                                      }} 
-                                    />
-                                  )}
-                                  {field.type === 'number' && (
-                                    <input 
-                                      id={field.name['en']} 
-                                      type="number" 
-                                      required={field.required} 
-                                      style={{ 
-                                        width: '100%', 
-                                        padding: '8px', 
-                                        border: '1px solid #ccc', 
-                                        borderRadius: '4px' 
-                                      }} 
-                                    />
-                                  )}
-                                  {field.type === 'image' && (
-                                    <input
-                                      type="file"
-                                      name={field.name['en']}
-                                      style={{ 
-                                        width: '100%', 
-                                        padding: '8px', 
-                                        border: '1px solid #ccc', 
-                                        borderRadius: '4px' 
-                                      }}
-                                      onChange={(e) => handleAttachmentChange(e.target.files[0], field.name['en'])}
-                                      required={field.required}
-                                    />
-                                  )}
+                        {selectedMethod && selectedMethod.client_fields && selectedMethod.client_fields.length > 0 && (
+                            selectedMethod.client_fields.map((field) => (
+                                <div className="Addfunds-inputWrapperaddfunds" key={field.id}>
+                                    <label
+                                        htmlFor={field.name[locale]}
+                                        className="Addfunds-label"
+                                    >
+                                        {field.name[locale] || field.name['en']}
+                                    </label>
+                                    {field.type === 'text' && (
+                                        <input 
+                                            id={field.name['en']} 
+                                            type="text" 
+                                            required={field.required} 
+                                            className="Addfunds-textInput"
+                                        />
+                                    )}
+                                    {field.type === 'number' && (
+                                        <input 
+                                            id={field.name['en']} 
+                                            type="number" 
+                                            required={field.required} 
+                                            className="Addfunds-numberInput"
+                                        />
+                                    )}
+                                    {field.type === 'image' && (
+                                        <input
+                                            type="file"
+                                            name={field.name['en']}
+                                            className="Addfunds-fileInput"
+                                            onChange={(e) => handleAttachmentChange(e.target.files[0], field.name['en'])}
+                                            required={field.required}
+                                        />
+                                    )}
                                 </div>
-                              ))
-                            )}
-                        <div style={styles.row}>
-                            <div style={styles.column}>
-                                <label style={styles.label}>Fees</label>
-                                <div style={styles.inputWithCurrency}>
+                            ))
+                        )}
+                        <div className="Addfunds-row">
+                            <div className="Addfunds-column">
+                                <label className="Addfunds-label">Fees</label>
+                                <div className="Addfunds-inputWithCurrency">
                                     <input
                                         type="text"
                                         placeholder="0"
-                                        style={styles.inputSmall}
+                                        className="Addfunds-inputSmall"
                                         value={charge}
                                     />
-                                    <span style={styles.currency}>EGP</span>
+                                    <span className="Addfunds-currency">EGP</span>
                                 </div>
                             </div>
-                            <div style={styles.column}>
-                                <label style={styles.label}>Vat</label>
-                                <div style={styles.inputWithCurrency}>
+                            <div className="Addfunds-column">
+                                <label className="Addfunds-label">Vat</label>
+                                <div className="Addfunds-inputWithCurrency">
                                     <input
                                         type="text"
                                         placeholder="0"
-                                        style={styles.inputSmall}
+                                        className="Addfunds-inputSmall"
                                         value={vat}
                                         disabled
                                     />
-                                    <span style={styles.currency}>EGP</span>
+                                    <span className="Addfunds-currency">EGP</span>
                                 </div>
                             </div>
                         </div>
-                        <div style={styles.totalContainer}>
-                            <h2 style={styles.totalLabel}>Total</h2>
-                            <h3 style={styles.totalValue}>{total} EGP</h3>
+                        <div className="Addfunds-totalContainer">
+                            <h2 className="Addfunds-totalLabel">Total</h2>
+                            <h3 className="Addfunds-totalValue">{total} EGP</h3>
                         </div>
                         {selectedMethod &&
                                 selectedMethod.attachment !== false &&
-                        <div style={styles.inputWrapperaddfunds}>
-                            <label style={styles.label}>
+                        <div className="Addfunds-inputWrapperaddfunds">
+                            <label className="Addfunds-label">
                                 Uploading the file
                             </label>
-                            <div style={styles.fileUpload}>
-                                <span style={styles.uploadText}>
+                            <div className="Addfunds-fileUpload">
+                                <span className="Addfunds-uploadText">
                                     Attach The File
                                 </span>
                                 <input
                                     type="file"
-                                    style={styles.fileInput}
+                                    className="Addfunds-fileInput"
                                     onChange={(e) => handleAttachmentChange(e.target.files[0], "attachment")}
                                 />
                             </div>
                             {attachment && attachment["attachment"] && (
-                                <div style={styles.previewContainer}>
+                                <div className="Addfunds-previewContainer">
                                     <img
                                         src={attachment["attachment"].preview}
                                         alt="Preview"
-                                        style={styles.previewImage}
+                                        className="Addfunds-previewImage"
                                     />
                                     <button
-                                        style={styles.removeButton}
+                                        className="Addfunds-removeButton"
                                         onClick={() => handleRemoveAttachment("attachment")}
                                     >
                                         Remove
@@ -390,13 +368,10 @@ const AddFunds = () => {
                             )}
                         </div>
                         }
-                        <div style={styles.buttonContainer}>
+                        <div className="Addfunds-buttonContainer">
                             <button
                                 type="submit"
-                                style={{
-                                    ...styles.sendButton,
-                                    ...(isSendButtonHovered ? styles.sendButtonHover : {}),
-                                }}
+                                className={`Addfunds-sendButton ${isSendButtonHovered ? 'Addfunds-sendButtonHover' : ''}`}
                                 onMouseEnter={() => setIsSendButtonHovered(true)}
                                 onMouseLeave={() => setIsSendButtonHovered(false)}
                                 onClick={onSubmit}
@@ -405,10 +380,7 @@ const AddFunds = () => {
                             </button>
                             <button
                                 type="button"
-                                style={{
-                                    ...styles.cancelButton,
-                                    ...(isCancelButtonHovered ? styles.cancelButtonHover : {}),
-                                }}
+                                className={`Addfunds-cancelButton ${isCancelButtonHovered ? 'Addfunds-cancelButtonHover' : ''}`}
                                 onMouseEnter={() => setIsCancelButtonHovered(true)}
                                 onMouseLeave={() => setIsCancelButtonHovered(false)}
                             >
@@ -416,231 +388,17 @@ const AddFunds = () => {
                             </button>
                         </div>
                     </form>
-
-                    <div style={styles.logosContainer}>
-                        <img src={orangee} alt="Logo 1" style={styles.logo} />
-                        <img src={weeee} alt="Logo 2" style={styles.logo} />
-                        <img src={insta} alt="Logo 3" style={styles.logo} />
-                        <img src={vode} alt="Logo 4" style={styles.logo} />
-                        <img src={bankk} alt="Logo 5" style={styles.logo} />
+                    <div className="Addfunds-logosContainer">
+                        <img src={orangee} alt="Logo 1" className="Addfunds-logo" />
+                        <img src={weeee} alt="Logo 2" className="Addfunds-logo" />
+                        <img src={insta} alt="Logo 3" className="Addfunds-logo" />
+                        <img src={vode} alt="Logo 4" className="Addfunds-logo" />
+                        <img src={bankk} alt="Logo 5" className="Addfunds-logo" />
                     </div>
                 </div>
             </div>
         </DashboardLayout>
     );
-};
-
-const styles = {
-    container: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "auto",
-        backgroundColor: "#f9f9f9",
-    },
-    card: {
-        width: "400px",
-        backgroundColor: "#fff",
-        borderRadius: "15px",
-        padding: "20px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        textAlign: "center",
-    },
-    header: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "20px",
-    },
-    title: {
-        fontSize: "1.4rem",
-        fontWeight: "bold",
-        color: "#808892",
-        textAlign: "center",
-      
-        "@media (max-width: 768px)": {
-          textAlign: "center",
-          fontWeight: "bold",
-        }
-    },
-    phone: {
-        fontSize: "16px",
-        color: "#DFBC8A",
-        textAlign: "right",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-    },
-    phoneIcon: {
-        marginLeft: "5px",
-    },
-    totalContainer: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "20px",
-    },
-    totalLabel: {
-        fontSize: "24px",
-        color: "#DFBC8A",
-        fontWeight: "bold",
-        
-    },
-    totalValue: {
-        fontSize: "24px",
-        color: "#DFBC8A",
-        fontWeight: "bold",
-       
-    },
-    form: {
-        textAlign: "left",
-    },
-    inputWrapperaddfunds: {
-        marginBottom: "15px",
-    },
-    label: {
-        display: "block",
-        marginBottom: "5px",
-        fontSize: "14px",
-        color: "#DFBC8A",
-        fontWeight: "bold",
-    },
-    inputWithIcon: {
-        display: "flex",
-        alignItems: "center",
-        border: "1px solid #ddd",
-        borderRadius: "5px",
-        padding: "10px",
-    },
-    icon: {
-        marginRight: "10px",
-        width: "40px",
-        height: "40px",
-    },
-    fileUpload: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        border: "1px dashed #ddd",
-        borderRadius: "5px",
-        height: "50px",
-        color: "#999",
-        fontSize: "14px",
-        position: "relative",
-    },
-    uploadText: {
-        pointerEvents: "none",
-    },
-    fileInput: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        opacity: 0,
-        cursor: "pointer",
-    },
-    previewContainer: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "#f9f9f9",
-        borderRadius: "5px",
-        padding: "10px",
-        marginTop: "10px",
-        border: "1px solid #ddd",
-    },
-    previewImage: {
-        width: "60px",
-        height: "60px",
-        borderRadius: "5px",
-        objectFit: "cover",
-    },
-    removeButton: {
-        backgroundColor: "#e74c3c",
-        color: "#fff",
-        border: "none",
-        padding: "5px 10px",
-        borderRadius: "5px",
-        cursor: "pointer",
-        fontSize: "14px",
-    },
-    row: {
-        display: "flex",
-        justifyContent: "space-between",
-        gap: "15px",
-        marginBottom: "20px",
-    },
-    column: {
-        width: "48%",
-        display: "flex",
-        flexDirection: "column",
-    },
-    inputWithCurrency: {
-        display: "flex",
-        alignItems: "center",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        padding: "10px",
-        height: "50px",
-        backgroundColor: "#f9f9f9",
-        boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-    },
-    inputSmall: {
-        flex: "1",
-        border: "none",
-        outline: "none",
-        fontSize: "16px",
-        width: "10%",
-        textAlign: "left",
-        color: "#555",
-        backgroundColor: "transparent",
-    },
-    currency: {
-        marginLeft: "-96px",
-        fontSize: "16px",
-        color: "#888",
-        fontWeight: "bold",
-    },
-    buttonContainer: {
-        display: "flex",
-        justifyContent: "space-between",
-        gap: "10px",
-        marginTop: "20px",
-    },
-    sendButton: {
-        flex: "1",
-        backgroundColor: "#DFBC8A",
-        color: "#fff",
-        padding: "10px",
-        borderRadius: "5px",
-        border: "none",
-        fontSize: "16px",
-        cursor: "pointer",
-        transition: "background-color 0.3s", // Smooth transition
-    },
-    sendButtonHover: {
-        backgroundColor: "#a87c6b", // Darker shade for hover
-    },
-    cancelButton: {
-        flex: "1",
-        backgroundColor: "#ddd",
-        color: "#333",
-        padding: "10px",
-        borderRadius: "5px",
-        border: "none",
-        fontSize: "16px",
-        cursor: "pointer",
-        transition: "background-color 0.3s", // Smooth transition
-    },
-    cancelButtonHover: {
-        backgroundColor: "#bbb", // Darker shade for hover
-    },
-    logosContainer: {
-        display: "flex",
-        justifyContent: "space-around",
-        marginTop: "20px",
-    },
-    logo: {
-        width: "55px",
-        height: "55px",
-    },
 };
 
 export default AddFunds;

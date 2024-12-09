@@ -16,6 +16,8 @@ use Laravel\Nova\Fields\MorphMany;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Boolean;
+use Outl1ne\MultiselectField\Multiselect;
+use App\Models\TaskManualField as TaskManualFieldModel;
 class Service extends Resource
 {
     /**
@@ -55,21 +57,55 @@ class Service extends Resource
                 Text::make('name')->sortable(),
             ]),
             Image::make('icon'),
-            Boolean::make('is_category_required')->sortable(),
+            Boolean::make('is category required')->sortable(),
             Select::make('status')->options([
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ]),
-            Number::make('reward_point')->sortable(),
-            Number::make('price_per_one_point')->sortable(),
-            Currency::make('price_per_one_balance')->step(0.01)->sortable(),
-            Number::make('min_amount')->sortable(),
-            Number::make('max_amount')->sortable(),
+            Select::make('type')->options([
+                'auto' => 'Auto',
+                'manual' => 'Manual',
+            ])->displayUsingLabels()->sortable(),
+            Boolean::make('requires description')->sortable()->dependsOn('type', function ($field, $request) {
+                if ($request->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
+            Boolean::make('requires instructions')->sortable()->dependsOn('type', function ($field, $request) {
+                if ($request->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }), 
+            Number::make('seconds to complete')->sortable()->dependsOn('type', function ($field, $request) {
+                if ($request->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
+            Multiselect::make('manual fields')->options(TaskManualFieldModel::all()->pluck('name', 'id'))->sortable()->dependsOn('type', function ($field, $request) {
+                if ($request->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
+            Number::make('reward point')->sortable(),
+            Number::make('price per one point')->sortable(),
+            Currency::make('price per one balance')->step(0.01)->sortable(),
+            Number::make('min amount')->sortable(),
+            Number::make('max amount')->sortable(),
             Code::make('credentials')->sortable(),
             Code::make('calculation_formula')->sortable(),
             Code::make('fields'),
+            Text::make('service code')->sortable(),
+            Currency::make('cost per unit')->step(0.01)->sortable(),
             HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail()->sortable(),
-            MorphMany::make('activityLogs','activityLogs', ActivityLog::class)->sortable(),
+            MorphMany::make('activity logs','activityLogs', ActivityLog::class)->sortable(),
         ];
     }
 

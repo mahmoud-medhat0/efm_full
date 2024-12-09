@@ -2,7 +2,7 @@ import InputErrorMessage from "../../../../components/InputErrorMessage";
 import Telegram from "../../photo/telegram.png";
 import LinkedIn from "../../photo/linkedin-logo.png";
 import face from "../../photo/facebook.png";
-import "./SingUp.css";
+
 import singup from "../../photo/Singup.svg";
 import { useState } from "react";
 import NavbarAuth from "../../Component/auth/NavbarAuth";
@@ -81,17 +81,18 @@ const SingUp = () => {
             <div className="login-container">
                 <div className="login-left">
                     <p>Welcome back! Please login to your account.</p>
-                    <form onSubmit={handleSubmit(onSubmit)} className="signup-form-container">
+                    <form onSubmit={handleSubmit(onSubmit)} className="login-form-container">
                         <div className="input-group">
-                            <input type="text" placeholder="FirstName" {...register("first_name")} />
-                            <input type="text" placeholder="LastName" {...register("last_name")} />
+                            <input type="text" placeholder="FirstName" {...register("first_name")} className="login-inputfn" />
+                            <input type="text" placeholder="LastName" {...register("last_name")} className="login-inputln" />
                         </div>
                         <div className="input-group">
-                            <input type="text" placeholder="Username" {...register("username")} />
+                            <input type="text" placeholder="Username" {...register("username")} className="login-inputun" />
                             <input
                                 type="text"
                                 placeholder="Telegram username"
                                 {...register("telegram")}
+                                className="login-inputtg"
                             />
                         </div>
                         <div className="input-group">
@@ -100,6 +101,7 @@ const SingUp = () => {
                                     value={phone}
                                     defaultCountry="eg"
                                     onChange={(phone) => setPhone(phone)}
+                                      className="login-inputphone"
                                 />
                                 {(phone.trim() === "" ||
                                     phone.trim().length <= 2) && (
@@ -114,28 +116,31 @@ const SingUp = () => {
                             placeholder="Email"
                             className="full-width-input"
                             {...register("email")}
+                            className="login-inputemil"
                         />
-                        <div className="password-group">
+                        <div className="signup-password-group">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Password"
                                 {...register("password")}
+                                className="login-inputpassword"
                             />
                             <span
-                                className="toggle-password"
+                                className="signup-toggle-password"
                                 onClick={togglePasswordVisibility}
                             >
                                 {showPassword ? <img src={eyeOpen} alt="eye-open" /> : <img src={eyeClosed} alt="eye-closed" />}
                             </span>
                         </div>
-                        <div className="password-group">
+                        <div className="signup-password-group">
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Password Confirmation"
                                 {...register("password_confirmation")}
+                                className="login-inputpassword"
                             />
                             <span
-                                className="toggle-password"
+                                className="signup-toggle-password"
                                 onClick={toggleConfirmPasswordVisibility}
                             >
                                 {showConfirmPassword ? <img src={eyeOpen} alt="eye-open" /> : <img src={eyeClosed} alt="eye-closed" />}
@@ -147,17 +152,18 @@ const SingUp = () => {
                             className="full-width-input"
                             defaultValue={referral_code}
                             {...register("referral_code")}
+                            className="login-inputreferral"
                         />
-                        <div className="button-group">
-                            <button className="signup-btn">Sign Up</button>
-                            <Link className="login-btn" href={route("client.login")}>Login</Link>
+                        <div className="signup-button-group">
+                            <button className="signup2-btn">Sign Up</button>
+                            <Link className="login2-btn" href={route("client.login")}>Login</Link>
                         </div>
                     </form>
 
-                    <div className="social-icons">
-                        <img src={Telegram} alt="face" className="icon" />
-                        <img src={face} alt="face" className="icon" />
-                        <img src={LinkedIn} alt="face" className="icon" />
+                    <div className="login-social-icons ">
+                        <img src={Telegram} alt="face" className="login-icon" />
+                        <img src={face} alt="face" className="login-icon" />
+                        <img src={LinkedIn} alt="face" className="login-icon" />
                         <span>@EFM Hub</span>
                     </div>
                 </div>

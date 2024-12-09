@@ -1,4 +1,4 @@
-import './ForgetPassword.css'
+
 import forget from './../../photo/Forget.svg'
 import logooos from './../../photo/logo2.svg'
 import Telegram from './../../photo/telegram.png'
@@ -66,15 +66,15 @@ const ForgetPassword = () => {
         <br/>
         
         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-          <input type="email" placeholder="Email" {...register("email")} />
+          <input type="email" placeholder="Email" {...register("email")} className="login-inputemil" />
           <button type="submit" className="login-btn">ForgetPassword</button>
           <button type="button" className="signup-btn" onClick={()=>Inertia.visit(route('client.register'))}>Sign Up</button>
         </form>
         
-        <div className="social-icons">
-          <img src={Telegram} alt="Telegram Icon" className="icon" />
-          <img src={face} alt="Facebook Icon" className="icon" />
-          <img src={LinkedIn} alt="LinkedIn Icon" className="icon" />
+        <div className="login-social-icons">
+          <img src={Telegram} alt="Telegram Icon" className="login-icon" />
+          <img src={face} alt="Facebook Icon" className="login-icon" />
+          <img src={LinkedIn} alt="LinkedIn Icon" className="login-icon" />
           <span style={{textAlign:'center'}}>@EFM Hub</span>
         </div>
       </div>

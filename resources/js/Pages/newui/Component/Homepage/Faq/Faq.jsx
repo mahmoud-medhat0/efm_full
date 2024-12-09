@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Faq.css';
+
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 
@@ -33,7 +33,9 @@ const Faq = () => {
 
     return (
         <>
-            <h2 style={{ textAlign: 'center', color: 'black' ,fontSize:'29px',fontWeight:'bold' }}>FAQ</h2>
+            <h2 
+            className='faq-title'
+          >FAQ</h2>
             <div className="faq-container">
                 {faqData.map((item, index) => (
                     <div key={index} className={`faq-item ${activeIndex === index ? 'active' : ''}`}>

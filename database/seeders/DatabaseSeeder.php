@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             // CurrencySeederPermission::class,
             // RoiSubscriptionPremission::class,
             // TransactionRejectionCausePermission::class,
-            AgentRecieveRequestPermissions::class,
+            // AgentRecieveRequestPermissions::class,
+            TaskManualFieldPremission::class,
         ]);
     }
 }

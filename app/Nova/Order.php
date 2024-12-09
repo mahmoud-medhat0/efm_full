@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use DateInterval;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\URL;
@@ -14,15 +15,21 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
+use Alaouy\Youtube\Facades\Youtube;
+use App\Models\Client as ClientModel;
 use Laravel\Nova\Fields\BelongsToMany;
+use App\Models\Service as ServiceModel;
 use Illuminate\Database\Eloquent\Model;
 use App\Nova\Filters\Order\StatusFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Murdercode\TinymceEditor\TinymceEditor;
 use App\Nova\Filters\Order\ApprovedByFilter;
 use App\Nova\Filters\Order\ServiceFilter;   
+use App\Models\Transaction as TransactionModel;
 use App\Nova\Filters\Order\ProvidorClientFilter;
 use App\Nova\Filters\Order\RejectionCauseFilter;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
+use App\Models\ReferralSetting as ReferralSettingModel;
 
 class Order extends Resource
 {
@@ -70,8 +77,8 @@ class Order extends Resource
                 return $approvedBy->name;
             })->hideWhenCreating()->hideWhenUpdating(),
             BelongsTo::make('Provider Client', 'provider', Client::class)->displayUsing(function ($provider) {
-                return $provider->name;
-            })->sortable(),
+                return $provider->name.' - '.$provider->email;
+            })->sortable()->searchable(),
             BelongsTo::make('service')->displayUsing(function ($service) {
                 return $service->name;
             })->sortable(),
@@ -111,6 +118,22 @@ class Order extends Resource
                     $field->hide();
                 }
             }),
+            TinymceEditor::make('description')->dependsOn(['service'], function ($field,$request) {
+                $service = ServiceModel::find($request->service);
+                if ($service && $service->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
+            TinymceEditor::make('instructions')->dependsOn('service', function ($field, $request) {
+                $service = ServiceModel::find($request->service);
+                if ($service && $service->type === 'manual') {
+                    $field->show();
+                } else {
+                    $field->hide();
+                }
+            }),
             Number::make('Target Amount','target_amount')->sortable(),
             Number::make('Current Amount','current_amount')->readonly()->sortable(),
             Currency::make('Price')->displayUsing(function ($value, $resource, $attribute) {
@@ -129,8 +152,30 @@ class Order extends Resource
             HasMany::make('Tasks', 'tasks', Task::class)->onlyOnDetail()->sortable(),
         ];
     }
+    protected static function afterUpdateValidation(NovaRequest $request, $validator)
+    {
+        $service = ServiceModel::find($request->service);
+        $provider = ClientModel::find($request->provider);
+        if($provider->balance < $request->price){
+            throw new \Exception('Insufficient balance');
+            return;
+        }
+        TransactionModel::create([
+            'amount' => $request->price,
+            'fee' => 0,
+            'total' => $request->price,
+            'description' => 'Order from ' . $service->name,
+            'tnx_type' => 'sub',
+            'tnx' => 'ORD' . time(),
+            'client_id' => $provider->id,
+            'type' => 'order',
+        ]);
+        $provider->decrement('balance', $request->price);
+
+    }
     public static function afterUpdate(NovaRequest $request, Model $model)
     {
+        // dd($request->all());
         $admin = auth(env('NOVA_GUARD'))->user();
         $model->last_action = $request->status;
         $model->last_action_at = now();
@@ -138,21 +183,37 @@ class Order extends Resource
         if ($request->status === 'rejected') {
             $model->rejection_cause_id = $request->rejectionCause;
         }elseif($request->status === 'approved'){
+            $service = ServiceModel::find($request->service);
+            if($service->service_code === 'yt_videos'){
+                $videoId = Youtube::parseVidFromURL($request->link);
+                    $video = Youtube::getVideoInfo($videoId);
+                    $interval = new DateInterval($video->contentDetails->duration);
+                    $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
+                    $price = $request->amount * ($minutes * json_decode($model->service->calculation_formula, true)['minute_cost']);
+                    $user = auth()->user();
+                    $thumbnail = $video->snippet->thumbnails->standard->url;
+                    $title = $video->snippet->title;
+                    foreach (json_decode($model->service->fields, true) as $field => $value) {
+                    $orderdata[$field] = isset(${$field}) ? ${$field} : null;
+                }
+                $model->data = $orderdata;
+            }
             $model->approved_by = $admin->id;
             if($model->tasks->isEmpty()){
                 GenerateOrderTasks::dispatch($model)->onQueue('default');
             }
             $client_of_order = $model->provider;
+            $client_of_order->decrement('balance', $model->price);
             $parent_of_client_of_order = $client_of_order->parent;
             if($parent_of_client_of_order){
-                $referral_setting = ReferralSetting::where('is_active', true)->where('code', 'order_referral')->first();
+                $referral_setting = ReferralSettingModel::where('is_active', true)->where('code', 'order_referral')->first();
                 if($referral_setting){
                     if($referral_setting->type === 'percentage'){
                         $bonus = $model->price * $referral_setting->value / 100;
                     }else{
                         $bonus = $referral_setting->value;
                     }
-                    Transaction::create([
+                    TransactionModel::create([
                         'amount' => $bonus,
                         'fee' => 0,
                         'total' => $bonus,

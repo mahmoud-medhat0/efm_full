@@ -1,4 +1,4 @@
-import "./Login.css";
+
 import photo from "../../photo/login.svg";
 import Telegram from "../../photo/telegram.png";
 import face from "../../photo/facebook.png";
@@ -68,13 +68,13 @@ const Login = () => {
                 <br />
 
                 <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                    <input type="text" placeholder="Email" {...register("username")} />
+                    <input type="text" placeholder="Email" {...register("username")} className="login-inputemil" />
                     <div className="password-container">
-                        <input type="password" placeholder="Password" {...register("password")} />
+                        <input type="password" placeholder="Password" {...register("password")} className="login-inputpassword" />
                     </div>
-                    <div className="options">
+                    <div className="login-options">
                         <label>
-                            <input type="checkbox" className="checkbox-login" />{" "}
+                            <input type="checkbox" className="checkbox-login " />{" "}
                             Remember Me
                         </label>
                         <Link href={route('client.reset-password')}>Forgot Password?</Link>
@@ -86,10 +86,10 @@ const Login = () => {
                         Sign Up
                     </Link>
                 </form>
-                <div className="social-icons">
-                    <img src={Telegram} alt="face" className="icon" />
-                    <img src={face} alt="face" className="icon" />
-                    <img src={LinkedIn} alt="face" className="icon" />
+                <div className="login-social-icons">
+                    <img src={Telegram} alt="face" className="login-icon" />
+                    <img src={face} alt="face" className="login-icon" />
+                    <img src={LinkedIn} alt="face" className="login-icon" />
                     <span>@EFM Hub</span>
                 </div>
             </div>

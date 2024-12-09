@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './ReferralContestPage.css';
 import photo from '../../photo/refelr.svg';
 import trophy from '../../photo/trophy-star 1.svg';
 import Layout from "../../Layout/Layout";
@@ -51,15 +50,15 @@ function ReferralContestPage() {
     <div className="referral-page">
       
      
-      <h2 className="title-referral">
-        Total subscribers <span className="subscriber-count">{clients}</span>
+      <h2 className="referral-title-referral">
+        Total subscribers <span className="referral-subscriber-count">{clients}</span>
       </h2>
       <img src={photo} alt="Referral" className="referral-image" />
      
       <div className="referral-contest">
-        <p className="contest-description">Get financial rewards when you encourage your friends to join EFMhub through your referral link.</p>
+        <p className="referral-contest-description">Get financial rewards when you encourage your friends to join EFMhub through your referral link.</p>
         
-        <div className="time-filters">
+        <div className="referral-time-filters">
           {Object.keys(data).map((tab) => (
             <button
               key={tab}

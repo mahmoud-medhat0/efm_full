@@ -15,10 +15,12 @@ use App\Nova\Filters\Task\PaidFilter;
 use App\Nova\Filters\Task\OrderFilter;
 use App\Nova\Filters\Task\ClientFilter;
 use App\Nova\Filters\Task\StatusFilter;
+use Illuminate\Support\Facades\Storage;
+use App\Nova\Filters\Task\ServiceFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Naif\ToggleSwitchField\ToggleSwitchField;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use App\Nova\Filters\Task\ServiceFilter;
+
 class Task extends Resource
 {
     /**
@@ -59,7 +61,8 @@ class Task extends Resource
                 'completed' => 'Completed',
                 'failed' => 'Failed',
                 'in_progress' => 'In Progress',
-            ])->sortable(),
+                'under_review' => 'Under Review',
+            ])->sortable()->displayUsingLabels(),
             ToggleSwitchField::make('Paid', 'paid')->sortable(),
             Boolean::make('Removed', 'removed')->sortable(),
             Number::make('Points Reward', 'points_reward')->step(0.01)->default(0)->sortable(),
@@ -67,6 +70,23 @@ class Task extends Resource
             Text::make('IP', 'ip')->readonly()->sortable(),
             Text::make('User Agent', 'user_agent')->readonly()->sortable(),
             Text::make('Country', 'country')->readonly()->sortable(),
+            Text::make('Data', 'data')
+                ->displayUsing(function ($value) {
+                    $output = '';
+                    if ($value) {
+                        $fields = json_decode($value, true);
+                        foreach ($fields as $key => $field) {
+                            if ($field['type'] === 'image') {
+                                $output .= "<div><strong>{$key}:</strong> <img src='" . Storage::disk('public')->url($field['value']) . "' alt='{$key}' style='max-width: 100px;'></div>";
+                            } else {
+                                $output .= "<div><strong>{$key}:</strong> {$field['value']}</div>";
+                            }
+                        }
+                    }
+                    return $output;
+                })
+                ->asHtml()
+                ->onlyOnDetail(),
             BelongsTo::make('Order', 'order', Order::class)->displayUsing(function ($order) {
                 return $order->order_id;
             })->sortable(),

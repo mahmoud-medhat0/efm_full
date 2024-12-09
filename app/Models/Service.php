@@ -35,4 +35,11 @@ class Service extends Model
     {
         return $this->hasMany(Task::class)->where('status', 'completed')->where('client_id', $client->id);
     }
+    public function fields()
+    {
+        if($this->manual_fields){
+            return TaskManualField::whereIn('id',json_decode($this->manual_fields))->get();
+        }
+        return null;
+    }
 }

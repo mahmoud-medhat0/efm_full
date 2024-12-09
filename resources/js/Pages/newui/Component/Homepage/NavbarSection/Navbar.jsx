@@ -12,12 +12,12 @@ const Navbar = () => {
   };
   const {client} = props.auth;
   return (
-    <header className="headerss">
-      <img src={logo} alt="logo" className="logoss" />
-      <button className="hamburger" onClick={toggleMenu}>
+    <header className="Navbar1-headerss">
+      <img src={logo} alt="logo" className="Navbar1-logoss" />
+      <button className="Navbar1-hamburger" onClick={toggleMenu}>
         ☰
       </button>
-      <nav className={`nav ${isOpen ? "open" : ""}`}>
+      <nav className={`Navbar1-nav ${isOpen ? "open" : ""}`}>
         <ul>
           <li>
             <Link href={route("client.home")}>Home</Link>
@@ -35,7 +35,7 @@ const Navbar = () => {
             <Link href={route("client.home")+"#offers"}>Offers</Link>
           </li>
         </ul>
-        <div className="mobile-auth-buttons">
+        <div className="Navbar1-mobile-auth-buttons">
           {!client ? (
             <>
         <Link href={route("client.register")}>
@@ -51,7 +51,7 @@ const Navbar = () => {
           )}
         </div>
       </nav>
-      <div className="auth-buttons">
+      <div className="Navbar1-auth-buttons">
         {!client ? (
           <>
           <Link href={route("client.register")}>

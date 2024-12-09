@@ -28,6 +28,7 @@ use App\Nova\TicketCategory;
 use App\Nova\ReferralSection;
 use App\Nova\ReferralSetting;
 use App\Nova\RoiSubscription;
+use App\Nova\TaskManualField;
 use App\Nova\TicketCategrory;
 use App\Nova\WithdrawAccount;
 use App\Nova\AdvertiseSection;
@@ -99,6 +100,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('currency-dollar')->collapsible(),
                 MenuSection::make('Orders Resources', [
                     MenuItem::resource(Service::class),
+                    MenuItem::resource(TaskManualField::class),
                     MenuItem::resource(Order::class),
                     MenuItem::resource(Task::class),
                     MenuItem::resource(RejectionCause::class),

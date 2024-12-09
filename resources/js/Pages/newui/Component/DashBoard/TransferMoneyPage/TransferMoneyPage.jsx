@@ -1,4 +1,4 @@
-import "./TransferMoneyPage.css";
+
 import iconess5 from "../../../photo/amount task.svg";
 import iconess6 from "../../../photo/clienttitel.svg";
 import orangee from "../../../photo/orange.svg";

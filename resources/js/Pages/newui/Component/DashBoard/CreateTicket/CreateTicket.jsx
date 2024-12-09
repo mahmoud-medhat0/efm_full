@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from './CreateTicket.module.css'; // Import the CSS module
 import logo from "../../../photo/logo withedraw.svg";
 import DashboardLayout from '../../../Layout/DashboardLayout';
 import { usePage } from "@inertiajs/inertia-react";
@@ -44,27 +43,27 @@ const CreateTicket = () => {
 
   return (
     <DashboardLayout>
-      <div className={styles.fullWidthDiv}>
-        <h2 className={styles.title}>Create Ticket</h2>
-        <div className={styles.container}>
+      <div className="createticket-fullWidthDiv">
+        <h2 className="createticket-title">Create Ticket</h2>
+        <div className="createticket-container">
           <center>
-          <img src={logo} alt="Logo" className={styles.logo} />
+          <img src={logo} alt="Logo" className="createticket-logo" />
           </center>
-          <form className={styles.form}>
-            <label className={styles.label}>Ticket Title</label>
+          <form className="createticket-form">
+            <label className="createticket-label">Ticket Title</label>
             <input
               type="text"
               placeholder="Ticket Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={styles.input}
+              className="createticket-input"
             />
 
-            <label className={styles.label}>Category</label>
+            <label className="createticket-label">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className={styles.select}
+              className="createticket-select"
             >
               <option>Select Category</option>
               {ticketCategories.map((category) => (
@@ -74,41 +73,41 @@ const CreateTicket = () => {
               ))}
             </select>
 
-            <label className={styles.label}>Uploading the file</label>
-            <div className={styles.fileUploadContainer}>
+            <label className="createticket-label">Uploading the file</label>
+            <div className="createticket-fileUploadContainer">
               <input
                 type="file"
                 id="file"
                 onChange={handleFileChange}
-                className={styles.fileInput}
+                className="createticket-fileInput"
               />
-              <label htmlFor="file" className={styles.fileLabel}>
+              <label htmlFor="file" className="createticket-fileLabel">
                 Attach The File
               </label>
             </div>
 
             {selectedFile && (
-              <div className={styles.previewContainer}>
-                <img src={selectedFile} alt="Preview" className={styles.previewImage} />
-                <button onClick={handleRemoveFile} className={styles.removeButton}>
+              <div className="createticket-previewContainer">
+                <img src={selectedFile} alt="Preview" className="createticket-previewImage" />
+                <button onClick={handleRemoveFile} className="createticket-removeButton">
                   Remove
                 </button>
               </div>
             )}
 
-            <label className={styles.label}>Description</label>
+            <label className="createticket-label">Description</label>
             <textarea
               placeholder="Description of the problem or request"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={styles.textarea}
+              className="createticket-textarea"
             />
 
-            <div className={styles.buttonsContainer}>
-              <button onClick={handleSubmit} className={styles.sendButton}>
+            <div className="createticket-buttonsContainer">
+              <button onClick={handleSubmit} className="createticket-sendButton">
                 Send
               </button>
-              <button type="button" className={styles.cancelButton}>
+              <button type="button" className="createticket-cancelButton">
                 Cancel
               </button>
             </div>

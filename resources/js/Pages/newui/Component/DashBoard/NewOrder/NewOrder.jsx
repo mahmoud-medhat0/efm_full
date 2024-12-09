@@ -1,4 +1,4 @@
-import NewOrderstyles from './NewOrder.module.css';
+
 import DashboardLayout from '../../../Layout/DashboardLayout';
 import { usePage } from "@inertiajs/inertia-react";
 import { FaLightbulb, FaLink, FaClock, FaDollarSign } from "react-icons/fa";
@@ -8,103 +8,113 @@ import start from "../../../../newui/photo/startorder.svg"
 import money from "../../../../newui/photo/mony.svg"
 import end from "../../../../newui/photo/endorder.svg"
 import Select from 'react-select';
-
+import { useState } from 'react';
 const NewOrder = () => {
+    const [selectedService, setSelectedService] = useState(null);
     const page = usePage().props;
+    const app_url = page.app_url;
     const services = page.services;
     const serviceOptions = services.map(service => ({
         value: service.id,
         label: (
             <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
-                <img src={srvric} alt="YouTube Icon" style={{ width: '20px', marginRight: '8px' }} />
+                <img src={app_url+`/storage/${service.icon}`} alt="YouTube Icon" style={{ width: '20px', marginRight: '8px' }} />
                 {service.name}
             </div>
         ),
     }));
+    const handleServiceChange = (selectedOption) => {
+      const service = services.find(service => service.id === selectedOption.value);
+      setSelectedService(service);
+    };
 
   return (
     <DashboardLayout>
-      <h2 className={ NewOrderstyles.newOrderTitle}>New Order</h2>
-      <div className={ NewOrderstyles.newOrderContainer}>
-        <div className={ NewOrderstyles.orderForm}>
-          <div className={ NewOrderstyles.priceSection}>
-            <span className={ NewOrderstyles.priceLabel}>Price</span>
-            <span className={ NewOrderstyles.priceValue}>$0.0</span>
+
+      <h2 className="newOrderTitle">New Order</h2>
+      <div className="newOrderContainer">
+        <div className="neworder-orderForm">
+          <div className="neworder-priceSection">
+            <span className="neworder-priceLabel">Price</span>
+            <span className="neworder-priceValue">$0.0</span>
           </div>
 
           {/* Select of Services */}
-          <label className={ NewOrderstyles.orderLabel}>Select a service</label>
-          <div className={ NewOrderstyles.inputWrapperordrer}>
+          <label className="neworder-orderLabel">Select a service</label>
+          <div className="neworder-inputWrapperordrer">
             <Select
               options={serviceOptions}
-              className={ NewOrderstyles.orderInput}
+              className="neworder-orderInput"
               styles={{ control: (base) => ({ ...base, fontSize: '15px' }) }}
               placeholder="Select a service"
               style={{fontSize:"15px"}}
+              onChange={(option) => handleServiceChange(option)}
             />
           </div>
 
           {/* Link of Order */}
-          <label className={ NewOrderstyles.orderLabel}>Link of order</label>
-          <div className={ NewOrderstyles.inputWrapperordrer}>
-            <span className={ NewOrderstyles.inputIcon}>
+          <label className="neworder-orderLabel">Link of order</label>
+          <div className="neworder-inputWrapperordrer">
+            <span className="neworder-inputIcon">
             <img src={link} alt="Clock Icon" />
             </span>
             <input
               type="text"
               placeholder="Enter The link of order"
               style={{fontSize:"15px"}}
-              className={ NewOrderstyles.orderInput}
+              className="neworder-orderInput"
             />
           </div>
 
-          {/* Order Time Type */}
-          <label className={ NewOrderstyles.orderLabel}>Order time type</label>
-          <div className={ NewOrderstyles.timeInputs} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <div className={ NewOrderstyles.inputWrapperordrer} style={{ flex: '1 1 45%', display: 'flex', alignItems: 'center' }}>
-              <span className={ NewOrderstyles.inputIcon}>
+          {selectedService && selectedService.time_type === 'custom' && (
+          <>
+          <label className="neworder-orderLabel">Order time type</label>
+          <div className="neworder-timeInputs">
+            <div className="neworder-inputWrapperordrer">
+              <span className="neworder-inputIcon">
                 <img src={start} alt="Clock Icon" />
               </span>
               <input
                 type="text"
                 placeholder="Start Time"
-                style={{fontSize:"15px", flex: '1'}}
-                className={ NewOrderstyles.orderInput}
+                className="neworder-orderInput1"
               />
             </div>
-            <div className={ NewOrderstyles.inputWrapperordrer} style={{ flex: '1 1 45%', display: 'flex', alignItems: 'center' }}>
-              <span className={ NewOrderstyles.inputIcon}>
+            <div className="neworder-inputWrapperordrer" >
+              <span className="neworder-inputIcon">
                 <img src={end} alt="Clock Icon" />
               </span>
               <input
                 type="text"
-                style={{fontSize:"15px", flex: '1'}}
                 placeholder="End Time"
-                className={ NewOrderstyles.orderInput}
+                className="neworder-orderInput"
               />
-            </div>
-          </div>
+              </div>
+              </div>
+              </>
+            )}
 
           {/* Amount */}
-          <label className={ NewOrderstyles.orderLabel}>Amount</label>
-          <div className={ NewOrderstyles.inputWrapperordrer}>
-            <span className={ NewOrderstyles.inputIcon}>
+          <label className="neworder-orderLabel">Amount</label>
+          <div className="neworder-inputWrapperordrer">
+            <span className="neworder-inputIcon">
             <img src={money} alt="Clock Icon" />
             </span>
             <input
               type="text"
-              style={{fontSize:"15px"}}
+             
               placeholder="Enter The amount"
-              className={ NewOrderstyles.orderInput}
+              className="neworder-orderInput"
             />
           </div>
 
-          <div className={ NewOrderstyles.buttonsContainer}>
-            <button className={ NewOrderstyles.upgradeButton}>Send Request</button>
-            <button className={ NewOrderstyles.cancelButton}>Cancel</button>
+          <div className="neworder-buttonsContainer">
+            <button className="neworder-upgradeButton">Send Request</button>
+            <button className="neworder-cancelButton">Cancel</button>
           </div>
         </div>
       </div>
+
     </DashboardLayout>
   );
 };

@@ -38,7 +38,11 @@ class Task extends Model
     }
     public function reward()
     {
-        return $this->service->reward_point*(json_decode($this->order->data,true)['minutes']??0);
+        if($this->order->order_type == 'custom_time'){
+            return (float) number_format($this->service->reward_point * (($this->order->time_end - $this->order->time_start) / 60), 2, '.', '');
+        }else{
+            return (float) number_format($this->service->reward_point * (json_decode($this->order->data, true)['minutes'] ?? 0), 2, '.', '');
+        }
     }
     public function banAttemps()
     {

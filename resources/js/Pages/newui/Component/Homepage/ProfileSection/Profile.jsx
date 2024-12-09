@@ -1,4 +1,4 @@
-import './Profile.css';
+
 import profile2 from '../../../photo/profilephoto.svg';
 
 const Profile = () => {
@@ -7,8 +7,8 @@ const Profile = () => {
           
 
     <div className="profile-container">
-     <div className="outer-frame">
-                <div className="inner-frame">
+     <div className="profile-outer-frame">
+                <div className="profile-inner-frame">
                     <img src={profile2} alt="Profile Image" className="profile-image" />
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Leaderboard.css';
 
 const Leaderboard = ({ data }) => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -10,7 +9,7 @@ const Leaderboard = ({ data }) => {
 
   return (
     <div className="leaderboard">
-      <table>
+      <table >
         <thead>
           <tr>
             <th>Rank</th>

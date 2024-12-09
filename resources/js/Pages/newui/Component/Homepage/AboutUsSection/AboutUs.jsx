@@ -1,4 +1,4 @@
-import "./AboutUs.css";
+
 import loggggo from "../../../photo/logo2.svg";
 import photo3 from "../../../photo/photo3.svg";
 import logoo333 from "../../../photo/logo3.svg";
@@ -18,25 +18,25 @@ const Aboutus = () => {
   return (
     <>
     <div className="bg-[#f9f9f9]" id="about">
-      <div className="about-section-container ">
-        <div className="about-section-header ">
+      <div className="Aboutus-about-section-container ">
+        <div className="Aboutus-about-section-header ">
         </div>
-        <div className="about-section-content">
-          <div className="about-section-left-column">
+        <div className="Aboutus-about-section-content">
+          <div className="Aboutus-about-section-left-column">
             <img
               src={photo3}
               alt="Panther Image"
-              className="about-section-panther-image"
+              className="Aboutus-about-section-panther-image"
             />
-            <div className="efm-hub-container">
-              <img src={loggggo} alt="EFM Logo" className="efm-logo" />
-              <span className="efm-text">EFM HUB</span>
+            <div className="Aboutus-efm-hub-container">
+              <img src={loggggo} alt="EFM Logo" className="Aboutus-efm-logo" />
+              <span className="Aboutus-efm-text">EFM HUB</span>
             </div>
           </div>
-          <div className="about-section-right-column">
+          <div className="Aboutus-about-section-right-column">
             <h1 className="flex">
               <span className="text-3xl lg:text-5xl font-bold ">
-                About <span className="about-section-highlight mr-2">US</span>{" "}
+                About <span className="Aboutus-about-section-highlight mr-2">US</span>{" "}
               </span>
               <br/>
             </h1>
@@ -67,8 +67,8 @@ const Aboutus = () => {
             </p>
           </div>
         </div>
-        <div className="about-section-goals-vision">
-          <div className="about-section-goal-card">
+        <div className="Aboutus-about-section-goals-vision">
+          <div className="Aboutus-about-section-goal-card">
             <h3>◎ Our goals</h3>
             <p>
               Contributing to the transition of the advertising market from
@@ -76,8 +76,8 @@ const Aboutus = () => {
               companies on advertising profits...
             </p>
           </div>
-          <img src={icon} alt="icon" className="about-section-icon" />
-          <div className="about-section-vision-card">
+          <img src={icon} alt="icon" className="Aboutus-about-section-icon" />
+          <div className="Aboutus-about-section-vision-card">
             <h3>◎ Our vision</h3>
             <p>
               To be the first true online platform to provide passive income to
