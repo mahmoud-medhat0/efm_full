@@ -40,6 +40,8 @@ class StatusFilter extends Filter
             'Completed' => 'completed',
             'Failed' => 'failed',
             'In Progress' => 'in_progress',
+            'Cancelled' => 'cancelled',
+            'Under Review' => 'under_review',
         ];
     }
 }
