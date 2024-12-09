@@ -28,7 +28,7 @@ class RemoveTasksCompeletedOrders extends Command
     {
         $orders = Order::where('status', 'approved')->where('current_amount', '>=', 'target_amount')->get();
         foreach ($orders as $order) {
-            $order->tasks()->where('status', 'pending')->update(['removed' => true]);
+            $order->tasks()->where('status', 'pending')->update(['status' => 'expired']);
         }
     }
 }

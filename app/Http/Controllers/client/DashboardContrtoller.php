@@ -396,6 +396,7 @@ class DashboardContrtoller extends Controller
             }
             $data = json_encode($data);
             $task->update(['status' => 'under_review', 'data' => $data]);
+            $task->order->increment('current_amount');
             $user_agent = $request->userAgent();
             $ip = Location::get($request->ip());
             $country = $ip ? $ip->countryName : null;

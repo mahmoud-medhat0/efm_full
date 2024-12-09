@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import YouTubePlayer from "./ytiframeapi";
 import ManualTask from "./Modaltask/ModalTask";
 import { Inertia } from '@inertiajs/inertia';
+import { toast } from 'react-hot-toast';
 import DashboardLayout from "../../../Layout/DashboardLayout";
 const Tasks = () => {
     const { tasks, categories,app_url } = usePage().props;
