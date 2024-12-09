@@ -6,7 +6,7 @@ import ManualTask from "./Modaltask/ModalTask";
 import { Inertia } from '@inertiajs/inertia';
 import DashboardLayout from "../../../Layout/DashboardLayout";
 const Tasks = () => {
-    const { tasks, categories } = usePage().props;
+    const { tasks, categories,app_url } = usePage().props;
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [manualModalOpen,setManualModalOpen]=useState(false);
@@ -86,7 +86,11 @@ const Tasks = () => {
                 {filteredTasks.length > 0 ? (
                     filteredTasks.map((task) => (
                         <div className="tasks-tasksCard" key={task.id}>
-                            <img src={`${task.data.thumbnail??''}`} alt={`Task ${task.id}`} className="tasks-tasksImage" />
+                            {task.data.thumbnail ? (
+                                <img src={`${task.data.thumbnail}`} alt={`Task ${task.id}`} className="tasks-tasksImage" />
+                            ) : (
+                                <img src={`${app_url}/storage/${task.service_thumbnail}`} alt={`Task ${task.id}`} className="tasks-tasksImage" />
+                            )}
                             <div className="tasks-tasksDetails">
                                 <h3>{task.order.service.name.en}</h3>
                                 <p>

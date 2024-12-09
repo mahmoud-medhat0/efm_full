@@ -312,6 +312,7 @@ class DashboardContrtoller extends Controller
                     'service_name' => $task->service->name,
                     'service_code' => $task->service->service_code,
                     'service_type' => $task->service->type,
+                    'service_thumbnail' => $task->service->icon,
                     'description' => $task->order->description,
                     'fields' => $task->service->fields(),
                     'instructions' => $task->order->instructions,
