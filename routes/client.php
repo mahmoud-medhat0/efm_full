@@ -67,6 +67,7 @@ Route::middleware(HandleInertiaRequests::class)->name('client.')->group(function
             Route::post('membership/upgrade/balance', 'upgradeBalance')->name('membership.upgrade.balance');
             Route::post('membership/upgrade/gateway', 'upgradeBalanceGateway')->name('membership.upgrade.balance.gateway');
             Route::get('tasks', 'tasks')->name('tasks');
+            Route::post('task/status', 'getTaskStatus')->name('tasks.status');
             Route::post('tasks/update', 'UpdateTask')->name('tasks.update');
             Route::post('tasks/update/manual', 'UpdateManualTask')->name('tasks.update.manual');
             Route::post('yt-video-details', 'YtVideoDetails')->name('yt-video-details');
