@@ -121,14 +121,15 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                         fs: 0,
                         iv_load_policy: 3,
                         disablekb: 1,
+                        allowfullscreen: 1,
                     },
                     events: {
                         onReady: onPlayerReady,
                         onError: onPlayerError,
-                        // onFinish: onPlayerFinish,
+                        onFinish: onPlayerFinish,
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
-                                // event.target.playVideo();
+                                event.target.playVideo();
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
                                 await updateTask(taskId, "in_progress");
@@ -143,12 +144,11 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
             }
         };
 
-        const onPlayerReady = (event: YT.PlayerEvent) => {
-            event.target.playVideo();
-        };
+        // const onPlayerReady = (event: YT.PlayerEvent) => {
+        //     event.target.playVideo();
+        // };
 
         const onPlayerError = (event: YT.OnErrorEvent) => {
-            toast.error;
             console.error("Error Occurred:", event.data);
         };
 
@@ -231,7 +231,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                     COMPLETED
                 </span>
             </center>
-            {/* <DevToolsListener /> */}
+            <DevToolsListener />
             
                 <div
                     style={isPlayerHidden ? { display: "none",width: "0%",height: "0%" } : {height: "78%"}}
