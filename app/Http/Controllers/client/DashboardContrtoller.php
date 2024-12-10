@@ -418,10 +418,7 @@ class DashboardContrtoller extends Controller
             $data = json_encode($data);
             $task->update(['status' => 'under_review', 'data' => $data]);
             $task->order->increment('current_amount');
-            $user_agent = $request->userAgent();
-            $ip = Location::get($request->ip());
-            $country = $ip ? $ip->countryName : null;
-            $task->update(['ip' => $ip, 'country' => $country, 'user_agent' => $user_agent]);
+            $task->update(['ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $request->userAgent()]);
             return response()->json(['success' => true, 'message' => 'Task updated successfully']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
