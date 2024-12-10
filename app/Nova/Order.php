@@ -175,17 +175,6 @@ class Order extends Resource
             throw new \Exception('Insufficient balance');
             return;
         }
-        TransactionModel::create([
-            'amount' => $request->price,
-            'fee' => 0,
-            'total' => $request->price,
-            'description' => 'Order from ' . $service->name,
-            'tnx_type' => 'sub',
-            'tnx' => 'ORD' . time(),
-            'client_id' => $provider->id,
-            'type' => 'order',
-        ]);
-        $provider->decrement('balance', $request->price);
     }
     public static function afterUpdate(NovaRequest $request, Model $model)
     {
