@@ -5,25 +5,45 @@ import { route } from "ziggy-js";
 import { toast } from "react-hot-toast";
 import { Inertia } from "@inertiajs/inertia";
 import DevToolsListener from "./DevToolsDetection";
-const YouTubePlayer: React.FC<{
-    videoId: string;
-    taskId: string;
-    order: any;
-    onTaskCompleted: () => void;
-}> = ({ videoId, taskId, order, onTaskCompleted }) => {
-    const playerRef = useRef<HTMLDivElement>(null);
+const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
+    const playerRef = useRef(null);
     const [progress, setProgress] = useState(0);
     const [showCaptcha, setShowCaptcha] = useState(false);
     const [captchaQuestion, setCaptchaQuestion] = useState("");
     const [userAnswer, setUserAnswer] = useState("");
     const [correctAnswer, setCorrectAnswer] = useState(0);
     const [isPlayerHidden, setIsPlayerHidden] = useState(false);
+
     const updateTask = async (taskId: string, status: string) => {
-        await axios.post(route("client.dashboard.tasks.update"), {
-            taskId: taskId,
-            status: status,
-        });
+        try {
+            await axios.post(route("client.dashboard.tasks.update"), {
+                taskId: taskId,
+                status: status,
+            });
+        } catch (error) {
+            console.error("Failed to update task:", error);
+            toast.error("Failed to update task status. Please try again.");
+        }
     };
+
+    const onPlayerFinish = () => {
+        onTaskCompleted();
+        updateTask(taskId, "completed");
+    };
+
+    const onPlayerError = (event: YT.OnErrorEvent) => {
+        console.error("YouTube Player Error:", event.data);
+        toast.error("An error occurred with the YouTube player.");
+    };
+
+    const onPlayerReady = (event: YT.PlayerEvent) => {
+        event.target.playVideo();
+    };
+
+    const updateProgress = () => {
+        // Logic to update progress
+    };
+
     useEffect(() => {
         const tag = document.createElement("script");
         tag.src = "https://www.youtube.com/iframe_api";
@@ -31,7 +51,57 @@ const YouTubePlayer: React.FC<{
         firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
 
         (window as any).onYouTubeIframeAPIReady = () => {
-            if (playerRef.current) {
+            if (!isPlayerHidden && playerRef.current) {
+                new YT.Player(playerRef.current, {
+                    videoId: videoId,
+                    playerVars: {
+                        start:
+                            order.order_type === "custom_time"
+                                ? order.time_start
+                                : 0,
+                        end:
+                            order.order_type === "custom_time"
+                                ? order.time_end
+                                : 0,
+                        autoplay: 0,
+                        controls: 0,
+                        showinfo: 0,
+                        modestbranding: 1,
+                        rel: 0,
+                        fs: 0,
+                        iv_load_policy: 3,
+                        disablekb: 1,
+                        disableRelatedVideos: 1,
+                        allowfullscreen: 1,
+                    },
+                    events: {
+                        onReady: onPlayerReady,
+                        onError: onPlayerError,
+                        onStateChange: async (event: YT.OnStateChangeEvent) => {
+                            if (event.data === YT.PlayerState.PAUSED) {
+                                event.target.playVideo();
+                            }
+                            if (event.data === YT.PlayerState.PLAYING) {
+                                await updateTask(taskId, "in_progress");
+                                updateProgress();
+                            }
+                            if (event.data === YT.PlayerState.ENDED) {
+                                onPlayerFinish();
+                            }
+                        },
+                    },
+                });
+            }
+        };
+    }, [videoId, taskId, order]);
+    useEffect(() => {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+        (window as any).onYouTubeIframeAPIReady = () => {
+            if (!isPlayerHidden && playerRef.current) {
                 new YT.Player(playerRef.current, {
                     videoId: videoId,
                     playerVars: {
@@ -60,7 +130,6 @@ const YouTubePlayer: React.FC<{
                         // onFinish: onPlayerFinish,
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
-                                await updateTask(taskId, "in_progress");
                                 event.target.playVideo();
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
@@ -78,7 +147,6 @@ const YouTubePlayer: React.FC<{
 
         const onPlayerReady = (event: YT.PlayerEvent) => {
             event.target.playVideo();
-            // removeWatermark();
         };
 
         const onPlayerError = (event: YT.OnErrorEvent) => {
@@ -95,7 +163,10 @@ const YouTubePlayer: React.FC<{
         };
 
         const updateProgress = () => {
-            const duration = order.order_type === 'custom_time' ? order.time_end - order.time_start : (JSON.parse(order.data).minutes*60);
+            const duration =
+                order.order_type === "custom_time"
+                    ? order.time_end - order.time_start
+                    : JSON.parse(order.data).minutes * 60;
             let width = 0;
             const interval = setInterval(() => {
                 if (width >= 100) {
@@ -108,36 +179,11 @@ const YouTubePlayer: React.FC<{
             }, duration * 10); // Adjust the interval timing as needed
         };
 
-        const removeWatermark = () => {
-            const watermarkElement = document.querySelector(
-                "#movie_player > a.ytp-watermark.yt-uix-sessionlink"
-            );
-            if (watermarkElement && watermarkElement.parentNode) {
-                watermarkElement.parentNode.removeChild(watermarkElement);
-            }
-            const watermarkElements = document.querySelectorAll(
-                ".ytp-watermark, .yt-uix-sessionlink"
-            );
-            watermarkElements.forEach((element) => {
-                if (element.parentNode) {
-                    element.parentNode.removeChild(element);
-                }
-            });
-            const watermarkElements2 = document.querySelectorAll(
-                ".ytp-watermark .yt-uix-sessionlink"
-            );
-            watermarkElements2.forEach((element) => {
-                if (element.parentNode) {
-                    element.parentNode.removeChild(element);
-                }
-            });
-        };
-
-        const handleVisibilityChange = () => {
+        const handleVisibilityChange = async () => {
             if (document.visibilityState === "hidden") {
                 console.log("hidden");
                 setIsPlayerHidden(true);
-                updateTask(taskId, "failed");
+                await updateTask(taskId, "failed");
             }
         };
 
@@ -171,24 +217,39 @@ const YouTubePlayer: React.FC<{
 
     return (
         <>
-        <center>
-            <span className="text-center text-2xl font-bold">
-            NOT ALLOWED TO MOVE OR CLOSE THE WINDOW UNTIL THE TASK IS COMPLETED
-            </span>
-        </center>
+            <center>
+                <span className="text-center text-2xl font-bold">
+                    NOT ALLOWED TO MOVE OR CLOSE THE WINDOW UNTIL THE TASK IS
+                    COMPLETED
+                </span>
+            </center>
             {/* <DevToolsListener /> */}
-            {!isPlayerHidden && <div
-                style={{ height: "78%" }}
-                className="w-full mt-4"
-                ref={playerRef}
-            ></div>}
-            {isPlayerHidden && <div style={{ height: "78%"}}
-                className="w-full mt-4" id="player-hidden">
+            {!isPlayerHidden  && (
+                <div
+                    style={{ height: "78%" }}
+                    className="w-full mt-4"
+                    ref={playerRef}
+                ></div>
+            )}
+            {isPlayerHidden && (
+                <div
+                    style={{ height: "78%" }}
+                    className="w-full mt-4"
+                    id="player-hidden"
+                >
                     <center>
-                        <img src="https://www.freeiconspng.com/uploads/shiny-metal-red-error-image-designs-1.png" width="350"/>
-                        <span className="text-2xl font-bold">KINDLY RELOAD THE PAGE AND CLICK AGAIN ON 'VIEW TASK'<br/> IF YOU FOUND IT 😅</span>
+                        <img
+                            src="https://www.freeiconspng.com/uploads/shiny-metal-red-error-image-designs-1.png"
+                            width="350"
+                        />
+                        <span className="text-2xl font-bold">
+                            KINDLY RELOAD THE PAGE AND CLICK AGAIN ON 'VIEW
+                            TASK'
+                            <br /> IF YOU FOUND IT 😅
+                        </span>
                     </center>
-            </div>}
+                </div>
+            )}
             <div className="w-full h-[20px] bg-gray-300 rounded-full mt-4 relative">
                 <div
                     className="h-[20px] bg-green-500 rounded-full transition-all duration-300 ease-in-out"
@@ -208,7 +269,7 @@ const YouTubePlayer: React.FC<{
                         </span>
                     </p>
                     <input
-                        style={{width: "80%"}}
+                        style={{ width: "80%" }}
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}

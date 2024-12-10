@@ -350,7 +350,6 @@ class DashboardContrtoller extends Controller
         $task = Task::find($request->taskId);
         if ($task->status != 'completed' && $task->status != 'cancelled') {
             $user_agent = $request->userAgent();
-            $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
             if ($request->status == 'completed' && $task->status != 'completed' && $task->paid == false) {
                 Transaction::create([
                     'status' => 'success',
@@ -368,11 +367,12 @@ class DashboardContrtoller extends Controller
                 $task->order->increment('current_amount');
             }
             if ($request->status == 'in_progress' && $task->status != 'in_progress') {
-                $task->order->increment('current_amount');
+                Order::find($task->order_id)->increment('current_amount');
             }
             if ($request->status == 'failed' && $task->status != 'failed') {
-                $task->order->decrement('current_amount');
+                Order::find($task->order_id)->decrement('current_amount');
             }
+            $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
         }
     }
     public function UpdateManualTask(Request $request)
