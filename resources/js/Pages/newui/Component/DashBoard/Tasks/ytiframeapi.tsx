@@ -70,24 +70,15 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                 new YT.Player(playerRef.current, {
                     videoId: videoId,
                     playerVars: {
-                        start:
-                            order.order_type === "custom_time"
-                                ? order.time_start
-                                : 0,
-                        end:
-                            order.order_type === "custom_time"
-                                ? order.time_end
-                                : 0,
+                        start: order.order_type === "custom_time" ? order.time_start : 0,
+                        end: order.order_type === "custom_time" ? order.time_end : 0,
                         autoplay: 0,
-                        controls: 0,
-                        showinfo: 0,
+                        controls: 1,
                         modestbranding: 1,
                         rel: 0,
-                        fs: 0,
+                        fs: 1,
                         iv_load_policy: 3,
-                        disablekb: 1,
-                        disableRelatedVideos: 1,
-                        allowfullscreen: 1,
+                        disablekb: 0,
                     },
                     events: {
                         onReady: onPlayerReady,
@@ -148,9 +139,9 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
             }
         };
 
-        // const onPlayerReady = (event: YT.PlayerEvent) => {
-        //     event.target.playVideo();
-        // };
+        const onPlayerReady = (event: YT.PlayerEvent) => {
+            event.target.playVideo();
+        };
 
         const onPlayerError = (event: YT.OnErrorEvent) => {
             console.error("Error Occurred:", event.data);
