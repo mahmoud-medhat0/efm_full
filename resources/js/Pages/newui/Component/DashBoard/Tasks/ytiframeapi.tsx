@@ -13,6 +13,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
     const [userAnswer, setUserAnswer] = useState("");
     const [correctAnswer, setCorrectAnswer] = useState(0);
     const [isPlayerHidden, setIsPlayerHidden] = useState(false);
+    const [isPausedProgrammatically, setIsPausedProgrammatically] = useState(false);
 
     const updateTask = async (taskId: string, status: string) => {
         try {
@@ -42,6 +43,20 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
 
     const updateProgress = () => {
         // Logic to update progress
+    };
+
+    const onPlayerStateChange = async (event: YT.OnStateChangeEvent) => {
+        if (event.data === YT.PlayerState.PAUSED && !isPausedProgrammatically) {
+            event.target.playVideo();
+        }
+        if (event.data === YT.PlayerState.PLAYING) {
+            setIsPausedProgrammatically(false);
+            await updateTask(taskId, "in_progress");
+            updateProgress();
+        }
+        if (event.data === YT.PlayerState.ENDED) {
+            onPlayerFinish();
+        }
     };
 
     useEffect(() => {
@@ -77,18 +92,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                     events: {
                         onReady: onPlayerReady,
                         onError: onPlayerError,
-                        onStateChange: async (event: YT.OnStateChangeEvent) => {
-                            if (event.data === YT.PlayerState.PAUSED) {
-                                event.target.playVideo();
-                            }
-                            if (event.data === YT.PlayerState.PLAYING) {
-                                await updateTask(taskId, "in_progress");
-                                updateProgress();
-                            }
-                            if (event.data === YT.PlayerState.ENDED) {
-                                onPlayerFinish();
-                            }
-                        },
+                        onStateChange: onPlayerStateChange,
                     },
                 });
             }
