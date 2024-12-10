@@ -24,7 +24,7 @@ use App\Nova\Filters\Order\StatusFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Murdercode\TinymceEditor\TinymceEditor;
 use App\Nova\Filters\Order\ApprovedByFilter;
-use App\Nova\Filters\Order\ServiceFilter;   
+use App\Nova\Filters\Order\ServiceFilter;
 use App\Models\Transaction as TransactionModel;
 use App\Nova\Filters\Order\ProvidorClientFilter;
 use App\Nova\Filters\Order\RejectionCauseFilter;
@@ -53,7 +53,22 @@ class Order extends Resource
      * @var array
      */
     public static $search = [
-        'id','status','ApprovedBy.name','provider.name','service.name','RejectionCause.name','link','order_type','target_amount','current_amount','Price','last_action','LastActionBy.name','data','created_at','categories.name'
+        'id',
+        'status',
+        'ApprovedBy.name',
+        'provider.name',
+        'service.name',
+        'RejectionCause.name',
+        'link',
+        'order_type',
+        'target_amount',
+        'current_amount',
+        'Price',
+        'last_action',
+        'LastActionBy.name',
+        'data',
+        'created_at',
+        'categories.name'
     ];
 
     /**
@@ -77,7 +92,7 @@ class Order extends Resource
                 return $approvedBy->name;
             })->hideWhenCreating()->hideWhenUpdating(),
             BelongsTo::make('Provider Client', 'provider', Client::class)->displayUsing(function ($provider) {
-                return $provider->name.' - '.$provider->email;
+                return $provider->name . ' - ' . $provider->email;
             })->sortable()->searchable(),
             BelongsTo::make('service')->displayUsing(function ($service) {
                 return $service->name;
@@ -98,7 +113,7 @@ class Order extends Resource
                 if ($request->status === 'rejected') {
                     $model->rejection_cause_id = $request->rejectionCause;
                 }
-            })->nullable(), 
+            })->nullable(),
             URL::make('link'),
             Select::make('order_type')->options([
                 'full_time' => 'Full Time',
@@ -118,7 +133,7 @@ class Order extends Resource
                     $field->hide();
                 }
             }),
-            TinymceEditor::make('description')->dependsOn(['service'], function ($field,$request) {
+            TinymceEditor::make('description')->dependsOn(['service'], function ($field, $request) {
                 $service = ServiceModel::find($request->service);
                 if ($service && $service->type === 'manual') {
                     $field->show();
@@ -134,17 +149,17 @@ class Order extends Resource
                     $field->hide();
                 }
             }),
-            Number::make('Target Amount','target_amount')->sortable(),
-            Number::make('Current Amount','current_amount')->readonly()->sortable(),
+            Number::make('Target Amount', 'target_amount')->sortable(),
+            Number::make('Current Amount', 'current_amount')->readonly()->sortable(),
             Currency::make('Price')->displayUsing(function ($value, $resource, $attribute) {
                 return number_format($resource->price, 2);
             })->sortable(),
-            Text::make('Last Action','last_action')->hideWhenCreating()->readonly()->sortable(),
-            DateTime::make('Last Action At','last_action_at',)->readonly()->onlyOnDetail()->sortable(),
+            Text::make('Last Action', 'last_action')->hideWhenCreating()->readonly()->sortable(),
+            DateTime::make('Last Action At', 'last_action_at',)->readonly()->onlyOnDetail()->sortable(),
             BelongsTo::make('Last Action By', 'LastActionBy', User::class)->displayUsing(function ($user) {
                 return $user->name;
             })->readonly()->onlyOnDetail()->sortable(),
-            Code::make('Data','data')->readonly()->onlyOnDetail()->sortable(),
+            Code::make('Data', 'data')->readonly()->onlyOnDetail()->sortable(),
             DateTime::make('created_at')->readonly()->onlyOnDetail()->sortable(),
             DateTime::make('updated_at')->readonly()->onlyOnDetail()->sortable(),
             BelongsToMany::make('Categories', 'categories', InterestCategory::class)->onlyOnDetail()->sortable(),
@@ -156,7 +171,7 @@ class Order extends Resource
     {
         $service = ServiceModel::find($request->service);
         $provider = ClientModel::find($request->provider);
-        if($provider->balance < $request->price){
+        if ($provider->balance < $request->price) {
             throw new \Exception('Insufficient balance');
             return;
         }
@@ -171,7 +186,6 @@ class Order extends Resource
             'type' => 'order',
         ]);
         $provider->decrement('balance', $request->price);
-
     }
     public static function afterUpdate(NovaRequest $request, Model $model)
     {
@@ -182,35 +196,35 @@ class Order extends Resource
         $model->last_action_by = $admin->id;
         if ($request->status === 'rejected') {
             $model->rejection_cause_id = $request->rejectionCause;
-        }elseif($request->status === 'approved'){
+        } elseif ($request->status === 'approved') {
             $service = ServiceModel::find($request->service);
-            if($service->service_code === 'yt_videos'){
+            if ($service->service_code === 'yt_videos') {
                 $videoId = Youtube::parseVidFromURL($request->link);
-                    $video = Youtube::getVideoInfo($videoId);
-                    $interval = new DateInterval($video->contentDetails->duration);
-                    $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
-                    $price = $request->amount * ($minutes * json_decode($model->service->calculation_formula, true)['minute_cost']);
-                    $user = auth()->user();
-                    $thumbnail = $video->snippet->thumbnails->standard->url;
-                    $title = $video->snippet->title;
-                    foreach (json_decode($model->service->fields, true) as $field => $value) {
+                $video = Youtube::getVideoInfo($videoId);
+                $interval = new DateInterval($video->contentDetails->duration);
+                $minutes = ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i + number_format($interval->s / 60, 2);
+                $price = $request->amount * ($minutes * json_decode($model->service->calculation_formula, true)['minute_cost']);
+                $user = auth()->user();
+                $thumbnail = $video->snippet->thumbnails->standard->url;
+                $title = $video->snippet->title;
+                foreach (json_decode($model->service->fields, true) as $field => $value) {
                     $orderdata[$field] = isset(${$field}) ? ${$field} : null;
                 }
-                $model->data = $orderdata;
+                $model->data = json_encode($orderdata);
             }
             $model->approved_by = $admin->id;
-            if($model->tasks->isEmpty()){
+            if ($model->tasks->isEmpty()) {
                 GenerateOrderTasks::dispatch($model)->onQueue('default');
             }
             $client_of_order = $model->provider;
             $client_of_order->decrement('balance', $model->price);
             $parent_of_client_of_order = $client_of_order->parent;
-            if($parent_of_client_of_order){
+            if ($parent_of_client_of_order) {
                 $referral_setting = ReferralSettingModel::where('is_active', true)->where('code', 'order_referral')->first();
-                if($referral_setting){
-                    if($referral_setting->type === 'percentage'){
+                if ($referral_setting) {
+                    if ($referral_setting->type === 'percentage') {
                         $bonus = $model->price * $referral_setting->value / 100;
-                    }else{
+                    } else {
                         $bonus = $referral_setting->value;
                     }
                     TransactionModel::create([
@@ -226,7 +240,7 @@ class Order extends Resource
                     $parent_of_client_of_order->increment('balance', $bonus);
                 }
             }
-        }else{
+        } else {
             $model->rejection_cause_id = null;
         }
         $model->save();
@@ -253,7 +267,7 @@ class Order extends Resource
         return [
             new ApprovedByFilter,
             new StatusFilter,
-            new ProvidorClientFilter,       
+            new ProvidorClientFilter,
             new ServiceFilter,
             new RejectionCauseFilter,
         ];
