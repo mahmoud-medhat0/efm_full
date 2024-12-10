@@ -94,7 +94,7 @@ class Service extends Resource
                     $field->hide();
                 }
             }),
-            Number::make('reward point')->sortable(),
+            Number::make('reward point')->sortable()->step(0.01),
             Number::make('price per one point')->sortable(),
             Currency::make('price per one balance')->step(0.01)->sortable(),
             Number::make('min amount')->sortable(),
