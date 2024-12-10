@@ -96,7 +96,7 @@ const YouTubePlayer: React.FC<{
         };
 
         const updateProgress = () => {
-            const duration = order.time_end - order.time_start;
+            const duration = order.order_type === 'custom_time' ? order.time_end - order.time_start : (JSON.parse(order.data).minutes*60);
             let width = 0;
             const interval = setInterval(() => {
                 if (width >= 100) {
