@@ -121,8 +121,6 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                         fs: 0,
                         iv_load_policy: 3,
                         disablekb: 1,
-                        disableRelatedVideos: 1,
-                        allowfullscreen: 1,
                     },
                     events: {
                         onReady: onPlayerReady,
@@ -130,7 +128,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                         // onFinish: onPlayerFinish,
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
-                                event.target.playVideo();
+                                // event.target.playVideo();
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
                                 await updateTask(taskId, "in_progress");
