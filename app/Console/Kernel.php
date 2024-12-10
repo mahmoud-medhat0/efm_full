@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('process:agent-recieve-request')->everyMinute();
         $schedule->command('app:cancel-deposit-long-time')->everyMinute();
-        $schedule->command('app:remove-tasks-compeleted-orders');
+        $schedule->command('app:remove-tasks-compeleted-orders')->everyMinute();
         $schedule->command('activate:night')->dailyAt('00:00');
         $schedule->command('activate:work')->dailyAt('08:00');
         $schedule->command('weekly:target-invites')->weeklyOn(1, '08:00');
