@@ -20,7 +20,11 @@ use App\Nova\Filters\Task\ServiceFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Naif\ToggleSwitchField\ToggleSwitchField;
 use Bolechen\NovaActivitylog\Resources\ActivityLog;
-
+use Laravel\Nova\Fields\HasOne;
+use App\Models\Client as ClientModel;
+use App\Models\Transaction as TransactionModel;
+use App\Models\Task as TaskModel;
+use App\Models\Order as OrderModel;
 class Task extends Resource
 {
     /**
@@ -99,7 +103,36 @@ class Task extends Resource
             })->sortable(),
             HasMany::make('Ban Attemps', 'banAttemps', BanAttemp::class)->sortable(),
             MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class)->sortable(),
+            BelongsTo::make('Rejection Causes', 'rejectionCause', TaskRejectionCause::class)->displayUsing(function ($rejectionCause) {
+                return $rejectionCause->name;
+            })->sortable()->nullable(),
         ];
+    }
+    protected static function afterUpdateValidation(NovaRequest $request, $validator)
+    {
+        if($request->status == 'failed'){
+            if (is_null($request->rejectionCause)) {
+                throw new \Exception('Rejection cause is required when the status is failed');
+            }
+        }
+        if($request->status == 'completed'){
+            $client = ClientModel::find($request->client);
+            $task = TaskModel::find($request->resourceId);
+            TransactionModel::create([
+                'status' => 'success',
+                'amount' => $task->reward(),
+                'fee' => 0,
+                'total' => $task->reward(),
+                'tnx_type' => 'add',
+                'tnx' => 'PTS' . time(),
+                'type' => 'points',
+                'description' => 'Points reward for task of Order ID: ' . $task->order->order_id,
+                'client_id' => $client->id,
+            ]);
+            $task->update(['paid' => true, 'points_reward' => $task->reward()]);
+            $client->increment('balance', $task->reward());
+            OrderModel::find($task->order_id)->increment('current_amount');
+        }
     }
     /**
      * Get the cards available for the request.

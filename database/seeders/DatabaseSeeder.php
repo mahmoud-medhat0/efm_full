@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             // RoiSubscriptionPremission::class,
             // TransactionRejectionCausePermission::class,
             // AgentRecieveRequestPermissions::class,
-            TaskManualFieldPremission::class,
+            // TaskManualFieldPremission::class,
+            TaskRejectionCausePremissions::class,
         ]);
     }
 }

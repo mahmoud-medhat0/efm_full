@@ -325,6 +325,7 @@ class DashboardContrtoller extends Controller
                     'categories' => $task->order->categories->pluck('name')->toArray(),
                     'reward' => number_format($task->reward(), 2),
                     'order' => $task->order,
+                    'rejection_cause_name' => $task->rejection_cause_name,
                 ];
             }),
             'categories' => auth()->user()->tasks()->where('status', '!=', 'completed')->where('removed', false)->whereHas('order', function ($query) {

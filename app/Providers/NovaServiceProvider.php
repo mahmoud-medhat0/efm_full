@@ -37,6 +37,7 @@ use App\Nova\MembershipSection;
 use App\Nova\RegistrationOffer;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuList;
+use App\Nova\TaskRejectionCause;
 use App\Nova\AgentRecieveRequest;
 use App\Nova\WithdrawAccountField;
 use Laravel\Nova\Menu\MenuSection;
@@ -103,6 +104,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(TaskManualField::class),
                     MenuItem::resource(Order::class),
                     MenuItem::resource(Task::class),
+                    MenuItem::resource(TaskRejectionCause::class),
                     MenuItem::resource(RejectionCause::class),
                 ])->icon('shopping-cart')->collapsible(),
                 MenuSection::make('Roles & Permissions', [

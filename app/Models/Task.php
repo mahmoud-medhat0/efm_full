@@ -11,6 +11,7 @@ class Task extends Model
 {
     use HasFactory,LogsActivity;
     protected $guarded = [];
+    protected $appends = ['rejection_cause_name'];
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -47,5 +48,13 @@ class Task extends Model
     public function banAttemps()
     {
         return $this->hasMany(BanAttemp::class);
+    }
+    public function rejectionCause()
+    {
+        return $this->belongsTo(TaskRejectionCause::class);
+    }
+    public function getRejectionCauseNameAttribute()
+    {
+        return $this->rejectionCause ? $this->rejectionCause->name : null;
     }
 }
