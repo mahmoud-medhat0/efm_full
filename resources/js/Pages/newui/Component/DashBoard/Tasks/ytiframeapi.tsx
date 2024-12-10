@@ -189,13 +189,11 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
 
         document.addEventListener("visibilitychange", handleVisibilityChange);
 
-        const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
-            // Custom message for the user
-            const message =
-                "Are you sure you want to leave? Your progress will be lost.";
-            event.returnValue = message; // Standard way to show a confirmation dialog
-            return message; // Some browsers require this return value
-            await updateTask(taskId, "failed");
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            const message = "Are you sure you want to leave? Your progress will be lost.";
+            event.preventDefault();
+            updateTask(taskId, "failed");
+            return message;
         };
 
         window.addEventListener("beforeunload", handleBeforeUnload);

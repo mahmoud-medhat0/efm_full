@@ -101,31 +101,6 @@ class Task extends Resource
             MorphMany::make('Activity Logs', 'activityLogs', ActivityLog::class)->sortable(),
         ];
     }
-    public static function afterUpdateValidation(NovaRequest $request, $model)
-    {
-        if($model->status == 'completed'){
-        Transaction::create([
-            'status' => 'success',
-            'amount' => $model->points_reward,
-            'fee' => 0,
-            'total' => $model->points_reward,
-            'tnx_type' => 'add',
-            'tnx' => 'PTS' . time(),
-                'type' => 'points',
-                'description' => 'Points reward for task of Order ID: ' . $model->order->order_id,
-                'client_id' => $model->client_id,
-            ]);
-            $model->paid = true;
-            $model->points_reward = $model->points_reward;
-            $model->save();
-            $model->client->increment('balance', $model->points_reward);
-        }
-        elseif($model->status == 'failed'){
-            $model->order->decrement('current_amount');
-            $model->removed = true;
-            $model->save();
-        }
-    }
     /**
      * Get the cards available for the request.
      *
