@@ -184,7 +184,7 @@ function Homes() {
             <div className="stat-item">
               <span className="bullet"></span>
               <span className="stat-label">Your Clicks</span>
-              <span className="stat-value">{tasksearn}</span>
+              <span className="stat-value"></span>
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ function Homes() {
             <div className="stat-item">
               <span className="bullet"></span>
               <span className="stat-label">Earned</span>
-              <span className="stat-value">0 <span className="currency">EGP</span></span>
+              <span className="stat-value">{tasksearn} <span className="currency">EGP</span></span>
             </div>
           </div>
         </div>
