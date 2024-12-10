@@ -140,21 +140,11 @@ function Homes() {
             <span className="continer-header-span">Advertiser Stats</span>
             <div className="card-container">
           <div className="card-content">
+            {services.map((service) => (
             <div className="stat-item">
-              <span className="bullet"></span> Ad Credits <span className="value">0</span>
+              <span className="bullet"></span> {service.name} Credits <span className="value">{service.completed}</span>
             </div>
-            <div className="stat-item">
-              <span className="bullet"></span> Video Ads Credits <span className="value">0</span>
-            </div>
-            <div className="stat-item">
-              <span className="bullet"></span> Banner Credits <span className="value">0</span>
-            </div>
-            <div className="stat-item">
-              <span className="bullet"></span> Text Ad Credits <span className="value">0</span>
-            </div>
-            <div className="stat-item">
-              <span className="bullet"></span> Link Ad Credits <span className="value">0</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>

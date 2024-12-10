@@ -364,7 +364,7 @@ class DashboardContrtoller extends Controller
                 ]);
                 $task->update(['paid' => true, 'points_reward' => $task->reward()]);
                 auth()->user()->increment('balance', $task->reward());
-                $task->order->increment('current_amount');
+                Order::find($task->order_id)->increment('current_amount');
             }
             if ($request->status == 'in_progress' && $task->status != 'in_progress') {
                 Order::find($task->order_id)->increment('current_amount');
