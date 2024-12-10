@@ -33,7 +33,7 @@ function Homes() {
           <div className="card-content">
             <h4 style={{fontSize:"16px" , color:"#555555"}}>Earning Balance Stats</h4>
             <div className="stats-grid">
-              <div className="stat-item">
+              <div className="stat-item justify-center">
                 <div className="icon-box">
                   <i className="icon-balance"></i>
                 </div>
@@ -47,7 +47,7 @@ function Homes() {
                 </div>
                 </div>
               </div>
-              <div className="stat-item">
+              <div className="stat-item justify-center">
                 <div className="icon-box">
                   <i className="icon-purchase"></i>
                 </div>
@@ -61,7 +61,7 @@ function Homes() {
                 </div>
                 </div>
               </div>
-              <div className="stat-item">
+              <div className="stat-item justify-center">
                 <div className="icon-box">
                   <i className="icon-payments"></i>
                 </div>
@@ -75,7 +75,7 @@ function Homes() {
                 </div>
                 </div>
               </div>
-              <div className="stat-item disabled">
+              <div className="stat-item justify-center disabled">
                 <div className="icon-box">
                   <i className="icon-pending"></i>
                 </div>
