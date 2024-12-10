@@ -67,6 +67,7 @@ class Task extends Resource
                 'in_progress' => 'In Progress',
                 'under_review' => 'Under Review',
                 'expired' => 'Expired',
+                'cancelled' => 'Cancelled',
             ])->sortable()->displayUsingLabels(),
             ToggleSwitchField::make('Paid', 'paid')->sortable(),
             Boolean::make('Removed', 'removed')->sortable(),
