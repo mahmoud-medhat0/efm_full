@@ -122,6 +122,11 @@ const Tasks = () => {
                                     <span>Time:</span>{" "}
                                     {task.order.created_at_human}
                                 </p>
+                                {task.rejection_cause_name!==null && (
+                                    <p style={{color:'red'}}>
+                                        <span>Rejection Cause:</span> {task.rejection_cause_name}
+                                    </p>
+                                )}
                             </div>
                             <div className="tasks-tasksButtons">
                                 {task.status === 'pending' || task.status === 'in_progress' || task.status === 'failed' ? (
