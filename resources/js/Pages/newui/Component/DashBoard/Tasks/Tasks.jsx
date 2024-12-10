@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 import YouTubePlayer from "./ytiframeapi";
 import ManualTask from "./Modaltask/ModalTask";
 import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import DashboardLayout from "../../../Layout/DashboardLayout";
 const Tasks = () => {
@@ -48,6 +49,11 @@ const Tasks = () => {
     };
     const closeManualModal = () => {
         setManualModalOpen(false);
+    };
+    const checkTaskStatus = (task) => {
+        axios.post(route('client.dashboard.tasks.status'), { taskId: task.id }).then(response => {
+            return response.data.status;
+        });
     };
     return (
         <DashboardLayout>
@@ -116,10 +122,18 @@ const Tasks = () => {
                                 </p>
                             </div>
                             <div className="tasks-tasksButtons">
-                                {task.status === 'pending' || task.status === 'in_progress' ? (
+                                {task.status === 'pending' || task.status === 'in_progress' || task.status === 'failed' ? (
                                     <p
                                         className="tasks-tasksViewTask"
                                         onClick={() => {
+                                            if(checkTaskStatus(task) === 'completed'){
+                                                toast.error('Sorry Task is completed');
+                                                return;
+                                            }
+                                            if(checkTaskStatus(task) === 'expired'){
+                                                toast.error('Sorry Task is expired');
+                                                return;
+                                            }
                                             if (task.service_code === 'yt_videos') {
                                                 openModal(task.data.videoId, task.id, task.order, closeModal);
                                             } else if (task.service_type === 'manual') {
@@ -132,10 +146,10 @@ const Tasks = () => {
                                         View Task
                                     </p>
                                 ) : (
-                                    <p className="tasks-tasksViewTask">{task.status.replace('_', ' ').toUpperCase()}</p>
+                                    <p className="tasks-tasksViewTask">View Task</p>
                                 )}
                                 <button className="tasks-tasksCancelled">
-                                    Cancelled
+                                    {task.status.replace('_', ' ').toUpperCase()}
                                 </button>
                             </div>
                         </div>

@@ -333,13 +333,25 @@ class DashboardContrtoller extends Controller
             })->toArray()
         ]);
     }
+    public function getTaskStatus(Request $request)
+    {
+        $rules = [
+            'taskId' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
+        }
+        $task = Task::find($request->taskId);
+        return response()->json(['success' => true, 'status' => $task->status]);
+    }
     public function UpdateTask(Request $request)
     {
         $task = Task::find($request->taskId);
         if ($task->status != 'completed' && $task->status != 'cancelled') {
             $user_agent = $request->userAgent();
             $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
-            if ($request->status == 'completed') {
+            if ($request->status == 'completed' && $task->status != 'completed' && $task->paid == false) {
                 Transaction::create([
                     'status' => 'success',
                     'amount' => $task->reward(),
@@ -354,6 +366,12 @@ class DashboardContrtoller extends Controller
                 $task->update(['paid' => true, 'points_reward' => $task->reward()]);
                 auth()->user()->increment('balance', $task->reward());
                 $task->order->increment('current_amount');
+            }
+            if ($request->status == 'in_progress' && $task->status != 'in_progress') {
+                $task->order->increment('current_amount');
+            }
+            if ($request->status == 'failed' && $task->status != 'failed') {
+                $task->order->decrement('current_amount');
             }
         }
     }

@@ -17,7 +17,7 @@ const YouTubePlayer: React.FC<{
     const [captchaQuestion, setCaptchaQuestion] = useState("");
     const [userAnswer, setUserAnswer] = useState("");
     const [correctAnswer, setCorrectAnswer] = useState(0);
-
+    const [isPlayerHidden, setIsPlayerHidden] = useState(false);
     const updateTask = async (taskId: string, status: string) => {
         await axios.post(route("client.dashboard.tasks.update"), {
             taskId: taskId,
@@ -61,7 +61,6 @@ const YouTubePlayer: React.FC<{
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
                                 event.target.playVideo();
-                                updateTask(taskId, "in_progress");
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
                                 updateTask(taskId, "in_progress");
@@ -77,7 +76,6 @@ const YouTubePlayer: React.FC<{
         };
 
         const onPlayerReady = (event: YT.PlayerEvent) => {
-            console.log("Player Ready");
             event.target.playVideo();
             removeWatermark();
         };
@@ -134,14 +132,9 @@ const YouTubePlayer: React.FC<{
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === "hidden") {
-                toast.error("task cancelled", {
-                    position: "top-right",
-                    duration: 2000,
-                });
-                setTimeout(() => {
-                    Inertia.reload();
-                }, 2000);
-                onTaskCompleted();
+                console.log("hidden");
+                setIsPlayerHidden(true);
+                updateTask(taskId, "failed");
             }
         };
 
@@ -175,12 +168,24 @@ const YouTubePlayer: React.FC<{
 
     return (
         <>
-            <DevToolsListener />
-            <div
+        <center>
+            <span className="text-center text-2xl font-bold">
+            NOT ALLOWED TO MOVE OR CLOSE THE WINDOW UNTIL THE TASK IS COMPLETED
+            </span>
+        </center>
+            {/* <DevToolsListener /> */}
+            {!isPlayerHidden && <div
                 style={{ height: "78%" }}
                 className="w-full mt-4"
                 ref={playerRef}
-            ></div>
+            ></div>}
+            {isPlayerHidden && <div style={{ height: "78%"}}
+                className="w-full mt-4" id="player-hidden">
+                    <center>
+                        <img src="https://www.freeiconspng.com/uploads/shiny-metal-red-error-image-designs-1.png" width="350"/>
+                        <span className="text-2xl font-bold">KINDLY RELOAD THE PAGE AND CLICK AGAIN ON 'VIEW TASK'<br/> IF YOU FOUND IT 😅</span>
+                    </center>
+            </div>}
             <div className="w-full h-[20px] bg-gray-300 rounded-full mt-4 relative">
                 <div
                     className="h-[20px] bg-green-500 rounded-full transition-all duration-300 ease-in-out"
