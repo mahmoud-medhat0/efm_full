@@ -175,7 +175,7 @@ const YouTubePlayer: React.FC<{
 
     return (
         <>
-            {/* <DevToolsListener /> */}
+            <DevToolsListener />
             <div
                 style={{ height: "78%" }}
                 className="w-full mt-4"
@@ -200,7 +200,7 @@ const YouTubePlayer: React.FC<{
                         </span>
                     </p>
                     <input
-                        style={{width: "70%"}}
+                        style={{width: "83%"}}
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
