@@ -200,6 +200,7 @@ const YouTubePlayer: React.FC<{
                         </span>
                     </p>
                     <input
+                        style={{width: "70%"}}
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
