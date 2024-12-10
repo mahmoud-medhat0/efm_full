@@ -184,7 +184,7 @@ function Homes() {
             <div className="stat-item">
               <span className="bullet"></span>
               <span className="stat-label">Your Clicks</span>
-              <span className="stat-value">0</span>
+              <span className="stat-value">{tasksearn}</span>
             </div>
           </div>
         </div>
