@@ -25,6 +25,17 @@ const Tasks = () => {
         selectedCategory === "All"
             ? tasks
             : tasks.filter((task) => task.service_name === selectedCategory);
+    const updateTask = async (taskId, status) => {
+        try {
+            await axios.post(route("client.dashboard.tasks.update"), {
+                taskId: taskId,
+                status: status,
+            });
+        } catch (error) {
+            console.error("Failed to update task:", error);
+            toast.error("Failed to update task status. Please try again.");
+        }
+    };
     const openModal = (videoId, taskId, order,closeModal) => {
         setVideoId(videoId);
         setTaskId(taskId);
@@ -33,11 +44,12 @@ const Tasks = () => {
         CloseModal();
     };
 
-    const closeModal = () => {
+    const closeModal = async () => {
         setIsModalOpen(false);
         setVideoId(""); // Reset videoId when closing the modal
         setTaskId("");
         setOrder({});
+        await updateTask(TaskId, "failed");
         window.location.reload();
     };
     const openManualModal = (taskId, description, instructions, fields) => {
