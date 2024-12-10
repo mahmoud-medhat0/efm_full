@@ -60,10 +60,11 @@ const YouTubePlayer: React.FC<{
                         // onFinish: onPlayerFinish,
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
+                                await updateTask(taskId, "in_progress");
                                 event.target.playVideo();
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
-                                updateTask(taskId, "in_progress");
+                                await updateTask(taskId, "in_progress");
                                 updateProgress();
                             }
                             if (event.data === YT.PlayerState.ENDED) {
@@ -77,7 +78,7 @@ const YouTubePlayer: React.FC<{
 
         const onPlayerReady = (event: YT.PlayerEvent) => {
             event.target.playVideo();
-            removeWatermark();
+            // removeWatermark();
         };
 
         const onPlayerError = (event: YT.OnErrorEvent) => {
