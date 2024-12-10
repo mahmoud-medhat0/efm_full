@@ -62,7 +62,9 @@ class DashboardContrtoller extends Controller
                     'completed' => $service->completed_tasks(auth()->user())->count(),
                 ];
             }),
-            'tasksearn' => auth()->user()->tasks()->where('status', 'completed')->sum('points_reward'),
+            'tasksearn' => Task::where('paid', true)->where('client_id', auth()->user()->id)   ->get()->sum(function ($task) {
+                return $task->reward();
+            }),
             'tasks' => auth()->user()->tasks()->where('removed', false)->count(),
             'tasks_completed' => auth()->user()->tasks()->where('status', 'completed')->where('removed', false)->count(),
             'deposits' => auth()->user()->transactions()->where('type', 'deposit')->where('status', 'success')->sum('amount'),
