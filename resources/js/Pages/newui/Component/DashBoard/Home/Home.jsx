@@ -6,7 +6,7 @@ import homs3 from '../../../../newui/photo/Homes3.svg'
 import homs4 from '../../../../newui/photo/Homes4.svg'
 import { usePage } from "@inertiajs/inertia-react";
 function Homes() {
-  const { services, pending_withdrawls, direct_referrals, referrals_earn,deposits,tasks,tasks_completed } = usePage().props;
+  const { services, pending_withdrawls, direct_referrals, referrals_earn,deposits,tasks,tasks_completed,tasksearn } = usePage().props;
   const client = usePage().props.auth.client;
   return (
     <DashboardLayout>
