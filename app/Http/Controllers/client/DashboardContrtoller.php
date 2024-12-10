@@ -336,11 +336,9 @@ class DashboardContrtoller extends Controller
     public function UpdateTask(Request $request)
     {
         $task = Task::find($request->taskId);
-        $ip = Location::get($request->ip());
         if ($task->status != 'completed' && $task->status != 'cancelled') {
             $user_agent = $request->userAgent();
-            $country = $ip ? $ip->countryName : null;
-            $task->update(['status' => $request->status, 'ip' => $ip, 'country' => $country, 'user_agent' => $user_agent]);
+            $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
             if ($request->status == 'completed') {
                 Transaction::create([
                     'status' => 'success',
