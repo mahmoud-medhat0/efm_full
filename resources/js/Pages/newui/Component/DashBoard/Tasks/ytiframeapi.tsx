@@ -233,7 +233,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                     COMPLETED
                 </span>
             </center>
-            {/* <DevToolsListener /> */}
+            <DevToolsListener />
             {!isPlayerHidden  && (
                 <div
                     style={{ height: "78%" }}
