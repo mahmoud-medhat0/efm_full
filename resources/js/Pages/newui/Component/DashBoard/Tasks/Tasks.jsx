@@ -122,16 +122,6 @@ const Tasks = () => {
                                     <span>Time:</span>{" "}
                                     {task.order.created_at_human}
                                 </p>
-                                <p>
-                                    <span>Link:</span>{" "}
-                                    <a
-                                        href={task.order.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Watch Video
-                                    </a>
-                                </p>
                             </div>
                             <div className="tasks-tasksButtons">
                                 {task.status === 'pending' || task.status === 'in_progress' || task.status === 'failed' ? (
