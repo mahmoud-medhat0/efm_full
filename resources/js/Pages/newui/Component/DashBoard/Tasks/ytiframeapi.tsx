@@ -111,22 +111,24 @@ const YouTubePlayer: React.FC<{
             const watermarkElement = document.querySelector(
                 "#movie_player > a.ytp-watermark.yt-uix-sessionlink"
             );
-            if (watermarkElement) {
-                watermarkElement.remove();
+            if (watermarkElement && watermarkElement.parentNode) {
+                watermarkElement.parentNode.removeChild(watermarkElement);
             }
-            const watermarkElements = document
-                ? document.querySelectorAll(
-                      ".ytp-watermark, .yt-uix-sessionlink"
-                  )
-                : [];
+            const watermarkElements = document.querySelectorAll(
+                ".ytp-watermark, .yt-uix-sessionlink"
+            );
             watermarkElements.forEach((element) => {
-                element.remove();
+                if (element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
             });
             const watermarkElements2 = document.querySelectorAll(
                 ".ytp-watermark .yt-uix-sessionlink"
             );
             watermarkElements2.forEach((element) => {
-                element.remove();
+                if (element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
             });
         };
 
@@ -205,7 +207,7 @@ const YouTubePlayer: React.FC<{
                         </span>
                     </p>
                     <input
-                        style={{width: "83%"}}
+                        style={{width: "80%"}}
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
