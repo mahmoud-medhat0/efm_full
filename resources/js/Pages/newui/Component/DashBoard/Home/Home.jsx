@@ -141,7 +141,7 @@ function Homes() {
             <div className="card-container">
           <div className="card-content">
             {services.map((service) => (
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span> {service.name} Credits <span className="value">{service.completed}</span>
             </div>
             ))}
@@ -161,12 +161,12 @@ function Homes() {
             <span className="continer-header-span">Referral Stats</span>
             <div className="card-container">
           <div className="card-content">
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span>
               <span className="stat-label">Direct Referrals</span>
               <span className="stat-value">{direct_referrals}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span>
               <span className="stat-label">Earned so far</span>
               <span className="stat-value">{referrals_earn} <span className="currency">EGP</span></span>
@@ -181,7 +181,7 @@ function Homes() {
             <span className="continer-header-span">Your Advertisement Clicks</span>
             <div className="card-container">
           <div className="card-content">
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span>
               <span className="stat-label">Your Clicks</span>
               <span className="stat-value"></span>
@@ -200,12 +200,12 @@ function Homes() {
             <span className="continer-header-span">Video Ads Stats</span>
             <div className="card-container">
           <div className="card-content">
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span>
               <span className="stat-label">Total plays</span>
               <span className="stat-value">{video_clicks}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item justify-around">
               <span className="bullet"></span>
               <span className="stat-label">Earned</span>
               <span className="stat-value">{tasksearn} <span className="currency">EGP</span></span>
