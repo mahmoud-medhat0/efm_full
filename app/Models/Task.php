@@ -41,8 +41,10 @@ class Task extends Model
     {
         if($this->order->order_type == 'custom_time'){
             return (float) number_format($this->service->reward_point * (($this->order->time_end - $this->order->time_start) / 60), 2, '.', '');
-        }else{
+        }else if($this->service->service_code == 'yt_videos'){
             return (float) number_format($this->service->reward_point * (json_decode($this->order->data, true)['minutes'] ?? 0), 2, '.', '');
+        }else{
+            return (float) number_format($this->service->reward_point);
         }
     }
     public function banAttemps()

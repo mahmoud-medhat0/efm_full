@@ -33,7 +33,7 @@ class GenerateOrderTasks implements ShouldQueue
         if ($tasksfororder) {
             return;
         }
-        Cache::put('tasksfororder' . $this->order->id, true, 60);
+        Cache::put('tasksfororder' . $this->order->id, true, 600);
         $clients = new Client();
         $clients = $clients->ValidClient()->select('id')->get();
         foreach ($clients as $client) {
