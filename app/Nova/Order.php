@@ -154,6 +154,9 @@ class Order extends Resource
             Currency::make('Price')->displayUsing(function ($value, $resource, $attribute) {
                 return number_format($resource->price, 2);
             })->sortable(),
+            Currency::make('Task Reward', 'task_reward')->displayUsing(function ($value, $resource, $attribute) {
+                return number_format($resource->task_reward, 2);
+            })->sortable(),
             Text::make('Last Action', 'last_action')->hideWhenCreating()->readonly()->sortable(),
             DateTime::make('Last Action At', 'last_action_at',)->readonly()->onlyOnDetail()->sortable(),
             BelongsTo::make('Last Action By', 'LastActionBy', User::class)->displayUsing(function ($user) {
@@ -188,6 +191,31 @@ class Order extends Resource
         }
         if ($model->tasks->isEmpty() && $request->status === 'approved') {
             GenerateOrderTasks::dispatch($model)->onQueue('default');
+            $model->approved_by = $admin->id;
+            $client_of_order = $model->provider;
+            $client_of_order->decrement('balance', $model->price);
+            $parent_of_client_of_order = $client_of_order->parent;
+            if ($parent_of_client_of_order) {
+                $referral_setting = ReferralSettingModel::where('is_active', true)->where('code', 'order_referral')->first();
+                if ($referral_setting) {
+                    if ($referral_setting->type === 'percentage') {
+                        $bonus = $model->price * $referral_setting->value / 100;
+                    } else {
+                        $bonus = $referral_setting->value;
+                    }
+                    TransactionModel::create([
+                        'amount' => $bonus,
+                        'fee' => 0,
+                        'total' => $bonus,
+                        'tnx_type' => 'add',
+                        'tnx' => 'ORD' . time(),
+                        'type' => 'referral',
+                        'description' => 'Referral bonus from ' . $model->service->name,
+                        'client_id' => $parent_of_client_of_order->id,
+                    ]);
+                    $parent_of_client_of_order->increment('balance', $bonus);
+                }
+            }
         }
         elseif ($request->status === 'approved' && $model->last_action !== 'approved') {
             $service = ServiceModel::find($request->service);

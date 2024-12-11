@@ -115,6 +115,9 @@ class Task extends Resource
             if (is_null($request->rejectionCause)) {
                 throw new \Exception('Rejection cause is required when the status is failed');
             }
+            else{
+                OrderModel::find($request->order)->decrement('current_amount');
+            }
         }
         if($request->status == 'completed'){
             $client = ClientModel::find($request->client);
@@ -132,7 +135,6 @@ class Task extends Resource
             ]);
             $task->update(['paid' => true, 'points_reward' => $task->reward()]);
             $client->increment('balance', $task->reward());
-            OrderModel::find($task->order_id)->increment('current_amount');
         }
     }
     /**

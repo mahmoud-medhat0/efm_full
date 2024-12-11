@@ -44,7 +44,7 @@ class Task extends Model
         }else if($this->service->service_code == 'yt_videos'){
             return (float) number_format($this->service->reward_point * (json_decode($this->order->data, true)['minutes'] ?? 0), 2, '.', '');
         }else{
-            return $this->service->reward_point;
+            return $this->order->task_reward;
         }
     }
     public function banAttemps()
