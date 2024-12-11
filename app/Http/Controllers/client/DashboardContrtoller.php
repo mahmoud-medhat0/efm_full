@@ -65,7 +65,7 @@ class DashboardContrtoller extends Controller
             'tasksearn' => Task::where('paid', true)->where('client_id', auth()->user()->id)   ->get()->sum(function ($task) {
                 return $task->reward();
             }),
-            'video_clicks' => auth()->user()->tasks()->where('status', 'completed')->where('service_id', 1)->count(),
+            'video_clicks' => auth()->user()->tasks()->where('status', 'completed')->count(),
             'tasks' => auth()->user()->tasks()->where('removed', false)->count(),
             'tasks_completed' => auth()->user()->tasks()->where('status', 'completed')->where('removed', false)->count(),
             'deposits' => auth()->user()->transactions()->where('type', 'deposit')->where('status', 'success')->sum('amount'),

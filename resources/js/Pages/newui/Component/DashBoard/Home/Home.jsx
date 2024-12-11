@@ -197,7 +197,7 @@ function Homes() {
       <div className="card-containerse">
         <div className="referral-stats-card" style={{ width: '100%', padding: '10px', marginRight:"10px" }}>
           <div className="continer-header">
-            <span className="continer-header-span">Video Ads Stats</span>
+            <span className="continer-header-span">Ads Stats</span>
             <div className="card-container">
           <div className="card-content">
             <div className="stat-item justify-around">
