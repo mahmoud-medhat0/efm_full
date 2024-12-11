@@ -185,7 +185,7 @@ class Order extends Resource
         $model->last_action_by = $admin->id;
         if ($request->status === 'rejected') {
             $model->rejection_cause_id = $request->rejectionCause;
-        } elseif ($request->status === 'approved') {
+        } elseif ($request->status === 'approved' && $model->last_action !== 'approved') {
             $service = ServiceModel::find($request->service);
             if ($service->service_code === 'yt_videos') {
                 $videoId = Youtube::parseVidFromURL($request->link);
