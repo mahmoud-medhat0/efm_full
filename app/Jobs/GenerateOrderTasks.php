@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Client;
 use App\Models\Task;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 class GenerateOrderTasks implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -29,6 +29,11 @@ class GenerateOrderTasks implements ShouldQueue
      */
     public function handle(): void
     {
+        $tasksfororder = Cache::get('tasksfororder' . $this->order->id);
+        if ($tasksfororder) {
+            return;
+        }
+        Cache::put('tasksfororder' . $this->order->id, true, 60);
         $clients = new Client();
         $clients = $clients->ValidClient()->select('id')->get();
         foreach ($clients as $client) {
@@ -39,5 +44,6 @@ class GenerateOrderTasks implements ShouldQueue
                 'link' => $this->order->link,
             ]);
         }
+        Cache::forget('tasksfororder' . $this->order->id);
     }
 }
