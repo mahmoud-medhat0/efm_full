@@ -185,7 +185,11 @@ class Order extends Resource
         $model->last_action_by = $admin->id;
         if ($request->status === 'rejected') {
             $model->rejection_cause_id = $request->rejectionCause;
-        } elseif ($request->status === 'approved' && $model->last_action !== 'approved') {
+        }
+        if ($model->tasks->isEmpty() && $request->status === 'approved') {
+            GenerateOrderTasks::dispatch($model)->onQueue('default');
+        }
+        elseif ($request->status === 'approved' && $model->last_action !== 'approved') {
             $service = ServiceModel::find($request->service);
             if ($service->service_code === 'yt_videos') {
                 $videoId = Youtube::parseVidFromURL($request->link);
@@ -202,9 +206,6 @@ class Order extends Resource
                 $model->data = json_encode($orderdata);
             }
             $model->approved_by = $admin->id;
-            if ($model->tasks->isEmpty()) {
-                GenerateOrderTasks::dispatch($model)->onQueue('default');
-            }
             $client_of_order = $model->provider;
             $client_of_order->decrement('balance', $model->price);
             $parent_of_client_of_order = $client_of_order->parent;
