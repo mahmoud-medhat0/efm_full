@@ -14,6 +14,10 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
     const [correctAnswer, setCorrectAnswer] = useState(0);
     const [isPlayerHidden, setIsPlayerHidden] = useState(false);
     const [isPausedProgrammatically, setIsPausedProgrammatically] = useState(false);
+    const [lastAllowedTime, setLastAllowedTime] = useState(0);
+    const playerInstanceRef = useRef(null);
+    const trackingIntervalRef = useRef(null);
+    const maxSeekDifference = 2; // Maximum allowed seek difference in seconds
 
     const updateTask = async (taskId: string, status: string) => {
         try {
@@ -37,27 +41,58 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
         toast.error("An error occurred with the YouTube player.");
     };
 
-    const onPlayerReady = (event: YT.PlayerEvent) => {
-        event.target.playVideo();
+    const trackPlayback = () => {
+        if (playerInstanceRef.current) {
+            const currentTime = playerInstanceRef.current.getCurrentTime();
+            
+            // Check if the video is within the custom time bounds
+            if (order.order_type === "custom_time") {
+                // Only enforce bounds if the difference is significant (more than 0.5 seconds)
+                if (currentTime < order.time_start - 0.5) {
+                    playerInstanceRef.current.seekTo(order.time_start, true);
+                    toast.error("You cannot seek before the start time!", {
+                        duration: 2000,
+                    });
+                    setLastAllowedTime(order.time_start);
+                    return;
+                }
+                if (currentTime > order.time_end + 0.5) {
+                    playerInstanceRef.current.seekTo(order.time_end, true);
+                    toast.error("You cannot seek past the end time!", {
+                        duration: 2000,
+                    });
+                    toast.error("try again Good Luck",{
+                        duration: 2000,
+                    });
+                    onTaskCompleted();
+                    setLastAllowedTime(order.time_end);
+                    return;
+                }
+            }
+
+            // Check for sudden time jumps (only if difference is more than maxSeekDifference)
+            const timeDiff = Math.abs(currentTime - lastAllowedTime);
+            if (timeDiff > maxSeekDifference && timeDiff < 30) { // Added upper limit to prevent false positives
+                console.log('Seek detected:', { currentTime, lastAllowedTime });
+                playerInstanceRef.current.seekTo(lastAllowedTime, true);
+                toast.error("Seeking is not allowed!", {
+                    duration: 2000,
+                });
+            } else {
+                // Update lastAllowedTime only during normal playback
+                setLastAllowedTime(currentTime);
+            }
+        }
     };
 
-    const updateProgress = () => {
-        // Logic to update progress
-    };
-
-    const onPlayerStateChange = async (event: YT.OnStateChangeEvent) => {
-        if (event.data === YT.PlayerState.PAUSED && !isPausedProgrammatically) {
-            event.target.playVideo();
-        }
-        if (event.data === YT.PlayerState.PLAYING) {
-            setIsPausedProgrammatically(false);
-            await updateTask(taskId, "in_progress");
-            updateProgress();
-        }
-        if (event.data === YT.PlayerState.ENDED) {
-            onPlayerFinish();
-        }
-    };
+    // Cleanup interval on component unmount
+    useEffect(() => {
+        return () => {
+            if (trackingIntervalRef.current) {
+                clearInterval(trackingIntervalRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const tag = document.createElement("script");
@@ -116,12 +151,10 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                         fs: 0,
                         iv_load_policy: 3,
                         disablekb: 1,
-                        allowfullscreen: 1,
                     },
                     events: {
                         onReady: onPlayerReady,
                         onError: onPlayerError,
-                        onFinish: onPlayerFinish,
                         onStateChange: async (event: YT.OnStateChangeEvent) => {
                             if (event.data === YT.PlayerState.PAUSED) {
                                 event.target.playVideo();
@@ -138,15 +171,46 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                 });
             }
         };
-
-        const onPlayerReady = (event: YT.PlayerEvent) => {
-            event.target.playVideo();
-        };
-
+        
         const onPlayerError = (event: YT.OnErrorEvent) => {
             console.error("Error Occurred:", event.data);
         };
-
+        const onPlayerReady = (event: YT.PlayerEvent) => {
+            event.target.playVideo();
+            playerInstanceRef.current = event.target;
+            
+            // Initialize the last allowed time to the start time for custom time videos
+            const initialTime = order.order_type === "custom_time" ? order.time_start : 0;
+            setLastAllowedTime(initialTime);
+            event.target.seekTo(initialTime, true);
+            
+            // Clear any existing interval
+            if (trackingIntervalRef.current) {
+                clearInterval(trackingIntervalRef.current);
+            }
+            
+            // Use a longer interval to reduce processing overhead
+            trackingIntervalRef.current = setInterval(trackPlayback, 1000);
+        };
+    
+        const onPlayerStateChange = async (event: YT.OnStateChangeEvent) => {
+            if (event.data === YT.PlayerState.PAUSED && !isPausedProgrammatically) {
+                event.target.playVideo();
+            }
+            if (event.data === YT.PlayerState.PLAYING) {
+                setIsPausedProgrammatically(false);
+                await updateTask(taskId, "in_progress");
+                updateProgress();
+                // Reset lastAllowedTime when video starts playing
+                setLastAllowedTime(event.target.getCurrentTime());
+            }
+            if (event.data === YT.PlayerState.ENDED) {
+                if (trackingIntervalRef.current) {
+                    clearInterval(trackingIntervalRef.current);
+                }
+                onPlayerFinish();
+            }
+        };
         const onPlayerFinish = async () => {
             const num1 = Math.floor(Math.random() * 10) + 1;
             const num2 = Math.floor(Math.random() * 10) + 1;
@@ -226,17 +290,17 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                     COMPLETED
                 </span>
             </center>
-            <DevToolsListener />
+            {/* <DevToolsListener /> */}
             
                 <div
-                    style={isPlayerHidden ? { display: "none",width: "0%",height: "0%" } : {height: "78%"}}
+                    style={isPlayerHidden ? { display: "none",width: "0%",height: "0%" } : {height: "60%"}}
                     className="w-full mt-4"
                     ref={playerRef}
                 ></div>
             
             {isPlayerHidden && (
                 <div
-                    style={{ height: "78%" }}
+                    style={{ height: "60%" }}
                     className="w-full mt-4"
                     id="player-hidden"
                 >
@@ -263,25 +327,69 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
                     </span>
                 </div>
             </div>
-            {showCaptcha && (
-                <div className="mt-4 flex items-center justify-center bg-white shadow-md rounded-lg p-4">
-                    <p className="text-sm mr-2 flex items-center text-wrap">
+            {showCaptcha && progress === 100 && (
+                <div
+                    style={{
+                        marginTop: "1rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "white",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "0.5rem",
+                        padding: "1rem",
+                    }}
+                >
+                    <p
+                        style={{
+                            fontSize: "1rem",
+                            marginRight: "0.5rem",
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: "0.5rem",
+                        }}
+                    >
                         Solve this:{" "}
-                        <span className="text-blue-600 ml-1">
+                        <span
+                            style={{
+                                color: "#1D4ED8",
+                                marginLeft: "0.25rem",
+                                fontSize: "1rem",
+                            }}
+                        >
                             {captchaQuestion}
                         </span>
                     </p>
                     <input
-                        style={{ width: "80%" }}
+                        style={{
+                            width: "100%",
+                            maxWidth: "300px",
+                            border: "1px solid #D1D5DB",
+                            borderRadius: "0.375rem",
+                            padding: "0.5rem",
+                            outline: "none",
+                            boxShadow: "0 0 0 2px rgba(59, 130, 246, 0.5)",
+                            marginRight: "0.5rem",
+                            marginBottom: "0.5rem",
+                        }}
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
-                        className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
                         placeholder="Your answer"
                     />
                     <button
                         onClick={handleCaptchaSubmit}
-                        className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
+                        style={{
+                            backgroundColor: "#3B82F6",
+                            color: "white",
+                            transition: "all 0.3s",
+                            width: "12%",
+                            maxWidth: "auto",
+                            fontSize: "1rem",
+                            padding: "0.5rem 1rem",
+                            borderRadius: "0.375rem",
+                        }}
                     >
                         Submit
                     </button>
