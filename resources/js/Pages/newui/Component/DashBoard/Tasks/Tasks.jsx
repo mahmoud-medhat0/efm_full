@@ -123,7 +123,7 @@ const Tasks = () => {
                                     {task.order.created_at_human}
                                 </p>
                                 <p>
-                                    <span>Current/Target:</span> {task.order.current_count}/{task.order.target_count}
+                                    <span>Current/Target:</span> {task.order.current_amount}/{task.order.target_amount}
                                 </p>
                                 {task.rejection_cause_name!==null && (
                                     <p style={{color:'red'}}>
