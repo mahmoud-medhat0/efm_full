@@ -122,6 +122,9 @@ const Tasks = () => {
                                     <span>Time:</span>{" "}
                                     {task.order.created_at_human}
                                 </p>
+                                <p>
+                                    <span>Current/Target:</span> {task.order.current_count}/{task.order.target_count}
+                                </p>
                                 {task.rejection_cause_name!==null && (
                                     <p style={{color:'red'}}>
                                         <span>Rejection Cause:</span> {task.rejection_cause_name}
