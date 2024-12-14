@@ -57,33 +57,38 @@ class RoiSubscription extends Resource
     }
     public static function afterCreate(NovaRequest $request, $model)
     {
-        DB::transaction(function () use ($request) {
+        DB::beginTransaction();
+        try {
             $patch = $request->patch;
             $percent = $request->percent;
             $subscriptions = SubscriptionMembership::{$patch}()->get();
             foreach ($subscriptions as $subscription) {
                 $amount = $subscription->membership->price;
                 $roi = $amount * $percent / 100;
-                Transaction::create([
-                    'client_id' => $subscription->client_id,
-                    'amount' => $roi,
-                    'fee' => 0,
-                    'total' => $roi,
-                    'type' => 'roi',
-                    'tnx_type' => 'add',
-                    'tnx' => 'Roi-' . uniqid(),
-                    'description' => 'ROI for ' . $subscription->membership->name,
-                    'status' => 'success',
-                ]);
                 $client = $subscription->client;
                 if ($client) {
+                    Transaction::create([
+                        'client_id' => $subscription->client_id,
+                        'amount' => $roi,
+                        'fee' => 0,
+                        'total' => $roi,
+                        'type' => 'roi',
+                        'tnx_type' => 'add',
+                        'tnx' => 'Roi-' . uniqid(),
+                        'description' => 'ROI for ' . $subscription->membership->name,
+                        'status' => 'success',
+                    ]);
                     $client->balance += $roi;
                     $subscription->client->save();
                 } else {
                     throw new \Exception('Client not found ' . $subscription->client_id . 'for subscription ' . $subscription->id);
                 }
             }
-        });
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Transaction failed for client ' . $subscription->client_id . ' with error: ' . $e->getMessage());
+        }
     }
     /**
      * Get the cards available for the request.
