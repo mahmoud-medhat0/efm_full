@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             // TransactionRejectionCausePermission::class,
             // AgentRecieveRequestPermissions::class,
             // TaskManualFieldPremission::class,
-            TaskRejectionCausePremissions::class,
+            // TaskRejectionCausePremissions::class,
+            NewPremissionSeeder::class,
         ]);
     }
 }

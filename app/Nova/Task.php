@@ -5,26 +5,28 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
+use App\Models\Task as TaskModel;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
+use App\Models\Order as OrderModel;
+use App\Models\Client as ClientModel;
 use App\Nova\Filters\Task\PaidFilter;
 use App\Nova\Filters\Task\OrderFilter;
 use App\Nova\Filters\Task\ClientFilter;
 use App\Nova\Filters\Task\StatusFilter;
 use Illuminate\Support\Facades\Storage;
+use App\Nova\Actions\Tasks\ApproveTasks;
 use App\Nova\Filters\Task\ServiceFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Naif\ToggleSwitchField\ToggleSwitchField;
-use Bolechen\NovaActivitylog\Resources\ActivityLog;
-use Laravel\Nova\Fields\HasOne;
-use App\Models\Client as ClientModel;
 use App\Models\Transaction as TransactionModel;
-use App\Models\Task as TaskModel;
-use App\Models\Order as OrderModel;
+use Bolechen\NovaActivitylog\Resources\ActivityLog;
+
 class Task extends Resource
 {
     /**
@@ -184,6 +186,10 @@ class Task extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        $actions = [];
+        if(auth()->user()->hasPermissionTo('Approve Tasks')){
+            $actions[] = new ApproveTasks;
+        }
+        return $actions;
     }
 }
