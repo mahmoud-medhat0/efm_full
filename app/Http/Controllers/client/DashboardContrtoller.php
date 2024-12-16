@@ -545,6 +545,9 @@ class DashboardContrtoller extends Controller
         if (auth()->user()->hasActiveSubscription) {
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
+        if(auth()->user()->parent && auth()->user()->parent->hasActiveSubscription && auth()->user()->parent->Membership->id != $request->plan){
+            return response()->json(['success' => false, 'message' => 'You can only upgrade to your parent membership'], 200);
+        }
         try {
             DB::transaction(function () use ($request) {
                 try {
