@@ -172,28 +172,18 @@ class Client extends Authenticatable implements MustVerifyEmail
             throw new \InvalidArgumentException("Level must be greater than or equal to 1.");
         }
 
-        // Run a recursive query to find the nth-level parent
-        $query = "
-            WITH RECURSIVE cte AS (
-                SELECT id, name, ref_id, 1 as level
-                FROM clients
-                WHERE id = ?
+        // Initialize the current client as the starting point
+        $currentClient = $this;
+        $currentLevel = 1;
 
-                UNION ALL
+        // Traverse up the referral chain until the desired level is reached
+        while ($currentLevel < $level && $currentClient->ref_id) {
+            $currentClient = self::find($currentClient->ref_id);
+            $currentLevel++;
+        }
 
-                SELECT c.id, c.name, c.ref_id, cte.level + 1
-                FROM clients c
-                INNER JOIN cte ON cte.ref_id = c.id
-            )
-            SELECT id, name, ref_id
-            FROM cte
-            WHERE level = ?
-            LIMIT 1
-        ";
-
-        $result = DB::select($query, [$this->id, $level]);
-
-        return $result ? new self((array)$result[0]) : null;
+        // Return the client at the desired level or null if not found
+        return $currentLevel === $level ? $currentClient : null;
     }
     public function countReferralsByMembership()
     {
