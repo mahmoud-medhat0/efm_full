@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 
 const DirectReferrals = () => {
   const { referrals, referral_count, parent, me } = usePage().props;
-  console.log(parent);
     const data = {
       parent: parent,
       me: me,
@@ -83,6 +82,16 @@ const DirectReferrals = () => {
                     className="directrefelr-image"
                   />
                 </div>
+                <h2 className="directrefelr-childInfo">
+                  {Object.entries(child.referral_count).map(([key, value], index) => (
+                    <div key={index} style={{color:"rgb(223 188 2"}}>
+                      <span>{value.name}</span>: <span>{value.count}</span>
+                    </div>
+                  ))}
+                </h2>
+                <h2 className="directrefelr-childInfo">
+                  <span>Free</span>: <span>{child.referral_count_free}</span>
+                </h2>
                 <h3 className="directrefelr-name">{child.name}</h3>
                 <p className="directrefelr-email">{child.email}</p>
               </motion.div>

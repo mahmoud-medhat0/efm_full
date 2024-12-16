@@ -45,7 +45,7 @@ const UpgradeAccount = () => {
                     e.preventDefault();
                     const response = await axios.post(route('client.dashboard.membership.upgrade.balance'), {
                         _method: 'POST',
-                        plan: selectedPlan.id,
+                        plan: selectedPlan,
                     });
                     if(response.data.success){
                         toast.success('Membership upgraded successfully',{
@@ -53,7 +53,7 @@ const UpgradeAccount = () => {
                             position: 'top-right',
                         });
                         setTimeout(() => {
-                            Inertia.reload();
+                            window.location.reload();
                         }, 2000);
                     }else{
                         toast.error(response.data.message,{
@@ -80,9 +80,9 @@ const UpgradeAccount = () => {
 
                     <label className="UpgradeAccount-formLabel">Plan</label>
                     <div className="UpgradeAccount-selectContainer">
-                        <select className="UpgradeAccount-formInput">
+                        <select className="UpgradeAccount-formInput" onChange={(e) => setSelectedPlan(e.target.value)}>
                             {plans.map((plan) => (
-                                <option key={plan.id}>{plan.name}</option>
+                                <option key={plan.id} value={plan.id}>{plan.name}</option>
                             ))}
                         </select>
                     </div>

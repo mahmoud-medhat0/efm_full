@@ -31,6 +31,7 @@ class WeeklyTargetInvites extends Command
         $firstDayOfPreviousWeek = now()->subWeek()->startOfWeek();
         $lastDayOfPreviousWeek = now()->subWeek()->endOfWeek();
         $clients = Client::select('id')->whereHas('subscriptionMemberships', function($query) use ($firstDayOfPreviousWeek, $lastDayOfPreviousWeek){
+            $query->where('is_lifetime',true);
             $query->whereHas('client.referrals', function($query) use ($firstDayOfPreviousWeek, $lastDayOfPreviousWeek) {
                 $query->whereHas('subscriptionMemberships', function($query) use ($firstDayOfPreviousWeek, $lastDayOfPreviousWeek) {
                     $query->whereBetween('created_at', [$firstDayOfPreviousWeek, $lastDayOfPreviousWeek]);
@@ -38,6 +39,7 @@ class WeeklyTargetInvites extends Command
             });
         })->withCount(['referrals as weekly_referrals_count' => function($query) use ($firstDayOfPreviousWeek, $lastDayOfPreviousWeek) {
             $query->whereHas('subscriptionMemberships', function($query) use ($firstDayOfPreviousWeek, $lastDayOfPreviousWeek) {
+                $query->where('is_lifetime',true);
                 $query->whereBetween('created_at', [$firstDayOfPreviousWeek, $lastDayOfPreviousWeek]);
             });
         }])->having('weekly_referrals_count', '>=', 1)->get();

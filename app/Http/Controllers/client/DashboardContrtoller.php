@@ -62,7 +62,7 @@ class DashboardContrtoller extends Controller
                     'completed' => $service->completed_tasks(auth()->user())->count(),
                 ];
             }),
-            'tasksearn' => Task::where('paid', true)->where('client_id', auth()->user()->id)   ->get()->sum(function ($task) {
+            'tasksearn' => Task::where('paid', true)->where('client_id', auth()->user()->id)->get()->sum(function ($task) {
                 return $task->reward();
             }),
             'video_clicks' => auth()->user()->tasks()->where('status', 'completed')->count(),
@@ -509,7 +509,7 @@ class DashboardContrtoller extends Controller
             }),
             'plans' => Membershib::all()->map(function ($plan) use ($registrationOffer) {
                 return [
-                    'name' => $plan->name . ' - ' . ($registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price) . ' EGP ' . $plan->duration,
+                    'name' => $plan->is_lifetime ? $plan->name . ' - ' . ($registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price) : $plan->name . ' - ' . $plan->price,
                     'id' => $plan->id,
                 ];
             }),
@@ -532,9 +532,13 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
         $plan = Membershib::find($request->plan);
-        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
-        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
-        $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
+        if($plan->is_lifetime==1 || $plan->is_lifetime==true){
+            $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
+            $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+            $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
+        }else{
+            $planPrice = $plan->price;
+        }
         if (auth()->user()->balance < $planPrice) {
             return response()->json(['success' => false, 'message' => 'Insufficient balance to upgrade'], 200);
         }
@@ -545,96 +549,146 @@ class DashboardContrtoller extends Controller
             DB::transaction(function () use ($request) {
                 try {
                     $plan = Membershib::find($request->plan);
-                    $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
-                    $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
-                    $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
-                    Transaction::create([
-                        'amount' => $planPrice,
-                        'fee' => 0,
-                        'total' => $planPrice,
-                        'tnx_type' => 'sub',
-                        'tnx' => 'SUB' . time(),
-                        'type' => 'membership',
-                        'description' => 'Upgrade to ' . $plan->name,
-                        'client_id' => auth()->user()->id,
-                        'status' => 'success',
-                    ]);
-                    $LastActiveNumber = Client::whereNotNull('activator_count')->count();
-                    $user = Client::find(auth()->user()->id);
-                    $user->update([
-                        'balance' => $user->balance - $planPrice,
-                        'activator_count' => $LastActiveNumber + 1
-                    ]);
-                    if (auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()) {
-                        $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type;
-                        $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
-                        $rewardvalue = $activatorReward == 'percentage' ? ($planPrice * $activatorRewardValue / 100) : $activatorRewardValue;
-                        if ($rewardvalue > 0) {
-                            Transaction::create([
-                                'amount' => $rewardvalue,
-                                'fee' => 0,
-                                'total' => $rewardvalue,
-                                'tnx_type' => 'add',
-                                'tnx' => 'REF' . time(),
-                                'type' => 'referral',
-                                'description' => 'Referral reward for ' . auth()->user()->name,
-                                'client_id' => auth()->user()->parent->id,
-                                'status' => 'success',
-                            ]);
-                            auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
-                        }
-                        auth()->user()->parent->increment('invites_premium');
-                        if (auth()->user()->parent->invites_premium >= 5) {
-                            auth()->user()->parent->increment('invites_premium_period');
-                            auth()->user()->parent->decrement('invites_premium', 5);
-                            Transaction::create([
-                                'amount' => 100,
-                                'fee' => 0,
-                                'total' => 100,
-                                'tnx_type' => 'add',
-                                'tnx' => 'BON' . time(),
-                                'type' => 'bonus',
-                                'description' => 'Bonus reward for ' . auth()->user()->parent->name,
-                                'client_id' => auth()->user()->parent->id,
-                                'status' => 'success',
-                            ]);
-                            auth()->user()->parent->increment('balance', 100);
-                            if (auth()->user()->parent->parent != null) {
+                    if ($plan->is_lifetime) {
+                        $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
+                        $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
+                        $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
+                        Transaction::create([
+                            'amount' => $planPrice,
+                            'fee' => 0,
+                            'total' => $planPrice,
+                            'tnx_type' => 'sub',
+                            'tnx' => 'SUB' . time(),
+                            'type' => 'membership',
+                            'description' => 'Upgrade to ' . $plan->name,
+                            'client_id' => auth()->user()->id,
+                            'status' => 'success',
+                        ]);
+                        $LastActiveNumber = Client::whereNotNull('activator_count')->count();
+                        $user = Client::find(auth()->user()->id);
+                        $user->update([
+                            'balance' => $user->balance - $planPrice,
+                            'activator_count' => $LastActiveNumber + 1
+                        ]);
+                        if (auth()->user()->parent != null && ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->exists()) {
+                            $activatorReward = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->type;
+                            $activatorRewardValue = ReferralSetting::where('code', 'activator_reward')->where('is_active', true)->first()->value;
+                            $rewardvalue = $activatorReward == 'percentage' ? ($planPrice * $activatorRewardValue / 100) : $activatorRewardValue;
+                            if ($rewardvalue > 0) {
                                 Transaction::create([
-                                    'amount' => 50,
+                                    'amount' => $rewardvalue,
                                     'fee' => 0,
-                                    'total' => 50,
+                                    'total' => $rewardvalue,
+                                    'tnx_type' => 'add',
+                                    'tnx' => 'REF' . time(),
+                                    'type' => 'referral',
+                                    'description' => 'Referral reward for ' . auth()->user()->name,
+                                    'client_id' => auth()->user()->parent->id,
+                                    'status' => 'success',
+                                ]);
+                                auth()->user()->parent->update(['balance' => auth()->user()->parent->balance + $rewardvalue]);
+                            }
+                            auth()->user()->parent->increment('invites_premium');
+                            if (auth()->user()->parent->invites_premium >= 5) {
+                                auth()->user()->parent->increment('invites_premium_period');
+                                auth()->user()->parent->decrement('invites_premium', 5);
+                                Transaction::create([
+                                    'amount' => 100,
+                                    'fee' => 0,
+                                    'total' => 100,
                                     'tnx_type' => 'add',
                                     'tnx' => 'BON' . time(),
                                     'type' => 'bonus',
-                                    'description' => 'Bonus reward for Help Person 5 Premium Invites',
-                                    'client_id' => auth()->user()->parent->parent->id,
+                                    'description' => 'Bonus reward for ' . auth()->user()->parent->name,
+                                    'client_id' => auth()->user()->parent->id,
                                     'status' => 'success',
                                 ]);
-                                auth()->user()->parent->parent->increment('balance', 50);
+                                auth()->user()->parent->increment('balance', 100);
+                                if (auth()->user()->parent->parent != null) {
+                                    Transaction::create([
+                                        'amount' => 50,
+                                        'fee' => 0,
+                                        'total' => 50,
+                                        'tnx_type' => 'add',
+                                        'tnx' => 'BON' . time(),
+                                        'type' => 'bonus',
+                                        'description' => 'Bonus reward for Help Person 5 Premium Invites',
+                                        'client_id' => auth()->user()->parent->parent->id,
+                                        'status' => 'success',
+                                    ]);
+                                    auth()->user()->parent->parent->increment('balance', 50);
+                                }
                             }
                         }
+                        $subscription = SubscriptionMembership::create([
+                            'client_id' => auth()->user()->id,
+                            'membership_id' => $request->plan,
+                            'status' => 'active',
+                            'start_date' => now(),
+                            'end_date' => $plan->subscriptionMemberships
+                                ? null
+                                : now()->addDays($plan->duration),
+                            'is_lifetime' => $plan->subscriptionMemberships,
+                        ]);
+                        PushMembershipNotification::dispatch(auth()->user(), $subscription->id)->onQueue('default');
+                        $message = 'New Membership Upgrade from ' . auth()->user()->name . ' (' . auth()->user()->username . ')' . ' To ' . $plan->name;
+                        SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '6461632565')->onQueue('default');
+                        MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
+                    } else {
+                        $levelReferralCommissions = $plan->levels_referral_commissions;
+                        foreach ($levelReferralCommissions as $id => $level) {
+                            $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel($level['level']);
+                            if ($parentlevel != null) {
+                                $ParentClient = Client::find($parentlevel->id);
+                                Transaction::create([
+                                    'amount' => (int)$plan->price * $level['percentage'] / 100,
+                                    'fee' => 0,
+                                    'total' => (int)$plan->price * $level['percentage'] / 100,
+                                    'tnx_type' => 'add',
+                                    'tnx' => 'REF' . time(),
+                                    'type' => 'referral',
+                                    'description' => 'Referral reward for ' . auth()->user()->name,
+                                    'client_id' => $ParentClient->id,
+                                    'status' => 'success',
+                                ]);
+                                $ParentClient->increment('balance', $plan->price * $level['percentage'] / 100);
+                            }
+                        }
+                        Transaction::create([
+                            'amount' => $plan->price,
+                            'fee' => 0,
+                            'total' => $plan->price,
+                            'tnx_type' => 'sub',
+                            'tnx' => 'SUB' . time(),
+                            'type' => 'membership',
+                            'description' => 'Upgrade to ' . $plan->name,
+                            'client_id' => auth()->user()->id,
+                            'status' => 'success',
+                        ]);
+                        auth()->user()->update(['balance' => auth()->user()->balance - $plan->price]);
+                        $subscription = SubscriptionMembership::create([
+                            'client_id' => auth()->user()->id,
+                            'membership_id' => $request->plan,
+                            'status' => 'active',
+                            'start_date' => now(),
+                            'end_date' => now()->addDays($plan->days),
+                            'is_lifetime' => $plan->is_lifetime,
+                        ]);
+                        PushMembershipNotification::dispatch(auth()->user(), $subscription->id)->onQueue('default');
+                        $message = 'New Membership Upgrade from ' . auth()->user()->name . ' (' . auth()->user()->username . ')' . ' To ' . $plan->name;
+                        SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
+                        SendMessageNotificationBot::dispatch($message, '6461632565')->onQueue('default');
+                        MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
+
                     }
-                    $subscription = SubscriptionMembership::create([
-                        'client_id' => auth()->user()->id,
-                        'membership_id' => $request->plan,
-                        'status' => 'active',
-                        'start_date' => now(),
-                        'end_date' => $plan->subscriptionMemberships
-                            ? null
-                            : now()->addDays($plan->duration),
-                        'is_lifetime' => $plan->subscriptionMemberships,
-                    ]);
-                    PushMembershipNotification::dispatch(auth()->user(), $subscription->id)->onQueue('default');
-                    $message = 'New Membership Upgrade from ' . auth()->user()->name . ' (' . auth()->user()->username . ')' . ' To ' . $plan->name;
-                    SendMessageNotificationBot::dispatch($message, '948449142')->onQueue('default');
-                    SendMessageNotificationBot::dispatch($message, '7812601988')->onQueue('default');
-                    SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
-                    SendMessageNotificationBot::dispatch($message, '6461632565')->onQueue('default');
-                    MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    \Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
                 }
             });
             return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
@@ -665,11 +719,14 @@ class DashboardContrtoller extends Controller
                     'email' => $referral->email,
                     'type' => $referral->membership ? $referral->membership->name : 'Free',
                     'has_subscription' => $referral->membership != null ? true : false,
+                    'referral_count' => $referral->countReferralsByMembership()->toArray(),
+                    'referral_count_free' => $referral->getReferralCountByFreeMembership(),
                 ];
             }),
             'referral_count' => auth()->user()->referrals->count(),
             'parent' => auth()->user()->parent,
             'me' => auth()->user(),
+            
         ]);
     }
     public function currencies()

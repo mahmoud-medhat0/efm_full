@@ -239,6 +239,7 @@ class HomeController extends Controller
         ]);
         if($user->ref_id){
             $parent = Client::find($user->ref_id);
+            if($parent->hasActiveSubscription && $parent->subscriptionMemberships->first() && $parent->subscriptionMemberships->first()->is_lifetime){
             $parent->increment('invites_free');
             if($parent->invites_free >=50){
                 $parent->increment('invites_free_period');
@@ -255,6 +256,7 @@ class HomeController extends Controller
                     'status' => 'success',
                 ]);
                 $parent->increment('balance', 20);
+                }
             }
         }
         return response()->json(['success' => true, 'message' => 'Telegram verification successful.']);

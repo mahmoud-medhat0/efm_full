@@ -17,12 +17,18 @@ class Membershib extends Model
     {
         return $this->is_lifetime ? true : false;
     }
-    public function getIsLifetimeAttribute($value)
-    {
-        return $value ? 'Yes' : 'No';
-    }
     public function getDurationAttribute()
     {
         return $this->is_lifetime ? 'Lifetime' : $this->days . ' day(s)';
+    }
+    public function getLevelsReferralCommissionsAttribute()
+    {
+        $ids = json_decode($this->level_referral_commission, true);
+        $levelReferralCommissions = [];
+        foreach ($ids as $id) {
+            $levelReferralCommissions[$id]['level'] = LevelReferralCommision::where('id', $id)->first()->level;
+            $levelReferralCommissions[$id]['percentage'] = LevelReferralCommision::where('id', $id)->first()->percentage;
+        }
+        return $levelReferralCommissions;
     }
 }

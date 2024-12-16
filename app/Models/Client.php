@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Membershib;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
@@ -36,13 +38,44 @@ class Client extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Coupoun::class);
     }
-    public function ValidClient()
+    public static function ValidClient()
     {
-        return $this->where('email_verified', 1)
+        return self::where('email_verified', 1)
         // ->where('is_active', 1)
         // ->where('telegram_verified', 1)
         // ->where('kyc_verified', 1)
         ;
+    }
+    public static function clientsForTasks()
+    {
+        
+        $validClients = self::ValidClient();
+        $clientsWithActiveSubscription = self::clientsWithActiveSubscription($validClients);
+        $clientsWithLowPoints = self::clientsWithLowPoints($validClients);
+        dd($clientsWithActiveSubscription,$clientsWithLowPoints);
+        // return $clientsWithActiveSubscription->union($clientsWithLowPoints);
+    }
+    
+    public static function clientsWithActiveSubscription()
+    {
+        return self::whereExists(function ($query) {
+            $query->select('*')
+                  ->from('subscription_memberships')
+                  ->whereColumn('clients.id', 'subscription_memberships.client_id')
+                  ->where('status', 'active');
+        })->get();
+    }
+
+    public static function clientsWithLowPoints()
+    {
+        return self::whereExists(function ($query) {
+            $query->selectRaw('client_id, SUM(tasks.points_reward) as total_points')
+                  ->from('tasks')
+                  ->whereColumn('clients.id', 'tasks.client_id')
+                  ->where('status', 'success')
+                  ->groupBy('client_id')
+                  ->havingRaw('total_points <= ?', [200]);
+        })->get();
     }
     public function orders()
     {
@@ -131,5 +164,51 @@ class Client extends Authenticatable implements MustVerifyEmail
     public function getJoiningDateAttribute()
     {
         return Carbon::parse($this->created_at)->format('d-m-Y');
+    }
+    public function getParentReferralLevel($level = 1)
+    {
+        // Validate the level
+        if ($level < 1) {
+            throw new \InvalidArgumentException("Level must be greater than or equal to 1.");
+        }
+
+        // Run a recursive query to find the nth-level parent
+        $query = "
+            WITH RECURSIVE cte AS (
+                SELECT id, name, ref_id, 1 as level
+                FROM clients
+                WHERE id = ?
+
+                UNION ALL
+
+                SELECT c.id, c.name, c.ref_id, cte.level + 1
+                FROM clients c
+                INNER JOIN cte ON cte.ref_id = c.id
+            )
+            SELECT id, name, ref_id
+            FROM cte
+            WHERE level = ?
+            LIMIT 1
+        ";
+
+        $result = DB::select($query, [$this->id, $level]);
+
+        return $result ? new self((array)$result[0]) : null;
+    }
+    public function countReferralsByMembership()
+    {
+        return $this->referrals()
+            ->join('subscription_memberships', 'clients.id', '=', 'subscription_memberships.client_id')
+            ->select('subscription_memberships.membership_id', DB::raw('COUNT(clients.id) as referral_count'))
+            ->groupBy('subscription_memberships.membership_id')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                $membership = Membershib::find($item->membership_id);
+                return [$item->membership_id => ['name' => $membership ? $membership->name : 'Unknown', 'count' => $item->referral_count]];
+            });
+    }
+    public function getReferralCountByFreeMembership()
+    {
+        return $this->referrals()->whereDoesntHave('subscriptionMemberships')->count();
     }
 }

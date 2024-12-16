@@ -41,6 +41,7 @@ use App\Nova\TaskRejectionCause;
 use App\Nova\AgentRecieveRequest;
 use App\Nova\WithdrawAccountField;
 use Laravel\Nova\Menu\MenuSection;
+use App\Nova\LevelReferralCommision;
 use App\Nova\SubscriptionMembership;
 use Illuminate\Support\Facades\Gate;
 use App\Nova\TransactionRejectionCause;
@@ -93,6 +94,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(AgentRequest::class),
                     MenuItem::resource(Membershib::class),
                     MenuItem::resource(SubscriptionMembership::class)->name('Subscriptions'),
+                    MenuItem::resource(LevelReferralCommision::class)->name('Level Referral Commision'),
                     MenuItem::resource(RoiSubscription::class)->name('Roi Subscriptions'),
                     MenuItem::resource(ReferralSetting::class),
                     MenuItem::resource(RegistrationOffer::class),

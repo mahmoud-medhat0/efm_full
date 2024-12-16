@@ -51,10 +51,10 @@ class SubscriptionMembership extends Model
     }
     public function scopeFirstHalf($query)
     {
-        return $query->whereRaw('DAY(start_date) > 14');
+        return $query->where('is_lifetime',true)->whereRaw('DAY(start_date) > 14');
     }
     public function scopeSecondHalf($query)
     {
-        return $query->whereRaw('DAY(start_date) <= 14');
+        return $query->where('is_lifetime',true)->whereRaw('DAY(start_date) <= 14');
     }
 }
