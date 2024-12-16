@@ -509,7 +509,7 @@ class DashboardContrtoller extends Controller
             }),
             'plans' => Membershib::all()->map(function ($plan) use ($registrationOffer) {
                 return [
-                    'name' => $plan->is_lifetime ? $plan->name . ' - ' . ($registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price) : $plan->name . ' - ' . $plan->price,
+                    'name' => $plan->is_lifetime ? $plan->name . ' - ' . ($registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price) : $plan->name . ' - ' . number_format($plan->price, 0, '.', ''),
                     'id' => $plan->id,
                 ];
             }),
