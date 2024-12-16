@@ -643,7 +643,7 @@ class DashboardContrtoller extends Controller
                     } else {
                         $levelReferralCommissions = $plan->levels_referral_commissions;
                         foreach ($levelReferralCommissions as $id => $level) {
-                            $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel($level['level']);
+                            $parentlevel = Client::find(auth()->user()->id)->getParentReferralLevel($level['level']);
                             if ($parentlevel != null) {
                                 $ParentClient = Client::find($parentlevel->id);
                                 Transaction::create([
