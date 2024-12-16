@@ -16,7 +16,7 @@ const UpgradeAccount = () => {
     const page = usePage();
     const methods = page.props.methods;
     const plans = page.props.plans;
-    const [selectedPlan, setSelectedPlan] = useState(plans[0]);
+    const [selectedPlan, setSelectedPlan] = useState(plans[0].id);
     return (
         <DashboardLayout>
             <h2 className="UpgradeAccount-upgradeTitle">Upgrade Account</h2>
