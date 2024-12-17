@@ -36,7 +36,7 @@ const DirectReferrals = () => {
         </div>
         )}
   
-        <div className="directrefelr-intermediateBox">
+        <div className="directrefelr-intermediateBox" style={{border:data.me.has_active_subscription ? "3px solid #FFD700" : "1px solid #ddd"}}>
           <div className="directrefelr-imageContainer">
             <img
               src={accImg}
