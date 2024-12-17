@@ -175,7 +175,7 @@ const YouTubePlayer = ({ videoId, taskId, order, onTaskCompleted }) => {
         const onPlayerError = (event: YT.OnErrorEvent) => {
             console.error("Error Occurred:", event.data);
         };
-        const onPlayerReady = (event: YT.PlayerEvent) => {
+        const onPlayerReady = (event: YT.PlayerEvent) => {           
             event.target.playVideo();
             playerInstanceRef.current = event.target;
             
