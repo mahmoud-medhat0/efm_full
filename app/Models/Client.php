@@ -187,15 +187,22 @@ class Client extends Authenticatable implements MustVerifyEmail
     }
     public function countReferralsByMembership()
     {
-        return $this->referrals()
-            ->join('subscription_memberships', 'clients.id', '=', 'subscription_memberships.client_id')
-            ->select('subscription_memberships.membership_id', DB::raw('COUNT(clients.id) as referral_count'))
-            ->groupBy('subscription_memberships.membership_id')
+        $referrals = $this->referrals()
+            ->whereHas('subscriptionMemberships')
+            ->with('subscriptionMemberships.membership')
             ->get()
-            ->mapWithKeys(function ($item) {
-                $membership = Membershib::find($item->membership_id);
-                return [$item->membership_id => ['name' => $membership ? $membership->name : 'Unknown', 'count' => $item->referral_count]];
+            ->groupBy(function ($referral) {
+                return $referral->subscriptionMemberships->first()->membership_id;
+            })
+            ->map(function ($group) {
+                $membership = $group->first()->subscriptionMemberships->first()->membership;
+                return [
+                    'name' => $membership ? $membership->name : 'Unknown',
+                    'count' => $group->count()
+                ];
             });
+
+        return $referrals;
     }
     public function getReferralCountByFreeMembership()
     {
