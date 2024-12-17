@@ -642,7 +642,6 @@ class DashboardContrtoller extends Controller
                         MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
                     } else {
                         $levelReferralCommissions = $plan->levels_referral_commissions;
-                        $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel(1);
                         foreach ($levelReferralCommissions as $id => $level) {
                             $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel($level['level']);
                             if ($parentlevel != null) {
@@ -688,14 +687,13 @@ class DashboardContrtoller extends Controller
                         SendMessageNotificationBot::dispatch($message, '5864049778')->onQueue('default');
                         SendMessageNotificationBot::dispatch($message, '6461632565')->onQueue('default');
                         MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
-
                     }
-                    return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
                 } catch (\Exception $e) {
                     DB::rollBack();
                     return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
                 }
             });
+            return response()->json(['success' => true, 'message' => 'Upgrade balance successful']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
         }
