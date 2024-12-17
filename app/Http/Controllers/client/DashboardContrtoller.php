@@ -532,11 +532,11 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
         $plan = Membershib::find($request->plan);
-        if($plan->is_lifetime==1 || $plan->is_lifetime==true){
+        if ($plan->is_lifetime == 1 || $plan->is_lifetime == true) {
             $currentcount = Client::whereNotNull('activator_count')->latest()->first()->activator_count + 1;
             $registrationOffer = RegistrationOffer::where('min_activator_count', '<=', $currentcount)->where('max_activator_count', '>=', $currentcount)->first();
             $planPrice = $registrationOffer ? ($registrationOffer->type == 'percentage' ? $plan->price - ($registrationOffer->value * $plan->price / 100) : $plan->price - $registrationOffer->value) : $plan->price;
-        }else{
+        } else {
             $planPrice = $plan->price;
         }
         if (auth()->user()->balance < $planPrice) {
@@ -545,7 +545,7 @@ class DashboardContrtoller extends Controller
         if (auth()->user()->hasActiveSubscription) {
             return response()->json(['success' => false, 'message' => 'You already have an active membership'], 200);
         }
-        if(auth()->user()->parent && auth()->user()->parent->hasActiveSubscription && auth()->user()->parent->Membership->id != $request->plan){
+        if (auth()->user()->parent && auth()->user()->parent->hasActiveSubscription && auth()->user()->parent->Membership->id != $request->plan) {
             return response()->json(['success' => false, 'message' => 'You can only upgrade to your parent membership'], 200);
         }
         try {
@@ -641,23 +641,25 @@ class DashboardContrtoller extends Controller
                         SendMessageNotificationBot::dispatch($message, '6461632565')->onQueue('default');
                         MembershipCongratsMessageJob::dispatch(auth()->user())->onQueue('default');
                     } else {
-                        $levelReferralCommissions = $plan->levels_referral_commissions;
-                        foreach ($levelReferralCommissions as $id => $level) {
-                            $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel($level['level']);
-                            if ($parentlevel != null) {
-                                $ParentClient = Client::find($parentlevel->id);
-                                Transaction::create([
-                                    'amount' => (int)$plan->price * $level['percentage'] / 100,
-                                    'fee' => 0,
-                                    'total' => (int)$plan->price * $level['percentage'] / 100,
-                                    'tnx_type' => 'add',
-                                    'tnx' => 'REF' . time(),
-                                    'type' => 'referral',
-                                    'description' => 'Referral reward for ' . auth()->user()->name,
-                                    'client_id' => $ParentClient->id,
-                                    'status' => 'success',
-                                ]);
-                                $ParentClient->increment('balance', $plan->price * $level['percentage'] / 100);
+                        if (auth()->user()->parent != null) {
+                            $levelReferralCommissions = $plan->levels_referral_commissions;
+                            foreach ($levelReferralCommissions as $id => $level) {
+                                $parentlevel = Client::find(auth()->user()->parent->id)->getParentReferralLevel($level['level']);
+                                if ($parentlevel != null) {
+                                    $ParentClient = Client::find($parentlevel->id);
+                                    Transaction::create([
+                                        'amount' => (int)$plan->price * $level['percentage'] / 100,
+                                        'fee' => 0,
+                                        'total' => (int)$plan->price * $level['percentage'] / 100,
+                                        'tnx_type' => 'add',
+                                        'tnx' => 'REF' . time(),
+                                        'type' => 'referral',
+                                        'description' => 'Referral reward for ' . auth()->user()->name,
+                                        'client_id' => $ParentClient->id,
+                                        'status' => 'success',
+                                    ]);
+                                    $ParentClient->increment('balance', $plan->price * $level['percentage'] / 100);
+                                }
                             }
                         }
                         Transaction::create([
@@ -728,7 +730,7 @@ class DashboardContrtoller extends Controller
             'referral_count' => auth()->user()->referrals->count(),
             'parent' => auth()->user()->parent,
             'me' => auth()->user(),
-            
+
         ]);
     }
     public function currencies()
