@@ -32,7 +32,8 @@ class OrdersController extends Controller
                     'icon' => $service->icon,
                     'min' => $service->min_amount,
                     'max' => $service->max_amount,
-                    'minute_cost' => json_decode($service->calculation_formula, true)['minute_cost'],
+                    'time_type' => $service->time_type,
+                    // 'minute_cost' => json_decode($service->calculation_formula, true)['minute_cost'],
                 ];
             }),
             'categories' => InterestCategory::all()->toArray()
