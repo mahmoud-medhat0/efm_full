@@ -26,6 +26,7 @@ use App\Models\TicketCategory;
 use App\Models\ReferralSetting;
 use App\Models\InterestCategory;
 use App\Models\RegistrationOffer;
+use App\Rules\IpDuplicateForTask;
 use Illuminate\Support\Facades\DB;
 use Alaouy\Youtube\Facades\Youtube;
 use App\Http\Controllers\Controller;
@@ -341,7 +342,7 @@ class DashboardContrtoller extends Controller
     public function getTaskStatus(Request $request)
     {
         $rules = [
-            'taskId' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule],
+            'taskId' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule, new IpDuplicateForTask($request->taskId)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

@@ -67,10 +67,23 @@ const Tasks = () => {
     const closeManualModal = () => {
         setManualModalOpen(false);
     };
-    const checkTaskStatus = (task) => {
-        axios.post(route('client.dashboard.tasks.status'), { taskId: task.id }).then(response => {
+    const checkTaskStatus = async (task) => {
+        try {
+            const response = await axios.post(route('client.dashboard.tasks.status'), { taskId: task.id });
             return response.data.status;
-        });
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.errors) {
+                // Assuming the server returns validation errors in a standard format
+                const errors = error.response.data.errors;
+                Object.values(errors).forEach(err => {
+                    toast.error(err[0]); // Display each error message
+                });
+            } else {
+                console.error('Failed to check task status:', error);
+                toast.error('Failed to check task status. Please try again.');
+            }
+            return 'failed';
+        }
     };
     return (
         <DashboardLayout>
