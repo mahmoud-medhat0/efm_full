@@ -379,9 +379,6 @@ class DashboardContrtoller extends Controller
             if ($request->status == 'failed' && $task->status != 'failed') {
                 Order::find($task->order_id)->decrement('current_amount');
             }
-            if ($request->status == 'under_review' && $task->status != 'under_review') {
-                $task->update(['under_review_date' => now(), 'status' => 'under_review', 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
-            }
             $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
         }
     }
@@ -423,7 +420,7 @@ class DashboardContrtoller extends Controller
             $data = json_encode($data);
             $task->update(['status' => 'under_review', 'data' => $data]);
             $task->order->increment('current_amount');
-            $task->update(['ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $request->userAgent()]);
+            $task->update(['ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $request->userAgent(), 'under_review_date' => now()]);
             return response()->json(['success' => true, 'message' => 'Task updated successfully']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 200);
