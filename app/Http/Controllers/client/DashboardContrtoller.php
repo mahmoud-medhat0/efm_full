@@ -19,6 +19,7 @@ use Endroid\QrCode\QrCode;
 use App\Models\ManualField;
 use App\Models\Transaction;
 use App\Models\AgentRequest;
+use App\Rules\AdBlockDetect;
 use Illuminate\Http\Request;
 use App\Models\TicketMessage;
 use App\Mail\SubscriptionMail;
@@ -342,7 +343,7 @@ class DashboardContrtoller extends Controller
     public function getTaskStatus(Request $request)
     {
         $rules = [
-            'taskId' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule, new IpDuplicateForTask($request->taskId)],
+            'taskId' => ['required', 'exists:tasks,id', new TaskBelongsToAuthClientRule, new IpDuplicateForTask($request->taskId), new AdBlockDetect],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
