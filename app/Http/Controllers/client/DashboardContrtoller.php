@@ -348,7 +348,8 @@ class DashboardContrtoller extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 200);
         }
         $task = Task::find($request->taskId);
-        return response()->json(['success' => true, 'status' => $task->status]);
+        $ip = DetectIp();
+        return response()->json(['success' => true, 'status' => $task->status, 'ip_detected' => $ip]);
     }
     public function UpdateTask(Request $request)
     {
@@ -378,7 +379,7 @@ class DashboardContrtoller extends Controller
                 Order::find($task->order_id)->decrement('current_amount');
             }
             if ($request->status == 'under_review' && $task->status != 'under_review') {
-                $task->update(['under_review_date' => now(), 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
+                $task->update(['under_review_date' => now(), 'status' => 'under_review', 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
             }
             $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
         }

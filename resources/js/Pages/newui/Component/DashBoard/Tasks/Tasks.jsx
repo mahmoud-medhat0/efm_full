@@ -64,6 +64,10 @@ const Tasks = () => {
     };
     const checkTaskStatus = (task) => {
         axios.post(route('client.dashboard.tasks.status'), { taskId: task.id }).then(response => {
+            if(response.data.ip_detected === true){
+                toast.error('VPN/Proxy Detected');
+                return;
+            }
             return response.data.status;
         });
     };
