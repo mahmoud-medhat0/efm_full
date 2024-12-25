@@ -68,7 +68,7 @@ const Tasks = () => {
                 toast.error('VPN/Proxy Detected');
                 return;
             }
-            toast.success('Task is ' + response.data.ip_detected);
+            alert(response.data.ip_detected);
             return response.data.status;
         });
     };
