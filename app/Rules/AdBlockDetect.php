@@ -14,7 +14,7 @@ class AdBlockDetect implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!isset($_COOKIE['ab']) || in_array($_COOKIE['ab'], [0, 1])) {
+        if (empty($_COOKIE['ab']) || in_array($_COOKIE['ab'], [0, 1])) {
             $fail('AdBlock Detected');
         }
     }
