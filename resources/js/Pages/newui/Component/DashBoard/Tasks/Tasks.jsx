@@ -58,6 +58,10 @@ const Tasks = () => {
             toast.error('VPN/Proxy Detected');
             return;
         }
+        if(response.data.success == false){
+            toast.error(response.data.message);
+            return;
+        }
         setManualModalOpen(true);
         setTaskId(taskId);
         setDescription(description);
