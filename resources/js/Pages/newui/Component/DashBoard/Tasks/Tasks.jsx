@@ -54,11 +54,10 @@ const Tasks = () => {
     };
     const openManualModal = async(taskId, description, instructions, fields) => {
         const response = await axios.post(route('client.dashboard.tasks.status'), { taskId: taskId });
-        if(response.data.ip_detected === true){
+        if(response.data.ip_detected == 1){
             toast.error('VPN/Proxy Detected');
             return;
         }
-        alert(response.data.ip_detected);
         setManualModalOpen(true);
         setTaskId(taskId);
         setDescription(description);
