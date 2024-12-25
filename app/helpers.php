@@ -25,7 +25,7 @@ if (!function_exists('iso8601ToDuration')) {
 if (!function_exists('DetectIp')) {
     function DetectIp()
     {
-        $response = Http::get('https://api.isproxyip.com/v1/check.php?key=HVERDuTrMt3OWGobA8HT6x0BpXqURIAkKdUMw8FJjFYdnGDaxe&ip=' . request()->ip());
+        $response = Http::get('https://api.isproxyip.com/v1/check.php?key=HVERDuTrMt3OWGobA8HT6x0BpXqURIAkKdUMw8FJjFYdnGDaxe&ip=' . request()->ip().'&format=json');
         $data = $response->json();
         return $data['proxy'];
     }

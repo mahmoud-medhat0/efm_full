@@ -52,13 +52,13 @@ const Tasks = () => {
         await updateTask(TaskId, "failed");
         window.location.reload();
     };
-    const openManualModal = (taskId, description, instructions, fields) => {
-        axios.post(route('client.dashboard.tasks.status'), { taskId: taskId }).then(response => {
-            if(response.data.ip_detected === true){
-                toast.error('VPN/Proxy Detected');
-                return;
-            }
-        });
+    const openManualModal = async(taskId, description, instructions, fields) => {
+        const response = await axios.post(route('client.dashboard.tasks.status'), { taskId: taskId });
+        if(response.data.ip_detected === true){
+            toast.error('VPN/Proxy Detected');
+            return;
+        }
+        alert(response.data.ip_detected);
         setManualModalOpen(true);
         setTaskId(taskId);
         setDescription(description);
