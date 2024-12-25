@@ -53,6 +53,12 @@ const Tasks = () => {
         window.location.reload();
     };
     const openManualModal = (taskId, description, instructions, fields) => {
+        axios.post(route('client.dashboard.tasks.status'), { taskId: taskId }).then(response => {
+            if(response.data.ip_detected === true){
+                toast.error('VPN/Proxy Detected');
+                return;
+            }
+        });
         setManualModalOpen(true);
         setTaskId(taskId);
         setDescription(description);
@@ -64,11 +70,6 @@ const Tasks = () => {
     };
     const checkTaskStatus = (task) => {
         axios.post(route('client.dashboard.tasks.status'), { taskId: task.id }).then(response => {
-            if(response.data.ip_detected === true){
-                toast.error('VPN/Proxy Detected');
-                return;
-            }
-            alert(response.data.ip_detected);
             return response.data.status;
         });
     };
