@@ -78,6 +78,7 @@ const Tasks = () => {
                 Object.values(errors).forEach(err => {
                     toast.error(err[0]); // Display each error message
                 });
+                return;
             } else {
                 console.error('Failed to check task status:', error);
                 toast.error('Failed to check task status. Please try again.');
