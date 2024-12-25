@@ -377,6 +377,9 @@ class DashboardContrtoller extends Controller
             if ($request->status == 'failed' && $task->status != 'failed') {
                 Order::find($task->order_id)->decrement('current_amount');
             }
+            if ($request->status == 'under_review' && $task->status != 'under_review') {
+                $task->update(['under_review_date' => now(), 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
+            }
             $task->update(['status' => $request->status, 'ip' => $request->ip(), 'country' => $request->country, 'user_agent' => $user_agent]);
         }
     }

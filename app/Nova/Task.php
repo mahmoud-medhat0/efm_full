@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
@@ -11,6 +13,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use App\Models\Task as TaskModel;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use App\Models\Order as OrderModel;
@@ -71,6 +74,9 @@ class Task extends Resource
                 'expired' => 'Expired',
                 'cancelled' => 'Cancelled',
             ])->sortable()->displayUsingLabels(),
+            Text::make('Under Review Date', 'under_review_date')->sortable()->displayUsing(function ($value) {
+                return $value ? Carbon::parse($value)->format('Y-m-d h:i:s A') : '-';
+            }),
             ToggleSwitchField::make('Paid', 'paid')->sortable(),
             Boolean::make('Removed', 'removed')->sortable(),
             Number::make('Points Reward', 'points_reward')->step(0.01)->default(0)->sortable(),
